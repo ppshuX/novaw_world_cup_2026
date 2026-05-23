@@ -6,7 +6,7 @@ const feedbackEmail = '2064747320@qq.com';
 export function OfficialSources() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="rounded-[8px] border border-white bg-white p-5 shadow-sm">
+      <div className="rounded-[8px] border border-white/80 bg-white/[0.92] p-5 shadow-sm backdrop-blur">
         <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
             <p className="text-sm font-bold text-summer-blue">Official Sources</p>
@@ -18,7 +18,7 @@ export function OfficialSources() {
         </div>
 
         <div className="mb-4 rounded-[8px] bg-slate-50 p-4 text-sm font-medium leading-6 text-slate-600">
-          数据更新时间：2026-05-23。若需要核对原始信息，可以从下方入口前往官方页面。
+          数据更新时间：2026-05-23。赛程对阵和时间将根据 FIFA 官方赛程人工维护；比分、结果和晋级情况将在比赛进行后更新。
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">

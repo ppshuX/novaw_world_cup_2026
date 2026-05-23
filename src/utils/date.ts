@@ -1,7 +1,8 @@
 import type { Match } from '../types';
 
 export function toMatchDate(match: Pick<Match, 'date' | 'time'>) {
-  return new Date(`${match.date}T${match.time}:00+08:00`);
+  const time = /^\d{2}:\d{2}$/.test(match.time) ? match.time : '23:59';
+  return new Date(`${match.date}T${time}:00+08:00`);
 }
 
 export function formatChineseDate(dateString: string) {
@@ -34,7 +35,7 @@ export function getTomorrowKey() {
 export function findNextMatch(matches: Match[], importantOnly = false) {
   const now = Date.now();
   return matches
-    .filter((match) => match.status !== '已结束')
+    .filter((match) => match.matchStatus !== 'finished')
     .filter((match) => !importantOnly || match.tag !== '普通')
     .map((match) => ({ match, startsAt: toMatchDate(match).getTime() }))
     .filter(({ startsAt }) => startsAt >= now)

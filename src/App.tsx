@@ -6,14 +6,14 @@ import { BracketTree } from './components/BracketTree';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
+import { InstallPage } from './components/InstallPage';
 import { MatchCard } from './components/MatchCard';
 import { MatchModal } from './components/MatchModal';
 import { OfficialSources } from './components/OfficialSources';
-import { SummerNotes } from './components/SummerNotes';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
 import { findNextMatch, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
 
-type AppView = 'home' | 'schedule' | 'bracket' | 'sources';
+type AppView = 'home' | 'schedule' | 'bracket' | 'sources' | 'install';
 type StageFilter = TournamentStage | '全部阶段';
 type GroupFilter = string | '全部小组';
 type DateFilter = string | '全部日期';
@@ -65,7 +65,7 @@ function App() {
   const todayMatches = sortedMatches.filter((match) => match.date === todayKey);
   const tomorrowMatches = sortedMatches.filter((match) => match.date === tomorrowKey);
   const upcomingMatches = sortedMatches
-    .filter((match) => match.status !== '已结束' && toMatchDate(match).getTime() >= Date.now())
+    .filter((match) => match.matchStatus !== 'finished' && toMatchDate(match).getTime() >= Date.now())
     .slice(0, 3);
   const focusMatches = sortedMatches.filter((match) => match.tag !== '普通').slice(0, 6);
   const headlineMatches = todayMatches.length > 0 ? todayMatches : tomorrowMatches.length > 0 ? tomorrowMatches : upcomingMatches;
@@ -78,23 +78,23 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#f4fbff] text-summer-ink">
+    <div className="app-shell min-h-screen overflow-hidden text-summer-ink">
       <Hero nextMatch={nextImportantMatch} onNavigate={setActiveView} onOpenMatch={setSelectedMatch} />
 
-      <main className="relative z-10 -mt-8 space-y-10 pb-16 sm:-mt-12">
+      <main className="relative z-10 -mt-10 space-y-10 pb-16 sm:-mt-14 lg:-mt-10">
         <NavTabs activeView={activeView} onChange={setActiveView} />
 
         {activeView === 'home' && (
           <>
             <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
                 <PanelHeaderCard
                   icon={<CalendarDays size={20} />}
                   eyebrow="近期比赛"
                   title="今日 / 最近即将开赛"
                   description="打开页面先看这里，快速判断今晚或明早有没有值得关注的比赛。"
                 >
-                  <div className="grid gap-3 md:grid-cols-2">
+                  <div className="grid gap-4 md:grid-cols-2">
                     {headlineMatches.map((match) => (
                       <MatchCard key={match.id} match={match} compact onOpen={setSelectedMatch} />
                     ))}
@@ -116,7 +116,6 @@ function App() {
                 </PanelHeaderCard>
               </div>
             </section>
-            <SummerNotes />
           </>
         )}
 
@@ -182,11 +181,10 @@ function App() {
         {activeView === 'bracket' && <BracketTree rounds={getBracketRounds()} />}
 
         {activeView === 'sources' && (
-          <>
-            <OfficialSources />
-            <SummerNotes />
-          </>
+          <OfficialSources />
         )}
+
+        {activeView === 'install' && <InstallPage />}
       </main>
 
       {filterOpen && (
@@ -219,11 +217,12 @@ function NavTabs({ activeView, onChange }: { activeView: AppView; onChange: (vie
     { id: 'schedule', label: '赛程' },
     { id: 'bracket', label: '晋级树' },
     { id: 'sources', label: '来源' },
+    { id: 'install', label: 'App' },
   ];
 
   return (
     <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-4 gap-2 rounded-[8px] border border-white bg-white/90 p-2 shadow-card backdrop-blur">
+      <div className="grid grid-cols-5 gap-2 rounded-[8px] border border-white bg-white/90 p-2 shadow-card backdrop-blur">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -258,7 +257,7 @@ function PanelHeaderCard({
   children: ReactNode;
 }) {
   return (
-    <section className={dark ? 'rounded-[8px] border border-white/70 bg-[#251b4c] p-5 text-white shadow-card' : 'rounded-[8px] border border-white/70 bg-white/[0.9] p-5 shadow-card backdrop-blur'}>
+    <section className={dark ? 'rounded-[8px] border border-white/70 bg-[#251b4c] p-5 text-white shadow-card' : 'rounded-[8px] border border-white/70 bg-white/[0.72] p-5 shadow-card backdrop-blur'}>
       <div className="mb-4 flex items-start gap-3">
         <span className={dark ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-summer-lime text-[#172033]' : 'flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-summer-blue text-white'}>
           {icon}

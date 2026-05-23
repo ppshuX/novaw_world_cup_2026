@@ -1,4 +1,4 @@
-export type TournamentStage =
+﻿export type TournamentStage =
   | '小组赛'
   | '32强'
   | '16强'
@@ -7,7 +7,7 @@ export type TournamentStage =
   | '三四名决赛'
   | '决赛';
 
-export type MatchStatus = '未开始' | '进行中' | '已结束';
+export type MatchStatus = 'scheduled' | 'live' | 'finished';
 
 export type MatchTag = '重点' | '推荐' | '普通';
 
@@ -18,7 +18,9 @@ export interface Team {
   name: string;
   shortName: string;
   group?: string;
-  flagEmoji: string;
+  flagKey?: string;
+  fifaCode?: string;
+  countryCode?: string;
   color: string;
 }
 
@@ -33,12 +35,14 @@ export interface Match {
   awayTeamId: string;
   homeScore?: number | null;
   awayScore?: number | null;
-  status: MatchStatus;
+  matchStatus: MatchStatus;
   city: string;
   stadium: string;
   note: string;
   tag: MatchTag;
-  dataStatus: DataStatus;
+  matchInfoStatus: DataStatus;
+  resultStatus: 'pending' | 'official';
+  advancementStatus: 'pending' | 'confirmed' | 'not_applicable';
   source: string;
   lastUpdated: string;
 }
@@ -71,3 +75,4 @@ export interface BracketRound {
   stage: TournamentStage | '冠军';
   matches: BracketMatch[];
 }
+

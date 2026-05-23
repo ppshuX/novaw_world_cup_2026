@@ -1,6 +1,6 @@
-# NovaW World Cup 2026
+# World Cup 2026
 
-NovaW World Cup 2026 是一个面向中文用户的、移动端优先的 2026 世界杯赛程展示网站。它的目标不是做社区、预测平台或复杂体育数据后台，而是让用户比浏览 FIFA 官方网站更轻松、更直观地查看赛程、北京时间、比赛对阵、比赛地点、比赛阶段和晋级路径。
+World Cup 2026 是一个面向中文用户的、移动端优先的 2026 世界杯赛程展示网站。它的目标不是做社区、预测平台或复杂体育数据后台，而是让用户比浏览 FIFA 官方网站更轻松、更直观地查看赛程、北京时间、比赛对阵、比赛地点、比赛阶段和晋级路径。
 
 ## 项目定位
 
@@ -42,6 +42,7 @@ V1 仍然是纯前端静态版本，不接后端、不接实时 API、不自动�
 - 官方 FIFA 页面入口
 - 数据反馈 / 纠错反馈邮箱入口
 - 数据状态标记：`official` / `pending` / `mock`
+- PWA 支持，可添加到手机主屏幕
 
 ## 当前不做
 
@@ -95,11 +96,24 @@ dist/
 
 如果平台不自动构建，也可以本地运行 `npm run build` 后上传 `dist/`。
 
+## 添加到主屏幕
+
+项目已加入基础 PWA 支持：
+
+- `public/manifest.webmanifest`
+- `public/sw.js`
+- `public/icons/icon-192.svg`
+- `public/icons/icon-512.svg`
+
+Android Chrome / Edge 在 HTTPS 环境下满足浏览器安装条件后，会显示添加到主屏幕提示。iPhone / iPad Safari 不支持网页主动触发安装弹窗，需要用户手动点击 Safari 的“分享”按钮，再选择“添加到主屏幕”。
+
+本地开发环境下 service worker 不注册，生产构建部署到 HTTPS 后生效。
+
 ## 数据文件说明
 
 所有 V1 数据集中放在 `src/data/`：
 
-- `src/data/matches.ts`：比赛列表、时间、地点、阶段、标签、数据状态
+- `src/data/matches.ts`：比赛列表、时间、地点、阶段、标签、赛程状态、结果状态、晋级状态
 - `src/data/teams.ts`：球队或占位槽位名称
 - `src/data/bracket.ts`：淘汰赛路径占位树
 - `src/data/sources.ts`：FIFA 官方信息来源链接
@@ -116,7 +130,10 @@ V1 仍然读取本地静态数据。`services` 层只是为了让组件不要强
 
 ## 数据可信度规则
 
-- 已确认数据标记为 `official`。
+- 赛程对阵、北京时间、阶段、城市和场馆如果已由 FIFA 官方确认，`matchDataStatus` 标记为 `official`。
+- 比赛尚未开始不等于比赛双方未知。已确认的小组赛必须展示真实球队。
+- 比分和比赛结果独立使用 `resultStatus` 管理，未开赛时保持 `pending`。
+- 晋级情况独立使用 `advancementStatus` 管理，未产生晋级结果时保持 `pending`。
 - 未确认但等待官方核对的数据标记为 `pending`。
 - 仅用于页面展示的示例数据标记为 `mock`。
 - 不确定球队显示为 `TBD`、`待确认`、`小组第一`、`第 X 场胜者` 等占位。

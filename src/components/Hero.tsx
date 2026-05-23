@@ -3,6 +3,8 @@ import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck } from 'lucide-r
 import type { Match } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate, getCountdownParts } from '../utils/date';
+import { getMatchStatusLabel } from '../utils/matchStatus';
+import { TeamMark } from './TeamIdentity';
 
 interface HeroProps {
   nextMatch?: Match;
@@ -25,33 +27,33 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch }: HeroProps) {
   const awayTeam = nextMatch ? getTeamById(nextMatch.awayTeamId) : undefined;
 
   return (
-    <header className="hero-scene relative overflow-hidden px-4 pb-10 pt-6 text-white sm:px-6 lg:px-8">
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f4fbff] to-transparent" />
+    <header className="hero-scene relative overflow-hidden px-4 pb-16 pt-6 text-white sm:px-6 lg:px-8 lg:pb-20">
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#e6f1f7] to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#07111f]/[0.86] via-[#07111f]/[0.46] to-[#07111f]/[0.14]" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/[0.36] via-transparent to-[#32245f]/[0.26]" />
 
-      <div className="relative z-10 mx-auto flex min-h-[640px] w-full max-w-7xl flex-col justify-between gap-8 sm:min-h-[620px]">
+      <div className="relative z-10 mx-auto flex min-h-[640px] w-full max-w-7xl flex-col justify-between gap-8 sm:min-h-[560px] lg:min-h-[520px]">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-white text-summer-blue shadow-glow">
               <CalendarDays size={20} />
             </span>
-            <span className="font-black">NovaW World Cup 2026</span>
+            <span className="font-black">World Cup 2026</span>
           </div>
           <span className="hidden rounded-[8px] border border-white/[0.35] bg-white/[0.12] px-3 py-2 text-sm font-bold backdrop-blur sm:inline">
             北京时间 · 中文赛程
           </span>
         </nav>
 
-        <div className="grid items-end gap-5 lg:grid-cols-[1fr_420px]">
+        <div className="grid items-end gap-6 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,0.95fr)_420px]">
           <div className="max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-[8px] border border-white/40 bg-white/[0.16] px-3 py-2 text-sm font-bold backdrop-blur">
               <ShieldCheck size={16} className="text-summer-lime" />
               为中文用户整理的世界杯赛程查看网站
             </div>
 
-            <h1 className="text-4xl font-black leading-[1.05] sm:text-6xl lg:text-7xl">
-              NovaW World Cup 2026
+            <h1 className="text-4xl font-black leading-[1.05] sm:text-6xl lg:text-6xl xl:text-7xl">
+              World Cup 2026
             </h1>
             <p className="mt-3 text-2xl font-black text-summer-lime sm:text-3xl">2026 世界杯赛程日历</p>
             <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-white/[0.88] sm:text-xl sm:leading-8">
@@ -75,9 +77,11 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch }: HeroProps) {
                   className="block w-full rounded-[8px] bg-white/[0.08] p-4 text-left transition hover:bg-white/[0.14]"
                 >
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                    <TeamName name={homeTeam.name} shortName={homeTeam.shortName} />
-                    <span className="rounded-[8px] bg-white px-3 py-2 text-sm font-black text-[#172033]">VS</span>
-                    <TeamName name={awayTeam.name} shortName={awayTeam.shortName} alignRight />
+                    <TeamName team={homeTeam} name={homeTeam.name} shortName={homeTeam.shortName} />
+                    <span className="rounded-[8px] bg-white px-3 py-2 text-sm font-black text-[#172033]">
+                      {getMatchStatusLabel(nextMatch.matchStatus)}
+                    </span>
+                    <TeamName team={awayTeam} name={awayTeam.name} shortName={awayTeam.shortName} alignRight />
                   </div>
                 </button>
 
@@ -126,11 +130,25 @@ function HeroButton({ label, onClick }: { label: string; onClick: () => void }) 
   );
 }
 
-function TeamName({ name, shortName, alignRight = false }: { name: string; shortName: string; alignRight?: boolean }) {
+function TeamName({
+  team,
+  name,
+  shortName,
+  alignRight = false,
+}: {
+  team?: ReturnType<typeof getTeamById>;
+  name: string;
+  shortName: string;
+  alignRight?: boolean;
+}) {
   return (
-    <span className={alignRight ? 'min-w-0 text-right' : 'min-w-0'}>
-      <span className="block truncate text-xl font-black">{name}</span>
-      <span className="mt-1 block text-xs font-bold text-white/[0.62]">{shortName}</span>
+    <span className={alignRight ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2'}>
+      {!alignRight && <TeamMark team={team} size="sm" />}
+      <span className="min-w-0">
+        <span className="block truncate text-xl font-black">{name}</span>
+        <span className="mt-1 block text-xs font-bold text-white/[0.62]">{shortName}</span>
+      </span>
+      {alignRight && <TeamMark team={team} size="sm" />}
     </span>
   );
 }

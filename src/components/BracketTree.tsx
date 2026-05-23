@@ -1,6 +1,5 @@
 import { Info, Trophy } from 'lucide-react';
 import type { BracketRound, BracketSlot } from '../types';
-import { getTeamById } from '../services/worldCupData';
 
 interface BracketTreeProps {
   rounds: BracketRound[];
@@ -12,7 +11,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
       <div className="mb-5">
         <p className="text-sm font-bold text-summer-blue">Bracket Path</p>
         <h2 className="text-3xl font-black sm:text-4xl">晋级路径</h2>
-        <div className="mt-4 rounded-[8px] border border-summer-sky/40 bg-white p-4 text-sm font-medium leading-6 text-slate-600 shadow-sm">
+        <div className="mt-4 rounded-[8px] border border-summer-sky/40 bg-white/[0.9] p-4 text-sm font-medium leading-6 text-slate-600 shadow-sm backdrop-blur">
           <p className="flex gap-2">
             <Info size={18} className="mt-0.5 shrink-0 text-summer-blue" />
             世界杯尚未开赛，当前晋级树仅展示赛制路径。具体晋级球队、胜者和冠军将在比赛进行后根据官方结果更新。
@@ -22,7 +21,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
 
       <div className="grid gap-4 lg:hidden">
         {rounds.map((round) => (
-          <section key={round.stage} className="rounded-[8px] border border-white bg-white p-4 shadow-sm">
+          <section key={round.stage} className="rounded-[8px] border border-white/80 bg-white/[0.92] p-4 shadow-sm backdrop-blur">
             <h3 className="mb-3 text-lg font-black">{round.stage}</h3>
             <div className="space-y-3">
               {round.matches.map((match) => (
@@ -33,7 +32,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
         ))}
       </div>
 
-      <div className="hidden overflow-x-auto rounded-[8px] border border-white bg-white/[0.82] p-4 shadow-card backdrop-blur lg:block">
+      <div className="hidden overflow-x-auto rounded-[8px] border border-white/80 bg-white/[0.86] p-4 shadow-card backdrop-blur lg:block">
         <div className="bracket-grid min-w-[1040px]">
           {rounds.map((round) => (
             <div key={round.stage} className="bracket-column">
@@ -80,19 +79,10 @@ function BracketMobileCard({ match }: { match: BracketRound['matches'][number] }
 }
 
 function BracketTeam({ slot }: { slot: BracketSlot }) {
-  const team = slot.teamId ? getTeamById(slot.teamId) : undefined;
-
   return (
     <div className="relative flex items-center gap-3 rounded-[8px] border border-dashed border-slate-300 bg-white px-3 py-3">
-      <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[10px] font-black text-white"
-        style={{ backgroundColor: team?.color ?? '#94a3b8' }}
-      >
-        {team?.shortName ?? 'TBD'}
-      </span>
       <span className="min-w-0">
-        <span className="block truncate text-sm font-black">{team?.name ?? slot.label}</span>
-        <span className="block truncate text-xs font-semibold text-slate-500">{slot.label}</span>
+        <span className="block text-sm font-black leading-5">{slot.label}</span>
       </span>
       <span className="ml-auto inline-flex shrink-0 items-center gap-1 text-xs font-black text-slate-400">
         <Trophy size={13} /> 待确认

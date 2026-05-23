@@ -21,6 +21,38 @@ body {
   min-width: 320px;
 }
 
+.app-shell {
+  background:
+    radial-gradient(circle at 9% 18%, rgba(34, 197, 94, 0.16), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(220, 38, 38, 0.12), transparent 26%),
+    radial-gradient(circle at 72% 76%, rgba(17, 119, 214, 0.13), transparent 30%),
+    linear-gradient(180deg, #e6f1f7 0%, #edf6f2 44%, #e8f1f8 100%);
+}
+
+.match-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  content: "";
+  background: linear-gradient(180deg, #1177d6, #25b96f 58%, #ff9f43);
+  opacity: 0.82;
+}
+
+.match-card::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 12% 0%, rgba(17, 119, 214, 0.08), transparent 34%),
+    radial-gradient(circle at 90% 12%, rgba(37, 185, 111, 0.08), transparent 30%);
+}
+
+.match-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 button,
 input,
 select {
