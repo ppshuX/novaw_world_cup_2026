@@ -40,11 +40,7 @@ export function MatchCard({ match, compact = false, onOpen, isFavorite = false, 
             {match.group && <span className="rounded-[6px] bg-slate-100 px-2 py-1 text-xs font-black">{match.group}</span>}
           </div>
         </div>
-        <div className="flex shrink-0 items-start gap-2">
-          <div className="flex flex-col items-end gap-1">
-            <span className="rounded-[6px] bg-summer-lime px-2 py-1 text-xs font-black text-[#17331d]">{match.tag}</span>
-            <DataStatusBadge status={match.matchInfoStatus} />
-          </div>
+        <div className="flex shrink-0 items-start">
           {onToggleFavorite && (
             <button
               type="button"
