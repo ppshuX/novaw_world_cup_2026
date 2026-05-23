@@ -12,6 +12,7 @@ type Platform = 'android' | 'ios-safari' | 'standalone' | 'desktop';
 export function InstallPage() {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
+  const [notice, setNotice] = useState('');
 
   const platform = useMemo<Platform>(() => {
     const userAgent = window.navigator.userAgent.toLowerCase();
@@ -49,9 +50,13 @@ export function InstallPage() {
   }, []);
 
   const install = async () => {
-    if (!installPrompt) return;
+    if (!installPrompt) {
+      setNotice(getUnavailableMessage(platform));
+      return;
+    }
     await installPrompt.prompt();
-    await installPrompt.userChoice;
+    const choice = await installPrompt.userChoice;
+    setNotice(choice.outcome === 'accepted' ? '已开始添加到主屏幕。' : '你取消了添加操作，可以稍后再试。');
     setInstallPrompt(null);
   };
 
@@ -73,6 +78,21 @@ export function InstallPage() {
 
         <div className="mt-6 grid gap-4 md:grid-cols-[1fr_0.9fr]">
           <div className="rounded-[8px] bg-slate-50 p-4">
+            <button
+              type="button"
+              onClick={install}
+              disabled={installed || platform === 'standalone'}
+              className="mb-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[8px] bg-[#172033] px-4 py-2 text-sm font-black text-white transition hover:bg-summer-blue disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600"
+            >
+              <Download size={18} />
+              下载到桌面 / 添加到主屏幕
+            </button>
+            {notice && (
+              <p className="mb-4 rounded-[8px] border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-bold leading-6 text-amber-800">
+                {notice}
+              </p>
+            )}
+
             {installed || platform === 'standalone' ? (
               <StatusCard
                 icon={<CheckCircle2 size={22} />}
@@ -87,14 +107,6 @@ export function InstallPage() {
                     title="当前浏览器支持安装"
                     text="点击下方按钮后，浏览器会显示官方添加到主屏幕提示。"
                   />
-                  <button
-                    type="button"
-                    onClick={install}
-                    className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-[8px] bg-[#172033] px-4 py-2 text-sm font-black text-white transition hover:bg-summer-blue sm:w-auto"
-                  >
-                    <Download size={17} />
-                    立即添加到主屏幕
-                  </button>
                 </div>
               ) : (
                 <StatusCard
@@ -142,6 +154,22 @@ export function InstallPage() {
       </div>
     </section>
   );
+}
+
+function getUnavailableMessage(platform: Platform) {
+  if (platform === 'ios-safari') {
+    return 'iPhone / iPad 不能由网页直接弹出安装框，请在 Safari 中点击“分享”，再选择“添加到主屏幕”。';
+  }
+
+  if (platform === 'android') {
+    return '当前浏览器暂未开放安装提示。请确认使用 Android Chrome / Edge，并在 HTTPS 正式网址中打开；也可以从浏览器菜单选择“添加到主屏幕”。';
+  }
+
+  if (platform === 'standalone') {
+    return '当前已经是桌面 App 模式，无需重复添加。';
+  }
+
+  return '当前浏览器暂时不能直接触发添加。请在手机 Chrome / Edge 或 iPhone Safari 中打开，或使用浏览器菜单里的安装/添加到主屏幕选项。';
 }
 
 function StatusCard({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
