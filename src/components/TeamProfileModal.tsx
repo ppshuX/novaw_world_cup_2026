@@ -16,7 +16,7 @@ const profileStatusLabel = {
 export function TeamProfileModal({ team, onClose }: TeamProfileModalProps) {
   if (!team) return null;
 
-  const keyPlayers = team.keyPlayers?.filter((player) => player && player !== '待补充') ?? [];
+  const starPlayers = team.starPlayers?.filter((player) => player && player !== '待补充') ?? [];
   const hasOfficialUrl = Boolean(team.officialUrl);
 
   return (
@@ -85,17 +85,17 @@ export function TeamProfileModal({ team, onClose }: TeamProfileModalProps) {
             </section>
 
             <section className="rounded-[8px] border border-slate-100 bg-slate-50 p-4">
-              <p className="text-xs font-black uppercase text-slate-400">核心球员</p>
-              {keyPlayers.length > 0 ? (
+              <p className="text-xs font-black uppercase text-slate-400">代表球星</p>
+              {starPlayers.length > 0 ? (
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {keyPlayers.slice(0, 5).map((player) => (
+                  {starPlayers.slice(0, 5).map((player) => (
                     <span key={player} className="rounded-[6px] bg-white px-2 py-1 text-xs font-black text-slate-700">
                       {player}
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="mt-2 font-black text-slate-700">名单待官方公布 / 待补充</p>
+                <p className="mt-2 font-black text-slate-700">代表球星待补充</p>
               )}
             </section>
           </div>
@@ -124,7 +124,7 @@ export function TeamProfileModal({ team, onClose }: TeamProfileModalProps) {
           </div>
 
           <p className="mt-4 text-xs font-semibold leading-5 text-slate-500">
-            球队资料由本地人工维护，未确认内容会标记为待补充；当前不维护完整球员名单。
+            代表球星用于快速识别球队，不等同于官方最终名单或首发预测；球队资料由本地人工维护，当前不维护完整球员名单。
           </p>
         </div>
       </div>

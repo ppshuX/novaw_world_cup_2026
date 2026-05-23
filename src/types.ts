@@ -26,6 +26,7 @@ export interface Team {
   nameEn?: string;
   description?: string;
   coach?: string;
+  starPlayers?: string[];
   keyPlayers?: string[];
   officialUrl?: string | null;
   posterUrl?: string | null;
