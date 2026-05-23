@@ -69,13 +69,79 @@ const teamDescriptions: Record<string, string> = {
   senegal: '非洲劲旅，小组赛对阵值得留意。',
 };
 
+const teamProfileFacts: Record<string, { appearances: number; fixtures: number }> = {
+  mexico: { appearances: 17, fixtures: 3 },
+  'south-africa': { appearances: 3, fixtures: 3 },
+  'korea-republic': { appearances: 11, fixtures: 3 },
+  czechia: { appearances: 1, fixtures: 3 },
+  canada: { appearances: 2, fixtures: 3 },
+  qatar: { appearances: 1, fixtures: 3 },
+  switzerland: { appearances: 12, fixtures: 3 },
+  bosnia: { appearances: 0, fixtures: 3 },
+  brazil: { appearances: 22, fixtures: 3 },
+  morocco: { appearances: 6, fixtures: 3 },
+  haiti: { appearances: 1, fixtures: 3 },
+  scotland: { appearances: 8, fixtures: 3 },
+  usa: { appearances: 11, fixtures: 3 },
+  paraguay: { appearances: 8, fixtures: 3 },
+  australia: { appearances: 6, fixtures: 3 },
+  turkey: { appearances: 2, fixtures: 3 },
+  germany: { appearances: 20, fixtures: 3 },
+  curacao: { appearances: 0, fixtures: 3 },
+  'ivory-coast': { appearances: 3, fixtures: 3 },
+  ecuador: { appearances: 4, fixtures: 3 },
+  netherlands: { appearances: 11, fixtures: 3 },
+  japan: { appearances: 7, fixtures: 3 },
+  sweden: { appearances: 12, fixtures: 3 },
+  tunisia: { appearances: 6, fixtures: 3 },
+  belgium: { appearances: 14, fixtures: 3 },
+  egypt: { appearances: 3, fixtures: 3 },
+  iran: { appearances: 6, fixtures: 3 },
+  'new-zealand': { appearances: 2, fixtures: 3 },
+  spain: { appearances: 16, fixtures: 3 },
+  'cape-verde': { appearances: 0, fixtures: 3 },
+  'saudi-arabia': { appearances: 6, fixtures: 3 },
+  uruguay: { appearances: 14, fixtures: 3 },
+  france: { appearances: 16, fixtures: 3 },
+  senegal: { appearances: 3, fixtures: 3 },
+  iraq: { appearances: 1, fixtures: 3 },
+  norway: { appearances: 3, fixtures: 3 },
+  argentina: { appearances: 18, fixtures: 3 },
+  algeria: { appearances: 4, fixtures: 3 },
+  austria: { appearances: 8, fixtures: 3 },
+  jordan: { appearances: 0, fixtures: 3 },
+  portugal: { appearances: 8, fixtures: 3 },
+  'dr-congo': { appearances: 0, fixtures: 3 },
+  uzbekistan: { appearances: 0, fixtures: 3 },
+  colombia: { appearances: 6, fixtures: 3 },
+  england: { appearances: 16, fixtures: 3 },
+  croatia: { appearances: 6, fixtures: 3 },
+  ghana: { appearances: 4, fixtures: 3 },
+  panama: { appearances: 1, fixtures: 3 },
+};
+
+function getProfileDescription(team: Team) {
+  const facts = teamProfileFacts[team.id];
+  const baseDescription = teamDescriptions[team.id];
+  if (!facts) return baseDescription ?? `${team.name} 将参加 2026 世界杯${team.group ? ` ${team.group}` : ''} 小组赛，更多球队资料后续可人工补充。`;
+
+  const history =
+    facts.appearances > 0
+      ? `历史世界杯参赛 ${facts.appearances} 次。`
+      : '此前暂无世界杯正赛参赛记录。';
+  const groupInfo = team.group ? `${team.group} 球队` : '参赛球队';
+  const scheduleInfo = `2026 年小组赛共有 ${facts.fixtures} 场。`;
+
+  return baseDescription ? `${baseDescription} ${scheduleInfo} ${history}` : `${groupInfo}，${scheduleInfo}${history}`;
+}
+
 function withProfile(team: Team): Team {
   if (team.id.startsWith('tbd') || team.id.startsWith('slot-')) return team;
 
   return {
     ...team,
     nameEn: teamEnglishNames[team.id] ?? team.shortName,
-    description: teamDescriptions[team.id] ?? `${team.name} 将参加 2026 世界杯${team.group ? ` ${team.group}` : ''} 小组赛，更多球队资料后续可人工补充。`,
+    description: getProfileDescription(team),
     coach: '待补充',
     keyPlayers: [],
     officialUrl: null,
