@@ -1,5 +1,5 @@
-import { Clock, Database, MapPin, Trophy } from 'lucide-react';
-import type { DataStatus, Match } from '../types';
+import { Clock, Database, MapPin, Star, Trophy } from 'lucide-react';
+import type { DataStatus, Match, Team } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate } from '../utils/date';
 import { getMatchStatusLabel, getResultLabel } from '../utils/matchStatus';
@@ -9,17 +9,27 @@ interface MatchCardProps {
   match: Match;
   compact?: boolean;
   onOpen: (match: Match) => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: (matchId: string) => void;
+  onOpenTeam?: (team: Team) => void;
 }
 
-export function MatchCard({ match, compact = false, onOpen }: MatchCardProps) {
+export function MatchCard({ match, compact = false, onOpen, isFavorite = false, onToggleFavorite, onOpenTeam }: MatchCardProps) {
   const homeTeam = getTeamById(match.homeTeamId);
   const awayTeam = getTeamById(match.awayTeamId);
   const score = getResultLabel(match);
 
   return (
-    <button
-      type="button"
+    <article
+      role="button"
+      tabIndex={0}
       onClick={() => onOpen(match)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onOpen(match);
+        }
+      }}
       className="match-card group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-[8px] border border-summer-sky/25 bg-[#fbfdff]/[0.96] p-4 text-left shadow-[0_10px_28px_rgba(23,32,51,0.08)] backdrop-blur transition hover:-translate-y-0.5 hover:border-summer-sky hover:bg-white hover:shadow-card"
     >
       <div className="mb-4 flex items-start justify-between gap-3">
@@ -30,16 +40,40 @@ export function MatchCard({ match, compact = false, onOpen }: MatchCardProps) {
             {match.group && <span className="rounded-[6px] bg-slate-100 px-2 py-1 text-xs font-black">{match.group}</span>}
           </div>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-1">
-          <span className="rounded-[6px] bg-summer-lime px-2 py-1 text-xs font-black text-[#17331d]">{match.tag}</span>
-          <DataStatusBadge status={match.matchInfoStatus} />
+        <div className="flex shrink-0 items-start gap-2">
+          <div className="flex flex-col items-end gap-1">
+            <span className="rounded-[6px] bg-summer-lime px-2 py-1 text-xs font-black text-[#17331d]">{match.tag}</span>
+            <DataStatusBadge status={match.matchInfoStatus} />
+          </div>
+          {onToggleFavorite && (
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                onToggleFavorite(match.id);
+              }}
+              onKeyDown={(event) => {
+                event.stopPropagation();
+              }}
+              aria-label={isFavorite ? '取消收藏比赛' : '收藏比赛'}
+              aria-pressed={isFavorite}
+              className={[
+                'flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border transition',
+                isFavorite
+                  ? 'border-summer-orange/40 bg-summer-orange text-[#271527]'
+                  : 'border-slate-200 bg-white text-slate-400 hover:border-summer-orange hover:text-summer-orange',
+              ].join(' ')}
+            >
+              <Star size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
-        <TeamBlock team={homeTeam} name={homeTeam?.name ?? '待确认'} shortName={homeTeam?.shortName ?? 'TBD'} align="left" />
+        <TeamBlock team={homeTeam} name={homeTeam?.name ?? '待确认'} shortName={homeTeam?.shortName ?? 'TBD'} align="left" onOpenTeam={onOpenTeam} />
         <div className="rounded-[8px] bg-[#172033] px-3 py-2 text-center text-sm font-black text-white">{score}</div>
-        <TeamBlock team={awayTeam} name={awayTeam?.name ?? '待确认'} shortName={awayTeam?.shortName ?? 'TBD'} align="right" />
+        <TeamBlock team={awayTeam} name={awayTeam?.name ?? '待确认'} shortName={awayTeam?.shortName ?? 'TBD'} align="right" onOpenTeam={onOpenTeam} />
       </div>
 
       <div className="mt-4 grid gap-2 text-sm font-semibold text-slate-600">
@@ -61,7 +95,7 @@ export function MatchCard({ match, compact = false, onOpen }: MatchCardProps) {
         </span>
         <span className="text-sm font-black text-summer-blue transition group-hover:translate-x-0.5">详情</span>
       </div>
-    </button>
+    </article>
   );
 }
 
@@ -86,15 +120,43 @@ export function DataStatusBadge({ status }: { status: DataStatus }) {
   );
 }
 
-function TeamBlock({ team, name, shortName, align }: { team?: ReturnType<typeof getTeamById>; name: string; shortName: string; align: 'left' | 'right' }) {
+function TeamBlock({
+  team,
+  name,
+  shortName,
+  align,
+  onOpenTeam,
+}: {
+  team?: ReturnType<typeof getTeamById>;
+  name: string;
+  shortName: string;
+  align: 'left' | 'right';
+  onOpenTeam?: (team: Team) => void;
+}) {
+  const canOpen = Boolean(team && onOpenTeam && !team.id.startsWith('tbd') && !team.id.startsWith('slot-'));
+
   return (
-    <div className={align === 'right' ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2 text-left'}>
+    <button
+      type="button"
+      disabled={!canOpen}
+      onClick={(event) => {
+        event.stopPropagation();
+        if (team && canOpen) onOpenTeam?.(team);
+      }}
+      onKeyDown={(event) => {
+        event.stopPropagation();
+      }}
+      className={[
+        align === 'right' ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2 text-left',
+        canOpen ? 'rounded-[8px] outline-none transition hover:text-summer-blue focus-visible:ring-2 focus-visible:ring-summer-sky' : 'cursor-default',
+      ].join(' ')}
+    >
       {align === 'left' && <TeamMark team={team} size="sm" />}
       <span className="min-w-0">
         <span className="block truncate text-sm font-black sm:text-base">{name}</span>
         <span className="mt-1 block text-xs font-bold text-slate-400">{shortName}</span>
       </span>
       {align === 'right' && <TeamMark team={team} size="sm" />}
-    </div>
+    </button>
   );
 }

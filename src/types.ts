@@ -12,6 +12,7 @@ export type MatchStatus = 'scheduled' | 'live' | 'finished';
 export type MatchTag = '重点' | '推荐' | '普通';
 
 export type DataStatus = 'official' | 'pending' | 'mock';
+export type TeamProfileStatus = 'official' | 'pending' | 'manual';
 
 export interface Team {
   id: string;
@@ -22,6 +23,14 @@ export interface Team {
   fifaCode?: string;
   countryCode?: string;
   color: string;
+  nameEn?: string;
+  description?: string;
+  coach?: string;
+  keyPlayers?: string[];
+  officialUrl?: string | null;
+  posterUrl?: string | null;
+  profileStatus?: TeamProfileStatus;
+  profileLastUpdated?: string;
 }
 
 export interface Match {

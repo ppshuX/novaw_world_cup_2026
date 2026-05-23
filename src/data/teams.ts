@@ -1,6 +1,91 @@
 import type { Team } from '../types';
 
-export const teams: Team[] = [
+const teamEnglishNames: Record<string, string> = {
+  mexico: 'Mexico',
+  'south-africa': 'South Africa',
+  'korea-republic': 'Korea Republic',
+  czechia: 'Czechia',
+  canada: 'Canada',
+  qatar: 'Qatar',
+  switzerland: 'Switzerland',
+  bosnia: 'Bosnia and Herzegovina',
+  brazil: 'Brazil',
+  morocco: 'Morocco',
+  haiti: 'Haiti',
+  scotland: 'Scotland',
+  usa: 'USA',
+  paraguay: 'Paraguay',
+  australia: 'Australia',
+  turkey: 'Türkiye',
+  germany: 'Germany',
+  curacao: 'Curaçao',
+  'ivory-coast': 'Côte d’Ivoire',
+  ecuador: 'Ecuador',
+  netherlands: 'Netherlands',
+  japan: 'Japan',
+  sweden: 'Sweden',
+  tunisia: 'Tunisia',
+  belgium: 'Belgium',
+  egypt: 'Egypt',
+  iran: 'Iran',
+  'new-zealand': 'New Zealand',
+  spain: 'Spain',
+  'cape-verde': 'Cabo Verde',
+  'saudi-arabia': 'Saudi Arabia',
+  uruguay: 'Uruguay',
+  france: 'France',
+  senegal: 'Senegal',
+  iraq: 'Iraq',
+  norway: 'Norway',
+  argentina: 'Argentina',
+  algeria: 'Algeria',
+  austria: 'Austria',
+  jordan: 'Jordan',
+  portugal: 'Portugal',
+  'dr-congo': 'DR Congo',
+  uzbekistan: 'Uzbekistan',
+  colombia: 'Colombia',
+  england: 'England',
+  croatia: 'Croatia',
+  ghana: 'Ghana',
+  panama: 'Panama',
+};
+
+const teamDescriptions: Record<string, string> = {
+  mexico: '东道主之一，将参加揭幕战，主场氛围会是本届赛事的重要看点。',
+  canada: '东道主之一，适合关注北美赛区比赛节奏和主场氛围。',
+  usa: '东道主之一，小组赛关注度高，比赛城市分布也很有代表性。',
+  brazil: '传统世界杯强队，小组赛关注度很高。',
+  argentina: '上届世界杯冠军，本届小组赛自然会受到大量关注。',
+  germany: '欧洲传统强队，赛程关注度稳定。',
+  france: '近年国际大赛表现突出的欧洲强队。',
+  spain: '欧洲传统强队，小组赛会是很多用户关注的重点。',
+  england: '欧洲传统强队，关注度高。',
+  portugal: '欧洲传统强队，具备很高的话题度。',
+  netherlands: '欧洲传统强队，小组赛对阵值得关注。',
+  japan: '亚洲代表球队之一，适合中文用户重点关注。',
+  'korea-republic': '亚洲代表球队之一，小组赛首轮就有较高关注度。',
+  morocco: '近年国际大赛表现亮眼的非洲球队。',
+  senegal: '非洲劲旅，小组赛对阵值得留意。',
+};
+
+function withProfile(team: Team): Team {
+  if (team.id.startsWith('tbd') || team.id.startsWith('slot-')) return team;
+
+  return {
+    ...team,
+    nameEn: teamEnglishNames[team.id] ?? team.shortName,
+    description: teamDescriptions[team.id] ?? `${team.name} 将参加 2026 世界杯${team.group ? ` ${team.group}` : ''} 小组赛，更多球队资料后续可人工补充。`,
+    coach: '待补充',
+    keyPlayers: [],
+    officialUrl: null,
+    posterUrl: null,
+    profileStatus: 'manual',
+    profileLastUpdated: '2026-05-23',
+  };
+}
+
+const baseTeams: Team[] = [
   { id: 'tbd-home', name: '待确认球队', shortName: 'TBD', color: '#64748b' },
   { id: 'tbd-away', name: '待确认球队', shortName: 'TBD', color: '#64748b' },
 
@@ -71,5 +156,7 @@ export const teams: Team[] = [
   { id: 'slot-w73', name: '第73场胜者', shortName: 'W73', color: '#1177d6' },
   { id: 'slot-w74', name: '第74场胜者', shortName: 'W74', color: '#25b96f' },
 ];
+
+export const teams: Team[] = baseTeams.map(withProfile);
 
 export const teamById = Object.fromEntries(teams.map((team) => [team.id, team])) as Record<string, Team>;

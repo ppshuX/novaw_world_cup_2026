@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { CalendarDays, Filter, Search, TreePine, X } from 'lucide-react';
-import type { Match, TournamentStage } from './types';
+import { CalendarDays, Filter, Search, Star, Trash2, TreePine, X } from 'lucide-react';
+import type { Match, Team, TournamentStage } from './types';
 import { BracketTree } from './components/BracketTree';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
@@ -10,8 +10,12 @@ import { InstallPage } from './components/InstallPage';
 import { MatchCard } from './components/MatchCard';
 import { MatchModal } from './components/MatchModal';
 import { OfficialSources } from './components/OfficialSources';
+import { TeamMark } from './components/TeamIdentity';
+import { TeamProfileModal } from './components/TeamProfileModal';
+import { useFavoriteMatches } from './hooks/useFavoriteMatches';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
-import { findNextMatch, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
+import { findNextMatch, formatChineseDate, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
+import { getMatchStatusLabel } from './utils/matchStatus';
 
 type AppView = 'home' | 'schedule' | 'bracket' | 'sources' | 'install';
 type StageFilter = TournamentStage | '全部阶段';
@@ -26,6 +30,8 @@ function App() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+  const { favoriteIds, isFavorite, toggleFavorite, removeFavorite } = useFavoriteMatches();
 
   const sortedMatches = useMemo(
     () => [...getMatches()].sort((a, b) => toMatchDate(a).getTime() - toMatchDate(b).getTime()),
@@ -81,6 +87,14 @@ function App() {
     .slice(0, 3);
   const focusMatches = sortedMatches.filter((match) => match.tag !== '普通').slice(0, 6);
   const headlineMatches = todayMatches.length > 0 ? todayMatches : tomorrowMatches.length > 0 ? tomorrowMatches : upcomingMatches;
+  const favoriteMatches = useMemo(
+    () =>
+      favoriteIds
+        .map((id) => sortedMatches.find((match) => match.id === id))
+        .filter((match): match is Match => Boolean(match))
+        .slice(0, 5),
+    [favoriteIds, sortedMatches],
+  );
 
   const resetFilters = () => {
     setDateFilter('全部日期');
@@ -91,7 +105,7 @@ function App() {
 
   return (
     <div className="app-shell min-h-screen overflow-hidden text-summer-ink">
-      <Hero nextMatch={nextImportantMatch} onNavigate={setActiveView} onOpenMatch={setSelectedMatch} />
+      <Hero nextMatch={nextImportantMatch} onNavigate={setActiveView} onOpenMatch={setSelectedMatch} onOpenTeam={setSelectedTeam} />
 
       <main className="relative z-10 -mt-10 space-y-10 pb-16 sm:-mt-14 lg:-mt-10">
         <NavTabs activeView={activeView} onChange={setActiveView} />
@@ -108,7 +122,15 @@ function App() {
                 >
                   <div className="grid gap-4 md:grid-cols-2">
                     {headlineMatches.map((match) => (
-                      <MatchCard key={match.id} match={match} compact onOpen={setSelectedMatch} />
+                      <MatchCard
+                        key={match.id}
+                        match={match}
+                        compact
+                        onOpen={setSelectedMatch}
+                        onOpenTeam={setSelectedTeam}
+                        isFavorite={isFavorite(match.id)}
+                        onToggleFavorite={toggleFavorite}
+                      />
                     ))}
                   </div>
                 </PanelHeaderCard>
@@ -122,12 +144,20 @@ function App() {
                 >
                   <div className="space-y-3">
                     {focusMatches.slice(0, 4).map((match) => (
-                      <FocusMatchButton key={match.id} match={match} onOpen={setSelectedMatch} />
+                      <FocusMatchButton key={match.id} match={match} onOpen={setSelectedMatch} onOpenTeam={setSelectedTeam} />
                     ))}
                   </div>
                 </PanelHeaderCard>
               </div>
             </section>
+
+            <FavoriteMatchesSection
+              matches={favoriteMatches}
+              onOpen={setSelectedMatch}
+              onOpenTeam={setSelectedTeam}
+              onRemove={removeFavorite}
+              onGoSchedule={() => setActiveView('schedule')}
+            />
           </>
         )}
 
@@ -179,7 +209,14 @@ function App() {
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filteredMatches.map((match) => (
-                <MatchCard key={match.id} match={match} onOpen={setSelectedMatch} />
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  onOpen={setSelectedMatch}
+                  onOpenTeam={setSelectedTeam}
+                  isFavorite={isFavorite(match.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
               ))}
             </div>
             {filteredMatches.length === 0 && (
@@ -217,7 +254,14 @@ function App() {
         </FilterDrawer>
       )}
 
-      <MatchModal match={selectedMatch} onClose={() => setSelectedMatch(null)} />
+      <MatchModal
+        match={selectedMatch}
+        onClose={() => setSelectedMatch(null)}
+        isFavorite={selectedMatch ? isFavorite(selectedMatch.id) : false}
+        onToggleFavorite={toggleFavorite}
+        onOpenTeam={setSelectedTeam}
+      />
+      <TeamProfileModal team={selectedTeam} onClose={() => setSelectedTeam(null)} />
       <Footer />
     </div>
   );
@@ -285,16 +329,36 @@ function PanelHeaderCard({
   );
 }
 
-function FocusMatchButton({ match, onOpen }: { match: Match; onOpen: (match: Match) => void }) {
+function FocusMatchButton({
+  match,
+  onOpen,
+  onOpenTeam,
+}: {
+  match: Match;
+  onOpen: (match: Match) => void;
+  onOpenTeam: (team: Team) => void;
+}) {
+  const homeTeam = getTeamById(match.homeTeamId);
+  const awayTeam = getTeamById(match.awayTeamId);
+
   return (
-    <button
-      type="button"
+    <article
+      role="button"
+      tabIndex={0}
       onClick={() => onOpen(match)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onOpen(match);
+        }
+      }}
       className="group flex min-h-16 w-full items-center justify-between gap-3 rounded-[8px] border border-white/10 bg-white/[0.08] px-4 py-3 text-left transition hover:border-summer-lime/70 hover:bg-white/[0.14]"
     >
       <span className="min-w-0">
-        <span className="block truncate text-sm font-bold">
-          {getTeamById(match.homeTeamId)?.name} vs {getTeamById(match.awayTeamId)?.name}
+        <span className="flex min-w-0 items-center gap-1 text-sm font-bold">
+          <TeamNameInline team={homeTeam} onOpenTeam={onOpenTeam} />
+          <span className="text-white/50">vs</span>
+          <TeamNameInline team={awayTeam} onOpenTeam={onOpenTeam} />
         </span>
         <span className="block text-xs text-white/[0.64]">
           {match.date} {match.time} · {match.city}
@@ -303,6 +367,177 @@ function FocusMatchButton({ match, onOpen }: { match: Match; onOpen: (match: Mat
       <span className="shrink-0 rounded-[6px] bg-summer-orange px-2 py-1 text-xs font-black text-[#271527]">
         {match.tag}
       </span>
+    </article>
+  );
+}
+
+function FavoriteMatchesSection({
+  matches,
+  onOpen,
+  onOpenTeam,
+  onRemove,
+  onGoSchedule,
+}: {
+  matches: Match[];
+  onOpen: (match: Match) => void;
+  onOpenTeam: (team: Team) => void;
+  onRemove: (matchId: string) => void;
+  onGoSchedule: () => void;
+}) {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="rounded-[8px] border border-white/70 bg-white/[0.76] p-5 shadow-card backdrop-blur">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-summer-orange text-[#271527]">
+              <Star size={20} fill="currentColor" />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-summer-blue">Favorites</p>
+              <h2 className="text-2xl font-black">我的收藏</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                收藏仅保存在当前设备浏览器中，清除浏览器数据后可能会丢失。
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onGoSchedule}
+            className="inline-flex min-h-10 items-center justify-center rounded-[8px] bg-[#172033] px-4 py-2 text-sm font-black text-white transition hover:bg-summer-blue"
+          >
+            查看全部赛程
+          </button>
+        </div>
+
+        {matches.length === 0 ? (
+          <EmptyState
+            title="还没有收藏比赛"
+            description="去赛程页点击星标，把想看的比赛放到这里。"
+          />
+        ) : (
+          <div className="grid gap-3 lg:grid-cols-2">
+            {matches.map((match) => (
+              <FavoriteMatchItem key={match.id} match={match} onOpen={onOpen} onOpenTeam={onOpenTeam} onRemove={onRemove} />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function FavoriteMatchItem({
+  match,
+  onOpen,
+  onOpenTeam,
+  onRemove,
+}: {
+  match: Match;
+  onOpen: (match: Match) => void;
+  onOpenTeam: (team: Team) => void;
+  onRemove: (matchId: string) => void;
+}) {
+  const homeTeam = getTeamById(match.homeTeamId);
+  const awayTeam = getTeamById(match.awayTeamId);
+
+  return (
+    <article className="rounded-[8px] border border-summer-sky/20 bg-[#fbfdff]/90 p-4 shadow-[0_10px_24px_rgba(23,32,51,0.06)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-black uppercase text-summer-blue">Match {match.matchNo}</p>
+          <div className="mt-1 flex flex-wrap items-center gap-2">
+            <span className="text-base font-black">{match.stage}</span>
+            {match.group && <span className="rounded-[6px] bg-slate-100 px-2 py-1 text-xs font-black">{match.group}</span>}
+          </div>
+        </div>
+        <span className="rounded-[6px] bg-summer-lime px-2 py-1 text-xs font-black text-[#17331d]">{match.tag}</span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+        <FavoriteTeam team={homeTeam} fallback="待确认" onOpenTeam={onOpenTeam} />
+        <span className="rounded-[8px] bg-[#172033] px-3 py-2 text-center text-sm font-black text-white">
+          {getMatchStatusLabel(match.matchStatus)}
+        </span>
+        <FavoriteTeam team={awayTeam} fallback="待确认" alignRight onOpenTeam={onOpenTeam} />
+      </div>
+
+      <p className="mt-4 text-sm font-bold text-slate-600">
+        北京时间 {formatChineseDate(match.date)} {match.time}
+      </p>
+
+      <div className="mt-4 grid grid-cols-[1fr_auto] gap-2">
+        <button
+          type="button"
+          onClick={() => onOpen(match)}
+          className="min-h-10 rounded-[8px] bg-[#172033] px-3 py-2 text-sm font-black text-white transition hover:bg-summer-blue"
+        >
+          查看详情
+        </button>
+        <button
+          type="button"
+          onClick={() => onRemove(match.id)}
+          aria-label="取消收藏"
+          className="flex h-10 w-10 items-center justify-center rounded-[8px] border border-slate-200 bg-white text-slate-500 transition hover:border-summer-orange hover:text-summer-orange"
+        >
+          <Trash2 size={17} />
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function FavoriteTeam({
+  team,
+  fallback,
+  alignRight = false,
+  onOpenTeam,
+}: {
+  team?: ReturnType<typeof getTeamById>;
+  fallback: string;
+  alignRight?: boolean;
+  onOpenTeam: (team: Team) => void;
+}) {
+  const canOpen = Boolean(team && !team.id.startsWith('tbd') && !team.id.startsWith('slot-'));
+
+  return (
+    <button
+      type="button"
+      disabled={!canOpen}
+      onClick={() => {
+        if (team && canOpen) onOpenTeam(team);
+      }}
+      className={[
+        alignRight ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2',
+        canOpen ? 'rounded-[8px] outline-none transition hover:text-summer-blue focus-visible:ring-2 focus-visible:ring-summer-sky' : 'cursor-default',
+      ].join(' ')}
+    >
+      {!alignRight && <TeamMark team={team} size="sm" />}
+      <span className="min-w-0">
+        <span className="block truncate text-sm font-black">{team?.name ?? fallback}</span>
+        <span className="block text-xs font-bold text-slate-400">{team?.shortName ?? 'TBD'}</span>
+      </span>
+      {alignRight && <TeamMark team={team} size="sm" />}
+    </button>
+  );
+}
+
+function TeamNameInline({ team, onOpenTeam }: { team?: ReturnType<typeof getTeamById>; onOpenTeam: (team: Team) => void }) {
+  const canOpen = Boolean(team && !team.id.startsWith('tbd') && !team.id.startsWith('slot-'));
+
+  return (
+    <button
+      type="button"
+      disabled={!canOpen}
+      onClick={(event) => {
+        event.stopPropagation();
+        if (team && canOpen) onOpenTeam(team);
+      }}
+      onKeyDown={(event) => {
+        event.stopPropagation();
+      }}
+      className="min-w-0 truncate rounded-[6px] outline-none transition hover:text-summer-lime focus-visible:ring-2 focus-visible:ring-summer-lime"
+    >
+      {team?.name ?? '待确认'}
     </button>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck } from 'lucide-react';
-import type { Match } from '../types';
+import type { Match, Team } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate, getCountdownParts } from '../utils/date';
 import { getMatchStatusLabel } from '../utils/matchStatus';
@@ -10,9 +10,10 @@ interface HeroProps {
   nextMatch?: Match;
   onNavigate: (view: 'schedule' | 'bracket' | 'sources') => void;
   onOpenMatch: (match: Match) => void;
+  onOpenTeam: (team: Team) => void;
 }
 
-export function Hero({ nextMatch, onNavigate, onOpenMatch }: HeroProps) {
+export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroProps) {
   const [countdown, setCountdown] = useState(() => getCountdownParts(nextMatch));
 
   useEffect(() => {
@@ -71,19 +72,26 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch }: HeroProps) {
             <p className="mb-3 text-sm font-bold text-summer-lime">下一场重点比赛</p>
             {nextMatch && homeTeam && awayTeam ? (
               <>
-                <button
-                  type="button"
+                <article
+                  role="button"
+                  tabIndex={0}
                   onClick={() => onOpenMatch(nextMatch)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      onOpenMatch(nextMatch);
+                    }
+                  }}
                   className="block w-full rounded-[8px] bg-white/[0.08] p-4 text-left transition hover:bg-white/[0.14]"
                 >
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                    <TeamName team={homeTeam} name={homeTeam.name} shortName={homeTeam.shortName} />
+                    <TeamName team={homeTeam} name={homeTeam.name} shortName={homeTeam.shortName} onOpenTeam={onOpenTeam} />
                     <span className="rounded-[8px] bg-white px-3 py-2 text-sm font-black text-[#172033]">
                       {getMatchStatusLabel(nextMatch.matchStatus)}
                     </span>
-                    <TeamName team={awayTeam} name={awayTeam.name} shortName={awayTeam.shortName} alignRight />
+                    <TeamName team={awayTeam} name={awayTeam.name} shortName={awayTeam.shortName} alignRight onOpenTeam={onOpenTeam} />
                   </div>
-                </button>
+                </article>
 
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
@@ -135,20 +143,35 @@ function TeamName({
   name,
   shortName,
   alignRight = false,
+  onOpenTeam,
 }: {
   team?: ReturnType<typeof getTeamById>;
   name: string;
   shortName: string;
   alignRight?: boolean;
+  onOpenTeam: (team: Team) => void;
 }) {
   return (
-    <span className={alignRight ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2'}>
+    <button
+      type="button"
+      onClick={(event) => {
+        event.stopPropagation();
+        if (team) onOpenTeam(team);
+      }}
+      onKeyDown={(event) => {
+        event.stopPropagation();
+      }}
+      className={[
+        alignRight ? 'flex min-w-0 items-center justify-end gap-2 text-right' : 'flex min-w-0 items-center gap-2',
+        'rounded-[8px] outline-none transition hover:text-summer-lime focus-visible:ring-2 focus-visible:ring-summer-lime',
+      ].join(' ')}
+    >
       {!alignRight && <TeamMark team={team} size="sm" />}
       <span className="min-w-0">
         <span className="block truncate text-xl font-black">{name}</span>
         <span className="mt-1 block text-xs font-bold text-white/[0.62]">{shortName}</span>
       </span>
       {alignRight && <TeamMark team={team} size="sm" />}
-    </span>
+    </button>
   );
 }

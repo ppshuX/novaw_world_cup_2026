@@ -19,7 +19,7 @@ export function getResultLabel(match: Match) {
 export function getMatchInfoStatusLabel(status: Match['matchInfoStatus']) {
   return {
     official: '官方确认',
-    pending: '待核对',
+    pending: '待确认',
     mock: '示例数据',
   }[status];
 }
