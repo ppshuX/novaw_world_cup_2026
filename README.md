@@ -117,10 +117,12 @@ Android Chrome / Edge 在 HTTPS 环境下满足浏览器安装条件后，会显
 
 所有 V1 数据集中放在 `src/data/`：
 
-- `src/data/matches.ts`：比赛列表、时间、地点、阶段、标签、赛程状态、结果状态、晋级状态
-- `src/data/teams.ts`：球队或占位槽位名称
+- `src/data/matches.ts`：比赛列表、时间、地点、阶段、标签、赛程状态、结果状态、晋级状态。当前已整理 72 场小组赛，淘汰赛仍保持路径占位。
+- `src/data/teams.ts`：48 支已确认球队和淘汰赛占位槽位，包含 `flagKey`、FIFA 代码等字段
 - `src/data/bracket.ts`：淘汰赛路径占位树
 - `src/data/sources.ts`：FIFA 官方信息来源链接
+
+国旗静态资源集中放在 `public/flags/`，页面通过 `flagKey` 映射本地 SVG，不依赖运行时外链。
 
 类型定义集中在：
 
@@ -150,7 +152,7 @@ V1 仍然读取本地静态数据。`services` 层只是为了让组件不要强
 ## 如何更新比赛数据
 
 1. 打开 FIFA 官方赛程页面核对原始信息。
-2. 在 `src/data/matches.ts` 更新比赛日期、北京时间、球队、城市、球场等字段。
+2. 在 `src/data/matches.ts` 更新比赛日期、北京时间、球队、城市、球场等字段。北京时间可通过已确认的 UTC 开球时间换算后填写。
 3. 赛程信息已确认时，设置 `matchInfoStatus: 'official'`；未确认则 `pending`；仅作示例则 `mock`。
 4. 比赛进行中或已结束时，更新 `matchStatus`（`scheduled` / `live` / `finished`）。
 5. 赛后填写 `homeScore`、`awayScore`，并设置 `resultStatus: 'official'`。
@@ -161,6 +163,7 @@ V1 仍然读取本地静态数据。`services` 层只是为了让组件不要强
 - [FIFA 2026 世界杯主页](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026)
 - [官方赛程 / 比分 / Fixtures](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures)
 - [官方完整赛程说明](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums)
+- [UTC 时间辅助核对](https://wc.dcs.pm/)
 
 ## 数据反馈
 

@@ -49,9 +49,21 @@ function App() {
     return sortedMatches.filter((match) => {
       const homeTeam = getTeamById(match.homeTeamId);
       const awayTeam = getTeamById(match.awayTeamId);
-      const teamNames = `${homeTeam?.name ?? ''} ${homeTeam?.shortName ?? ''} ${awayTeam?.name ?? ''} ${
-        awayTeam?.shortName ?? ''
-      }`.toLowerCase();
+      const teamNames = [
+        homeTeam?.name,
+        homeTeam?.shortName,
+        homeTeam?.fifaCode,
+        homeTeam?.countryCode,
+        homeTeam?.id,
+        awayTeam?.name,
+        awayTeam?.shortName,
+        awayTeam?.fifaCode,
+        awayTeam?.countryCode,
+        awayTeam?.id,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
 
       return (
         (dateFilter === '全部日期' || match.date === dateFilter) &&
