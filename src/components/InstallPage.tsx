@@ -154,7 +154,7 @@ export function InstallPage() {
                 href={`mailto:${partnershipEmail}?subject=World%20Cup%202026%20合作联系`}
                 className="mt-3 inline-flex min-h-10 items-center justify-center rounded-[8px] border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-summer-sky hover:text-summer-blue"
               >
-                合作联系
+                合作联系：{partnershipEmail}
               </a>
             </div>
           </div>

@@ -29,7 +29,7 @@ export function OfficialSources() {
           数据更新时间：{latestDataUpdate}。赛程对阵和时间将根据 FIFA 官方赛程人工维护；比分、结果和晋级情况将在比赛进行后更新。
         </div>
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           {getOfficialSources().map((source) => (
             <a
               key={source.id}

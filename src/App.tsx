@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { CalendarDays, Filter, Search, Star, Trash2, TreePine, X } from 'lucide-react';
+import { CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
 import { BracketTree } from './components/BracketTree';
 import { EmptyState } from './components/EmptyState';
@@ -150,6 +150,8 @@ function App() {
                 </PanelHeaderCard>
               </div>
             </section>
+
+            <ViewingInfoSection onGoSources={() => setActiveView('sources')} />
 
             <FavoriteMatchesSection
               matches={favoriteMatches}
@@ -368,6 +370,36 @@ function FocusMatchButton({
         {match.tag}
       </span>
     </article>
+  );
+}
+
+function ViewingInfoSection({ onGoSources }: { onGoSources: () => void }) {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="rounded-[8px] border border-summer-sky/30 bg-[#f8fcff]/90 p-5 shadow-card backdrop-blur">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[#172033] text-white">
+              <Tv size={20} />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-summer-blue">Viewing Guide</p>
+              <h2 className="text-2xl font-black">观赛信息</h2>
+              <p className="mt-1 max-w-3xl text-sm font-medium leading-6 text-slate-600">
+                中国大陆电视端可先关注 CCTV-5。具体每场频道、平台和转播安排，以赛前官方节目单为准。
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onGoSources}
+            className="inline-flex min-h-10 items-center justify-center rounded-[8px] bg-white px-4 py-2 text-sm font-black text-slate-700 shadow-sm transition hover:bg-summer-lime hover:text-[#172033]"
+          >
+            查看官方来源
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
