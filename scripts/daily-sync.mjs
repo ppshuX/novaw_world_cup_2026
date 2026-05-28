@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const today = new Date();
+const utcDate = today.toISOString().slice(0, 10);
+const reportDir = path.resolve('reports');
+const reportPath = path.join(reportDir, `daily-sync-${utcDate}.md`);
+
+const report = [
+  `# Daily Sync Report (${utcDate})`,
+  '',
+  'Mode: automation-run (data updates may be auto-committed when workflow detects changes).',
+  '',
+  '## Checklist',
+  '- [x] Workflow进入脚本执行阶段（已通过 gate 或手动触发）。',
+  '- [x] Daily sync script executed.',
+  '- [ ] FIFA official result verification (manual/agent task).',
+  '- [ ] Update `src/data/matches.ts` if official results changed.',
+  '- [ ] Update `src/data/bracket.ts` if knockout advancement changed.',
+  '- [ ] Commit and push (performed by workflow only when data changes are detected).',
+  '',
+  '## Notes',
+  '- Workflow runs build and conditionally commits data updates when changes are detected.',
+  '- Manual verification of FIFA official source is still required for data correctness.',
+  ''
+].join('\n');
+
+fs.mkdirSync(reportDir, { recursive: true });
+fs.writeFileSync(reportPath, report, 'utf8');
+
+console.log(`Generated report: ${reportPath}`);

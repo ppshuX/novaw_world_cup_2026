@@ -1,7 +1,15 @@
 import { ArrowUpRight, Link2, Mail } from 'lucide-react';
 import { getOfficialSources } from '../services/worldCupData';
+import { matches } from '../data/matches';
 
 const feedbackEmail = '2064747320@qq.com';
+
+const sortedUpdatedDates = matches
+  .map((match) => match.lastUpdated)
+  .filter(Boolean)
+  .sort();
+
+const latestDataUpdate = sortedUpdatedDates[sortedUpdatedDates.length - 1] ?? '待更新';
 
 export function OfficialSources() {
   return (
@@ -18,7 +26,7 @@ export function OfficialSources() {
         </div>
 
         <div className="mb-4 rounded-[8px] bg-slate-50 p-4 text-sm font-medium leading-6 text-slate-600">
-          数据更新时间：2026-05-23。赛程对阵和时间将根据 FIFA 官方赛程人工维护；比分、结果和晋级情况将在比赛进行后更新。
+          数据更新时间：{latestDataUpdate}。赛程对阵和时间将根据 FIFA 官方赛程人工维护；比分、结果和晋级情况将在比赛进行后更新。
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
