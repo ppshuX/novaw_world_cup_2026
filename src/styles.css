@@ -29,15 +29,6 @@ body {
     linear-gradient(180deg, #e6f1f7 0%, #edf6f2 44%, #e8f1f8 100%);
 }
 
-.match-card::before {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
-  content: "";
-  background: linear-gradient(180deg, #1177d6, #25b96f 58%, #ff9f43);
-  opacity: 0.82;
-}
-
 .match-card::after {
   position: absolute;
   inset: 0;
@@ -68,32 +59,104 @@ select {
 
 .bracket-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(160px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
 }
 
 .bracket-column {
   position: relative;
   display: flex;
-  min-height: 560px;
+  min-height: 0;
   flex-direction: column;
 }
 
-.bracket-column:not(:last-child)::after {
+.bracket-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.bracket-column:nth-child(2) .bracket-stack {
+  margin-top: 56px;
+  gap: 76px;
+}
+
+.bracket-column:nth-child(3) .bracket-stack,
+.bracket-column:nth-child(4) .bracket-stack,
+.bracket-column:nth-child(5) .bracket-stack,
+.bracket-column:nth-child(6) .bracket-stack {
+  margin-top: 178px;
+}
+
+.bracket-column:not(:last-child) .bracket-stack.has-multiple::before {
   position: absolute;
-  top: 50%;
-  right: -18px;
-  width: 14px;
-  height: 2px;
+  top: 162px;
+  right: -10px;
+  bottom: 58px;
+  width: 2px;
   content: "";
-  background: rgba(37, 185, 111, 0.6);
+  background: linear-gradient(180deg, rgba(17, 119, 214, 0.58), rgba(37, 185, 111, 0.78));
+  border-radius: 999px;
+}
+
+.bracket-column:nth-child(2):not(:last-child) .bracket-stack.has-multiple::before {
+  top: 216px;
+  bottom: 58px;
 }
 
 .bracket-match {
   position: relative;
+  overflow: visible;
+  border: 1px solid rgba(186, 230, 253, 0.68);
   border-radius: 8px;
-  background: rgba(248, 250, 252, 0.86);
-  padding: 10px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(17, 119, 214, 0.08), transparent 34%),
+    rgba(248, 250, 252, 0.92);
+  padding: 12px;
+  box-shadow: 0 10px 24px rgba(23, 32, 51, 0.05);
+}
+
+.bracket-match > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bracket-column:not(:last-child) .bracket-match::after {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1px);
+  width: 18px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, rgba(37, 185, 111, 0.78), rgba(17, 119, 214, 0.55));
+}
+
+.bracket-column:not(:first-child) .bracket-node-dot::before {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 1px);
+  width: 18px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, rgba(17, 119, 214, 0.55), rgba(37, 185, 111, 0.78));
+}
+
+.bracket-node-dot {
+  position: absolute;
+  top: calc(50% - 5px);
+  right: -5px;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #f8fcff;
+  border-radius: 999px;
+  background: #25b96f;
+  box-shadow: 0 0 0 2px rgba(37, 185, 111, 0.18);
+}
+
+.bracket-column:last-child .bracket-node-dot {
+  background: #ff9f43;
+  box-shadow: 0 0 0 2px rgba(255, 159, 67, 0.22);
 }
 
 @media (max-width: 640px) {

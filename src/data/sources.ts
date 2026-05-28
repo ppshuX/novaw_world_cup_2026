@@ -29,10 +29,10 @@ export const officialSources: OfficialSource[] = [
     tag: '完整说明',
   },
   {
-    id: 'fifa-cmg-rights',
-    title: '中国大陆官方转播方说明',
-    description: 'FIFA 确认中央广播电视总台（CMG）为中国大陆 2026 世界杯官方转播方。电视端可先关注 CCTV-5，具体每场安排以赛前官方节目单为准。',
-    url: 'https://www.fifa.com/en/about-fifa/organisation/news/fifa-awards-china-media-group-exclusive-media-rights-in-mainland-china-for-world-cup-26',
+    id: 'cctv-viewing-guide',
+    title: 'CCTV-5 观赛信息',
+    description: '央视网发布的总台 2026 世界杯融媒体传播服务方案提到，CCTV5 将直播赛事。具体每场安排以赛前官方节目单为准。',
+    url: 'https://1118.cctv.com/2026/05/19/ARTIcCLAOaOwHU6zgnnnhZZm260519.shtml',
     tag: '观赛信息',
   },
 ];

@@ -125,7 +125,7 @@ Android Chrome / Edge 在 HTTPS 环境下满足浏览器安装条件后，会显
 - `src/data/matches.ts`：比赛列表、时间、地点、阶段、标签、赛程状态、结果状态、晋级状态。当前已整理 72 场小组赛，淘汰赛仍保持路径占位。
 - `src/data/teams.ts`：48 支已确认球队和淘汰赛占位槽位，包含 `flagKey`、FIFA 代码等字段
 - `src/data/bracket.ts`：淘汰赛路径占位树
-- `src/data/sources.ts`：FIFA 官方信息来源链接
+- `src/data/sources.ts`：FIFA 官方信息来源链接与 CCTV-5 观赛信息来源
 
 国旗静态资源集中放在 `public/flags/`，页面通过 `flagKey` 映射本地 SVG，不依赖运行时外链。
 
@@ -170,6 +170,7 @@ V1 仍然读取本地静态数据。`services` 层只是为了让组件不要强
 - [FIFA 2026 世界杯主页](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026)
 - [官方赛程 / 比分 / Fixtures](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures)
 - [官方完整赛程说明](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums)
+- [CCTV-5 观赛信息来源](https://1118.cctv.com/2026/05/19/ARTIcCLAOaOwHU6zgnnnhZZm260519.shtml)
 - [UTC 时间辅助核对](https://wc.dcs.pm/)
 
 ## 数据反馈
