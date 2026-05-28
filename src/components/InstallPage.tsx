@@ -9,6 +9,8 @@ interface BeforeInstallPromptEvent extends Event {
 
 type Platform = 'android' | 'ios-safari' | 'standalone' | 'desktop';
 
+const partnershipEmail = '2064747320@qq.com';
+
 export function InstallPage() {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
@@ -130,12 +132,30 @@ export function InstallPage() {
             )}
           </div>
 
-          <div className="rounded-[8px] border border-slate-100 bg-white p-4">
-            <h3 className="font-black">添加后可以做什么</h3>
-            <div className="mt-3 space-y-3 text-sm font-medium leading-6 text-slate-600">
-              <p>1. 从手机桌面直接打开赛程。</p>
-              <p>2. 使用独立窗口浏览，减少浏览器干扰。</p>
-              <p>3. 更快查看下一场比赛、北京时间和晋级路径。</p>
+          <div className="space-y-4">
+            <div className="rounded-[8px] border border-slate-100 bg-white p-4">
+              <h3 className="font-black">添加后可以做什么</h3>
+              <div className="mt-3 space-y-3 text-sm font-medium leading-6 text-slate-600">
+                <p>1. 从手机桌面直接打开赛程。</p>
+                <p>2. 使用独立窗口浏览，减少浏览器干扰。</p>
+                <p>3. 更快查看下一场比赛、北京时间和晋级路径。</p>
+              </div>
+            </div>
+
+            <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-4">
+              <h3 className="font-black">观赛伙伴位预留</h3>
+              <p className="mt-2 text-sm font-medium leading-6 text-slate-600">
+                未来可能开放少量与世界杯观赛相关的合作内容（如观赛工具、球迷活动信息等），用于支持本站持续维护与数据更新。
+              </p>
+              <p className="mt-2 text-sm font-medium leading-6 text-slate-600">
+                当前仅作展示位预留，不影响赛程、晋级树与官方来源信息的正常使用。
+              </p>
+              <a
+                href={`mailto:${partnershipEmail}?subject=World%20Cup%202026%20合作联系`}
+                className="mt-3 inline-flex min-h-10 items-center justify-center rounded-[8px] border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-summer-sky hover:text-summer-blue"
+              >
+                合作联系
+              </a>
             </div>
           </div>
         </div>

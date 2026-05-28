@@ -57,10 +57,9 @@ export const bracketRounds: BracketRound[] = [
     matches: [
       {
         id: 'r16-1',
-        title: '第73场',
+        title: '16强第1场',
         round: '16强',
         date: '待确认',
-        matchId: 'm073',
         homeSlot: pendingSlot('r16-1-home', '第73场胜者'),
         awaySlot: pendingSlot('r16-1-away', '第74场胜者'),
         winnerTeamId: null,
@@ -70,7 +69,7 @@ export const bracketRounds: BracketRound[] = [
       },
       {
         id: 'r16-2',
-        title: '第74场',
+        title: '16强第2场',
         round: '16强',
         date: '待确认',
         homeSlot: pendingSlot('r16-2-home', '第75场胜者'),

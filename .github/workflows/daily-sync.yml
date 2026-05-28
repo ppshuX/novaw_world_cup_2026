@@ -1,0 +1,73 @@
+name: Daily World Cup Sync
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check date window (Asia/Shanghai)
+        id: gate
+        run: |
+          today=$(TZ=Asia/Shanghai date +%F)
+          echo "Today is $today"
+
+          if [[ "$today" < "2026-06-08" || "$today" > "2026-07-22" ]]; then
+            echo "run_sync=false" >> "$GITHUB_OUTPUT"
+            echo "Not in World Cup sync window. Skip."
+          else
+            echo "run_sync=true" >> "$GITHUB_OUTPUT"
+            echo "In World Cup sync window. Continue."
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.run_sync == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        if: steps.gate.outputs.run_sync == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run_sync == 'true'
+        run: npm ci
+
+      - name: Generate daily sync report (check-only)
+        if: steps.gate.outputs.run_sync == 'true'
+        run: node scripts/daily-sync.mjs
+
+      - name: Build
+        if: steps.gate.outputs.run_sync == 'true'
+        run: npm run build
+
+
+      - name: Detect data changes
+        if: steps.gate.outputs.run_sync == 'true'
+        id: changes
+        run: |
+          if git diff --quiet -- src/data/matches.ts src/data/bracket.ts; then
+            echo "has_data_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No data changes detected."
+          else
+            echo "has_data_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Data changes detected."
+          fi
+
+      - name: Commit and push data updates
+        if: steps.gate.outputs.run_sync == 'true' && steps.changes.outputs.has_data_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sync_date=$(TZ=Asia/Shanghai date +%F)
+          git add src/data/matches.ts src/data/bracket.ts reports/
+          git commit -m "chore(data): sync fifa results ${sync_date}"
+          git push
