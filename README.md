@@ -4,6 +4,9 @@
 
 **在线访问**：[https://ppshu2026-6hz4s01hv.maozi.io/](https://ppshu2026-6hz4s01hv.maozi.io/)
 
+<img width="423" height="465" alt="cc6fc2b37138968b8a8891b924cc8b63" src="https://github.com/user-attachments/assets/2dc777b7-4039-4fc7-bf63-74210efb9976" />
+
+
 World Cup 2026 是一个面向中文用户的、移动端优先的 2026 世界杯赛程展示网站。它的目标不是做社区、预测平台或复杂体育数据后台，而是让用户比浏览 FIFA 官方网站更轻松、更直观地查看赛程、北京时间、比赛对阵、比赛地点、比赛阶段和晋级路径。
 
 V1 功能范围已冻结，后续以人工维护赛程数据为主；新功能规划见 [TODO.md](./TODO.md)。
