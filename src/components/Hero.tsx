@@ -39,7 +39,7 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
             <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-white text-summer-blue shadow-glow sm:h-10 sm:w-10">
               <CalendarDays size={16} className="sm:size-[20px]" />
             </span>
-            <span className="font-black text-sm sm:text-base">World Cup 2026</span>
+            <span className="font-black text-sm sm:text-base">世界杯赛程·2026</span>
           </div>
           <span className="hidden rounded-[8px] border border-white/[0.35] bg-white/[0.12] px-2 py-1.5 text-xs font-bold backdrop-blur sm:px-3 sm:py-2 sm:text-sm sm:inline">
             北京时间 · 中文赛程
@@ -54,12 +54,8 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
             </div>
 
             <h1 className="text-2xl font-black leading-[1.05] sm:text-5xl lg:text-6xl xl:text-7xl">
-              World Cup 2026
+              2026 世界杯赛程日历
             </h1>
-            <p className="mt-2 text-base font-black text-summer-lime sm:mt-3 sm:text-3xl">2026 世界杯赛程日历</p>
-            <p className="mt-3 max-w-2xl text-xs font-semibold leading-5 text-white/[0.88] sm:mt-4 sm:text-xl sm:leading-8">
-              快速查看北京时间、比赛对阵、比赛地点、比赛阶段和晋级路径。轻量、清爽，适合手机上临时查赛程。
-            </p>
 
             <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-6 sm:flex sm:flex-wrap sm:gap-3">
               <HeroButton label="全部赛程" onClick={() => onNavigate('schedule')} />
