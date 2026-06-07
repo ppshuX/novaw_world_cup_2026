@@ -64,33 +64,33 @@ export function InstallPage() {
 
   return (
     <section className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
-      <div className="rounded-[8px] border border-white/80 bg-white/[0.92] p-5 shadow-card backdrop-blur sm:p-7">
-        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div className="rounded-[8px] border border-white/80 bg-white/[0.92] p-4 shadow-card backdrop-blur sm:p-7">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between sm:gap-5">
           <div>
-            <p className="text-sm font-bold text-summer-blue">PWA App</p>
-            <h2 className="text-3xl font-black sm:text-4xl">添加到主屏幕</h2>
-            <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-600 sm:text-base sm:leading-7">
+            <p className="text-xs font-bold text-summer-blue sm:text-sm">PWA App</p>
+            <h2 className="text-2xl font-black sm:text-4xl">添加到主屏幕</h2>
+            <p className="mt-2 max-w-2xl text-xs font-medium leading-5 text-slate-600 sm:mt-3 sm:text-base sm:leading-7">
               把 World Cup 2026 放到你的手机桌面，像 App 一样查看世界杯赛程。
             </p>
           </div>
-          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[8px] bg-[#172033] text-white shadow-glow">
-            <MonitorSmartphone size={30} />
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[8px] bg-[#172033] text-white shadow-glow sm:h-16 sm:w-16">
+            <MonitorSmartphone size={24} className="sm:size-[30px]" />
           </span>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-[1fr_0.9fr]">
-          <div className="rounded-[8px] bg-slate-50 p-4">
+        <div className="mt-5 grid gap-4 md:grid-cols-[1fr_0.9fr] sm:mt-6">
+          <div className="rounded-[8px] bg-slate-50 p-3 sm:p-4">
             <button
               type="button"
               onClick={install}
               disabled={installed || platform === 'standalone'}
-              className="mb-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[8px] bg-[#172033] px-4 py-2 text-sm font-black text-white transition hover:bg-summer-blue disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600"
+              className="mb-3 inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-[8px] bg-[#172033] px-4 py-2 text-xs font-black text-white transition hover:bg-summer-blue disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600 sm:mb-4 sm:min-h-12 sm:gap-2 sm:text-sm"
             >
-              <Download size={18} />
+              <Download size={16} className="sm:size-[18px]" />
               下载到桌面 / 添加到主屏幕
             </button>
             {notice && (
-              <p className="mb-4 rounded-[8px] border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-bold leading-6 text-amber-800">
+              <p className="mb-3 rounded-[8px] border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-bold leading-5 text-amber-800 sm:mb-4 sm:text-sm sm:leading-6">
                 {notice}
               </p>
             )}
@@ -132,27 +132,27 @@ export function InstallPage() {
             )}
           </div>
 
-          <div className="space-y-4">
-            <div className="rounded-[8px] border border-slate-100 bg-white p-4">
-              <h3 className="font-black">添加后可以做什么</h3>
-              <div className="mt-3 space-y-3 text-sm font-medium leading-6 text-slate-600">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="rounded-[8px] border border-slate-100 bg-white p-3 sm:p-4">
+              <h3 className="text-sm font-black sm:text-base">添加后可以做什么</h3>
+              <div className="mt-2 space-y-2 text-xs font-medium leading-5 text-slate-600 sm:mt-3 sm:space-y-3 sm:text-sm sm:leading-6">
                 <p>1. 从手机桌面直接打开赛程。</p>
                 <p>2. 使用独立窗口浏览，减少浏览器干扰。</p>
                 <p>3. 更快查看下一场比赛、北京时间和晋级路径。</p>
               </div>
             </div>
 
-            <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-4">
-              <h3 className="font-black">观赛伙伴位预留</h3>
-              <p className="mt-2 text-sm font-medium leading-6 text-slate-600">
+            <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3 sm:p-4">
+              <h3 className="text-sm font-black sm:text-base">观赛伙伴位预留</h3>
+              <p className="mt-1.5 text-xs font-medium leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">
                 未来可能开放少量与世界杯观赛相关的合作内容（如观赛工具、球迷活动信息等），用于支持本站持续维护与数据更新。
               </p>
-              <p className="mt-2 text-sm font-medium leading-6 text-slate-600">
+              <p className="mt-1.5 text-xs font-medium leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">
                 当前仅作展示位预留，不影响赛程、晋级树与官方来源信息的正常使用。
               </p>
               <a
                 href={`mailto:${partnershipEmail}?subject=World%20Cup%202026%20合作联系`}
-                className="mt-3 inline-flex min-h-10 items-center justify-center rounded-[8px] border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 transition hover:border-summer-sky hover:text-summer-blue"
+                className="mt-3 inline-flex min-h-9 items-center justify-center rounded-[8px] border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 transition hover:border-summer-sky hover:text-summer-blue sm:min-h-10 sm:px-3 sm:py-2 sm:text-sm"
               >
                 合作联系：{partnershipEmail}
               </a>
@@ -161,9 +161,9 @@ export function InstallPage() {
         </div>
 
         {platform === 'ios-safari' && (
-          <div className="mt-4 rounded-[8px] border border-summer-sky/30 bg-[#f4fbff] p-4">
-            <h3 className="font-black">iPhone 添加步骤</h3>
-            <ol className="mt-3 space-y-2 text-sm font-medium leading-6 text-slate-600">
+          <div className="mt-4 rounded-[8px] border border-summer-sky/30 bg-[#f4fbff] p-3 sm:p-4">
+            <h3 className="text-sm font-black sm:text-base">iPhone 添加步骤</h3>
+            <ol className="mt-2 space-y-1.5 text-xs font-medium leading-5 text-slate-600 sm:mt-3 sm:space-y-2 sm:text-sm sm:leading-6">
               <li>1. 确认当前使用 Safari 打开。</li>
               <li>2. 点击底部工具栏的“分享”按钮。</li>
               <li>3. 选择“添加到主屏幕”。</li>
@@ -194,13 +194,13 @@ function getUnavailableMessage(platform: Platform) {
 
 function StatusCard({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
   return (
-    <div className="flex gap-3">
-      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[8px] bg-summer-lime text-[#17331d]">
+    <div className="flex gap-2 sm:gap-3">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-summer-lime text-[#17331d] sm:h-11 sm:w-11">
         {icon}
       </span>
       <div>
-        <h3 className="font-black">{title}</h3>
-        <p className="mt-1 text-sm font-medium leading-6 text-slate-600">{text}</p>
+        <h3 className="text-sm font-black sm:text-base">{title}</h3>
+        <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-sm sm:leading-6">{text}</p>
       </div>
     </div>
   );

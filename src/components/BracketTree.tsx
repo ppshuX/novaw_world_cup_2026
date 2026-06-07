@@ -11,18 +11,18 @@ export function BracketTree({ rounds }: BracketTreeProps) {
       <div className="mb-5">
         <p className="text-sm font-bold text-summer-blue">Bracket Path</p>
         <h2 className="text-3xl font-black sm:text-4xl">晋级路径</h2>
-        <div className="mt-4 rounded-[8px] border border-summer-sky/40 bg-white/[0.9] p-4 text-sm font-medium leading-6 text-slate-600 shadow-sm backdrop-blur">
-          <p className="flex gap-2">
-            <Info size={18} className="mt-0.5 shrink-0 text-summer-blue" />
+        <div className="mt-3 rounded-[8px] border border-summer-sky/40 bg-white/[0.9] p-3 text-xs font-medium leading-5 text-slate-600 shadow-sm backdrop-blur sm:mt-4 sm:p-4 sm:text-sm sm:leading-6">
+          <p className="flex gap-1.5 sm:gap-2">
+            <Info size={16} className="mt-0.5 shrink-0 text-summer-blue sm:size-[18px]" />
             世界杯尚未开赛，当前晋级树仅展示赛制路径。具体晋级球队、胜者和冠军将在比赛进行后根据官方结果更新。
           </p>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:hidden">
+      <div className="grid gap-3 lg:hidden sm:gap-4">
         {rounds.map((round) => (
-          <section key={round.stage} className="rounded-[8px] border border-white/80 bg-white/[0.92] p-4 shadow-sm backdrop-blur">
-            <h3 className="mb-3 text-lg font-black">{round.stage}</h3>
+          <section key={round.stage} className="rounded-[8px] border border-white/80 bg-white/[0.92] p-3 shadow-sm backdrop-blur sm:p-4">
+            <h3 className="mb-2 text-base font-black sm:mb-3 sm:text-lg">{round.stage}</h3>
             <div className="space-y-3">
               {round.matches.map((match) => (
                 <BracketMobileCard key={match.id} match={match} />
@@ -32,20 +32,20 @@ export function BracketTree({ rounds }: BracketTreeProps) {
         ))}
       </div>
 
-      <div className="hidden rounded-[8px] border border-white/80 bg-white/[0.88] p-5 shadow-card backdrop-blur lg:block">
-        <div className="mb-4 flex items-center justify-between gap-4">
+      <div className="hidden rounded-[8px] border border-white/80 bg-white/[0.88] p-4 shadow-card backdrop-blur sm:p-5 lg:block">
+        <div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
           <div>
-            <p className="text-sm font-bold text-summer-blue">Knockout Tree</p>
-            <h3 className="text-xl font-black">淘汰赛晋级树</h3>
+            <p className="text-xs font-bold text-summer-blue sm:text-sm">Knockout Tree</p>
+            <h3 className="text-lg font-black sm:text-xl">淘汰赛晋级树</h3>
           </div>
         </div>
 
         <div className="bracket-grid">
           {rounds.map((round) => (
             <div key={round.stage} className="bracket-column">
-              <div className="bracket-round-title mb-3 rounded-[8px] bg-[#172033] px-3 py-2 text-center text-sm font-black text-white">
+              <div className="bracket-round-title mb-2 rounded-[8px] bg-[#172033] px-2 py-1.5 text-center text-xs font-black text-white sm:mb-3 sm:px-3 sm:py-2 sm:text-sm">
                 <span>{round.stage}</span>
-                <span className="mt-1 block text-[11px] font-bold text-white/55">{round.matches.length} 个节点</span>
+                <span className="mt-0.5 block text-[10px] font-bold text-white/55 sm:mt-1 sm:text-[11px]">{round.matches.length} 个节点</span>
               </div>
               <div className={round.matches.length > 1 ? 'bracket-stack has-multiple' : 'bracket-stack'}>
                 {round.matches.map((match) => (

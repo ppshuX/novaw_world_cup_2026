@@ -63,16 +63,16 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
           </div>
         </div>
 
-        <div className="p-5">
-          <div className="rounded-[8px] bg-[#172033] p-5 text-white">
-            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <div className="p-4 sm:p-5">
+          <div className="rounded-[8px] bg-[#172033] p-4 text-white sm:p-5">
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
               <ModalTeam team={homeTeam} name={homeTeam?.name ?? '待确认'} shortName={homeTeam?.shortName ?? 'TBD'} onOpenTeam={onOpenTeam} />
-              <div className="rounded-[8px] bg-white px-4 py-3 text-center text-lg font-black text-[#172033]">{score}</div>
+              <div className="rounded-[8px] bg-white px-3 py-2 text-center text-base font-black text-[#172033] sm:px-4 sm:py-3 sm:text-lg">{score}</div>
               <ModalTeam team={awayTeam} name={awayTeam?.name ?? '待确认'} shortName={awayTeam?.shortName ?? 'TBD'} alignRight onOpenTeam={onOpenTeam} />
             </div>
           </div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
             <Info label="比赛时间" value={`${formatChineseDate(match.date)} ${match.time} 北京时间`} />
             <Info label="比赛阶段" value={`${match.stage}${match.group ? ` · ${match.group}` : ''}`} />
             <Info label="比赛地点" value={`${match.city} · ${match.stadium}`} />
@@ -81,17 +81,17 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
             <Info label="更新时间" value={match.lastUpdated} />
           </div>
 
-          <div className="mt-5 rounded-[8px] border border-slate-100 bg-slate-50 p-4">
+          <div className="mt-4 rounded-[8px] border border-slate-100 bg-slate-50 p-3 sm:mt-5 sm:p-4">
             <div className="mb-2 flex items-center justify-between gap-3">
               <h3 className="font-black">数据状态</h3>
               <DataStatusBadge status={match.matchInfoStatus} />
             </div>
-            <div className="mb-3 grid gap-2 text-xs font-bold text-slate-500 sm:grid-cols-3">
+            <div className="mb-2 grid gap-1.5 text-[11px] font-bold text-slate-500 sm:mb-3 sm:gap-2 sm:text-xs sm:grid-cols-3">
               <span>赛程信息：{getMatchInfoStatusLabel(match.matchInfoStatus)}</span>
               <span>比分结果：{getResultStatusLabel(match.resultStatus)}</span>
               <span>晋级状态：{getAdvancementStatusLabel(match.advancementStatus)}</span>
             </div>
-            <p className="text-sm leading-6 text-slate-600">{match.note}</p>
+            <p className="text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">{match.note}</p>
             <a
               href={match.source}
               target="_blank"
@@ -136,17 +136,17 @@ function ModalTeam({
       ].join(' ')}
     >
       <TeamMark team={team} size="lg" />
-      <span className="mt-2 block max-w-full truncate text-xl font-black sm:text-2xl">{name}</span>
-      <span className="mt-1 block text-xs font-bold text-white/[0.62]">{shortName}</span>
+      <span className="mt-1.5 block max-w-full truncate text-lg font-black sm:mt-2 sm:text-2xl">{name}</span>
+      <span className="mt-0.5 block text-[11px] font-bold text-white/[0.62] sm:mt-1 sm:text-xs">{shortName}</span>
     </button>
   );
 }
 
 function Info({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[8px] border border-slate-100 bg-slate-50 p-4">
-      <p className="text-xs font-black uppercase text-slate-400">{label}</p>
-      <p className="mt-1 font-bold">{value}</p>
+    <div className="rounded-[8px] border border-slate-100 bg-slate-50 p-3 sm:p-4">
+      <p className="text-[11px] font-black uppercase text-slate-400 sm:text-xs">{label}</p>
+      <p className="mt-1 text-sm font-bold">{value}</p>
     </div>
   );
 }

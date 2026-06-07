@@ -161,7 +161,6 @@ select {
 
 @media (max-width: 640px) {
   .hero-scene {
-    min-height: 680px;
     background-position: 62% center;
   }
 }
