@@ -33,7 +33,7 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
       <div className="absolute inset-0 bg-gradient-to-r from-[#07111f]/[0.86] via-[#07111f]/[0.46] to-[#07111f]/[0.14]" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/[0.36] via-transparent to-[#32245f]/[0.26]" />
 
-      <div className="relative z-10 mx-auto flex min-h-[400px] w-full max-w-7xl flex-col justify-between gap-6 sm:min-h-[480px] sm:gap-8 lg:min-h-[410px] lg:justify-start lg:gap-8 xl:min-h-[440px] xl:gap-10">
+      <div className="relative z-10 mx-auto flex min-h-[400px] w-full max-w-7xl flex-col justify-start gap-8 sm:min-h-[480px] sm:gap-10 lg:min-h-[410px] lg:gap-8 xl:min-h-[440px] xl:gap-10">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-white text-summer-blue shadow-glow sm:h-10 sm:w-10">
