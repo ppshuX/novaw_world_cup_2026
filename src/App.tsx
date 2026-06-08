@@ -10,6 +10,7 @@ import { InstallPage } from './components/InstallPage';
 import { MatchCard } from './components/MatchCard';
 import { MatchModal } from './components/MatchModal';
 import { OfficialSources } from './components/OfficialSources';
+import { ScheduleAssistant } from './components/ScheduleAssistant';
 import { TeamMark } from './components/TeamIdentity';
 import { TeamProfileModal } from './components/TeamProfileModal';
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
@@ -118,7 +119,6 @@ function App() {
                   icon={<CalendarDays size={16} className="sm:size-[20px]" />}
                   eyebrow="近期比赛"
                   title="今日 / 最近即将开赛"
-                  description="打开页面先看这里，快速判断今晚或明早有没有值得关注的比赛。"
                 >
                   <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                     {headlineMatches.map((match) => (
@@ -140,7 +140,6 @@ function App() {
                   icon={<TreePine size={16} className="sm:size-[20px]" />}
                   eyebrow="重点比赛"
                   title="推荐关注"
-                  description="根据比赛阶段、时间和观赛价值人工标记，后续会随真实赛程更新。"
                 >
                   <div className="space-y-2 sm:space-y-3">
                     {focusMatches.slice(0, 4).map((match) => (
@@ -264,6 +263,7 @@ function App() {
         onOpenTeam={setSelectedTeam}
       />
       <TeamProfileModal team={selectedTeam} onClose={() => setSelectedTeam(null)} />
+      <ScheduleAssistant matches={sortedMatches} onOpenMatch={setSelectedMatch} onNavigate={setActiveView} />
       <Footer />
     </div>
   );
@@ -310,7 +310,7 @@ function PanelHeaderCard({
   icon: ReactNode;
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   dark?: boolean;
   children: ReactNode;
 }) {
@@ -323,7 +323,9 @@ function PanelHeaderCard({
         <div>
           <p className={dark ? 'text-xs font-semibold text-summer-lime sm:text-sm' : 'text-xs font-semibold text-summer-blue sm:text-sm'}>{eyebrow}</p>
           <h2 className="text-xl font-black sm:text-2xl">{title}</h2>
-          <p className={dark ? 'mt-1 text-xs leading-5 text-white/[0.68] sm:text-sm sm:leading-6' : 'mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6'}>{description}</p>
+          {description && (
+            <p className={dark ? 'mt-1 text-xs leading-5 text-white/[0.68] sm:text-sm sm:leading-6' : 'mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6'}>{description}</p>
+          )}
         </div>
       </div>
       {children}
@@ -386,7 +388,11 @@ function ViewingInfoSection({ onGoSources }: { onGoSources: () => void }) {
               <p className="text-xs font-semibold text-summer-blue sm:text-sm">Viewing Guide</p>
               <h2 className="text-xl font-black sm:text-2xl">观赛信息</h2>
               <p className="mt-1 max-w-3xl text-xs font-medium leading-5 text-slate-600 sm:text-sm sm:leading-6">
-                中国大陆电视端可先关注 CCTV-5。具体每场频道、平台和转播安排，以赛前官方节目单为准。
+                中国大陆电视端可先关注
+                <span className="mx-1 inline-flex rounded-[6px] bg-[#172033] px-2 py-0.5 text-xs font-black text-white sm:text-sm">
+                  CCTV-5
+                </span>
+                。具体每场频道、平台和转播安排，以赛前官方节目单为准。
               </p>
             </div>
           </div>
