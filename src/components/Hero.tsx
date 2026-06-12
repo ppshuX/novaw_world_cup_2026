@@ -3,7 +3,7 @@ import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck } from 'lucide-r
 import type { Match, Team } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate, getCountdownParts } from '../utils/date';
-import { getResolvedMatchStatusLabel } from '../utils/matchStatus';
+import { getResolvedMatchStatusLabel, getStatusColorClasses } from '../utils/matchStatus';
 import { TeamMark } from './TeamIdentity';
 
 interface HeroProps {
@@ -82,7 +82,7 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
                 >
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                     <TeamName team={homeTeam} name={homeTeam.name} shortName={homeTeam.shortName} onOpenTeam={onOpenTeam} />
-                    <span className="rounded-[8px] bg-white px-2 py-1.5 text-xs font-black text-[#172033] sm:px-3 sm:py-2 sm:text-sm">
+                    <span className={`rounded-[8px] px-2 py-1.5 text-xs font-black sm:px-3 sm:py-2 sm:text-sm ${getResolvedMatchStatusLabel(nextMatch) === '未开始' ? 'bg-white text-[#172033]' : `${getStatusColorClasses(nextMatch).bg} ${getStatusColorClasses(nextMatch).text}`}`}>
                       {getResolvedMatchStatusLabel(nextMatch)}
                     </span>
                     <TeamName team={awayTeam} name={awayTeam.name} shortName={awayTeam.shortName} alignRight onOpenTeam={onOpenTeam} />

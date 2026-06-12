@@ -2,7 +2,7 @@ import { Clock, Database, MapPin, Star, Trophy } from 'lucide-react';
 import type { DataStatus, Match, Team } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate } from '../utils/date';
-import { getResolvedMatchStatusLabel, getResultLabel } from '../utils/matchStatus';
+import { getResolvedMatchStatusLabel, getResultLabel, getStatusColorClasses } from '../utils/matchStatus';
 import { TeamMark } from './TeamIdentity';
 
 interface MatchCardProps {
@@ -18,6 +18,7 @@ export function MatchCard({ match, compact = false, onOpen, isFavorite = false, 
   const homeTeam = getTeamById(match.homeTeamId);
   const awayTeam = getTeamById(match.awayTeamId);
   const score = getResultLabel(match);
+  const statusColors = getStatusColorClasses(match);
 
   return (
     <article
@@ -68,7 +69,7 @@ export function MatchCard({ match, compact = false, onOpen, isFavorite = false, 
 
       <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
         <TeamBlock team={homeTeam} name={homeTeam?.name ?? '待确认'} shortName={homeTeam?.shortName ?? 'TBD'} align="left" onOpenTeam={onOpenTeam} />
-        <div className="rounded-[8px] bg-[#172033] px-2 py-1.5 text-center text-xs font-black text-white sm:px-3 sm:py-2 sm:text-sm">{score}</div>
+        <div className={`rounded-[8px] px-2 py-1.5 text-center text-xs font-black sm:px-3 sm:py-2 sm:text-sm ${statusColors.bg} ${statusColors.text}`}>{score}</div>
         <TeamBlock team={awayTeam} name={awayTeam?.name ?? '待确认'} shortName={awayTeam?.shortName ?? 'TBD'} align="right" onOpenTeam={onOpenTeam} />
       </div>
 

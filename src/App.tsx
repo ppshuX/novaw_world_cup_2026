@@ -16,12 +16,13 @@ import { TeamProfileModal } from './components/TeamProfileModal';
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
 import { findNextMatch, formatChineseDate, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
-import { getMatchStatusLabel } from './utils/matchStatus';
+import { getResolvedMatchStatusLabel, getStatusColorClasses } from './utils/matchStatus';
 
 type AppView = 'home' | 'schedule' | 'bracket' | 'sources' | 'install';
 type StageFilter = TournamentStage | '全部阶段';
 type GroupFilter = string | '全部小组';
 type DateFilter = string | '全部日期';
+type MatchStatusFilter = '全部状态' | '未开始' | '进行中' | '已结束';
 
 function App() {
   const [activeView, setActiveView] = useState<AppView>('home');
@@ -29,6 +30,7 @@ function App() {
   const [stageFilter, setStageFilter] = useState<StageFilter>('全部阶段');
   const [groupFilter, setGroupFilter] = useState<GroupFilter>('全部小组');
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [matchStatusFilter, setMatchStatusFilter] = useState<MatchStatusFilter>('全部状态');
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
@@ -76,6 +78,7 @@ function App() {
         (dateFilter === '全部日期' || match.date === dateFilter) &&
         (stageFilter === '全部阶段' || match.stage === stageFilter) &&
         (groupFilter === '全部小组' || match.group === groupFilter) &&
+        (matchStatusFilter === '全部状态' || getResolvedMatchStatusLabel(match) === matchStatusFilter) &&
         (!keyword || teamNames.includes(keyword))
       );
     });
@@ -101,6 +104,7 @@ function App() {
     setDateFilter('全部日期');
     setStageFilter('全部阶段');
     setGroupFilter('全部小组');
+    setMatchStatusFilter('全部状态');
     setSearchKeyword('');
   };
 
@@ -199,10 +203,12 @@ function App() {
                   dateFilter={dateFilter}
                   stageFilter={stageFilter}
                   groupFilter={groupFilter}
+                  matchStatusFilter={matchStatusFilter}
                   searchKeyword={searchKeyword}
                   setDateFilter={setDateFilter}
                   setStageFilter={setStageFilter}
                   setGroupFilter={setGroupFilter}
+                  setMatchStatusFilter={setMatchStatusFilter}
                   setSearchKeyword={setSearchKeyword}
                 />
               </div>
@@ -493,8 +499,8 @@ function FavoriteMatchItem({
 
       <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:mt-4 sm:gap-3">
         <FavoriteTeam team={homeTeam} fallback="待确认" onOpenTeam={onOpenTeam} />
-        <span className="rounded-[8px] bg-[#172033] px-2 py-1.5 text-center text-xs font-black text-white sm:px-3 sm:py-2 sm:text-sm">
-          {getMatchStatusLabel(match.matchStatus)}
+        <span className={`rounded-[8px] px-2 py-1.5 text-center text-xs font-black sm:px-3 sm:py-2 sm:text-sm ${getStatusColorClasses(match).bg} ${getStatusColorClasses(match).text}`}>
+          {getResolvedMatchStatusLabel(match)}
         </span>
         <FavoriteTeam team={awayTeam} fallback="待确认" alignRight onOpenTeam={onOpenTeam} />
       </div>
@@ -588,10 +594,12 @@ function FilterControls({
   dateFilter,
   stageFilter,
   groupFilter,
+  matchStatusFilter,
   searchKeyword,
   setDateFilter,
   setStageFilter,
   setGroupFilter,
+  setMatchStatusFilter,
   setSearchKeyword,
 }: {
   dates: string[];
@@ -600,10 +608,12 @@ function FilterControls({
   dateFilter: DateFilter;
   stageFilter: StageFilter;
   groupFilter: GroupFilter;
+  matchStatusFilter: MatchStatusFilter;
   searchKeyword: string;
   setDateFilter: (value: DateFilter) => void;
   setStageFilter: (value: StageFilter) => void;
   setGroupFilter: (value: GroupFilter) => void;
+  setMatchStatusFilter: (value: MatchStatusFilter) => void;
   setSearchKeyword: (value: string) => void;
 }) {
   return (
@@ -645,6 +655,17 @@ function FilterControls({
             {group}
           </option>
         ))}
+      </select>
+
+      <select
+        value={matchStatusFilter}
+        onChange={(event) => setMatchStatusFilter(event.target.value as MatchStatusFilter)}
+        className="h-11 rounded-[8px] border border-slate-200 bg-white px-3 text-sm font-semibold shadow-sm outline-none focus:border-summer-blue"
+      >
+        <option value="全部状态">全部状态</option>
+        <option value="未开始">未开始</option>
+        <option value="进行中">进行中</option>
+        <option value="已结束">已结束</option>
       </select>
 
       <label className="relative block">

@@ -7,6 +7,7 @@ import {
   getMatchInfoStatusLabel,
   getResolvedMatchStatusLabel,
   getResultLabel,
+  getStatusColorClasses,
   getResultStatusLabel,
 } from '../utils/matchStatus';
 import { DataStatusBadge } from './MatchCard';
@@ -26,6 +27,7 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
   const homeTeam = getTeamById(match.homeTeamId);
   const awayTeam = getTeamById(match.awayTeamId);
   const score = getResultLabel(match);
+  const statusColors = getStatusColorClasses(match);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#07111f]/[0.72] p-0 backdrop-blur-sm sm:items-center sm:p-4">
@@ -64,10 +66,10 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
         </div>
 
         <div className="p-4 sm:p-5">
-          <div className="rounded-[8px] bg-[#172033] p-4 text-white sm:p-5">
+          <div className={`rounded-[8px] p-4 sm:p-5 ${statusColors.bg}`}>
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
               <ModalTeam team={homeTeam} name={homeTeam?.name ?? '待确认'} shortName={homeTeam?.shortName ?? 'TBD'} onOpenTeam={onOpenTeam} />
-              <div className="rounded-[8px] bg-white px-3 py-2 text-center text-base font-black text-[#172033] sm:px-4 sm:py-3 sm:text-lg">{score}</div>
+              <div className="rounded-[8px] bg-white/90 px-3 py-2 text-center text-base font-black text-[#172033] sm:px-4 sm:py-3 sm:text-lg">{score}</div>
               <ModalTeam team={awayTeam} name={awayTeam?.name ?? '待确认'} shortName={awayTeam?.shortName ?? 'TBD'} alignRight onOpenTeam={onOpenTeam} />
             </div>
           </div>

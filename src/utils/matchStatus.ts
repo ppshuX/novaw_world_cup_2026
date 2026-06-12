@@ -24,6 +24,23 @@ export function getResolvedMatchStatusLabel(match: Match) {
   return getMatchStatusLabel(getResolvedMatchStatus(match));
 }
 
+export function getStatusColorClasses(match: Match): { bg: string; text: string } {
+  const status = getResolvedMatchStatus(match);
+
+  if (match.resultStatus === 'official' && match.homeScore != null && match.awayScore != null) {
+    return { bg: 'bg-summer-blue', text: 'text-white' };
+  }
+
+  switch (status) {
+    case 'live':
+      return { bg: 'bg-red-500', text: 'text-white' };
+    case 'finished':
+      return { bg: 'bg-slate-400', text: 'text-white' };
+    default:
+      return { bg: 'bg-[#172033]', text: 'text-white' };
+  }
+}
+
 export function getResultLabel(match: Match) {
   if (match.resultStatus === 'official' && match.homeScore != null && match.awayScore != null) {
     return `${match.homeScore} : ${match.awayScore}`;
