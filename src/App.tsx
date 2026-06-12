@@ -252,10 +252,12 @@ function App() {
             dateFilter={dateFilter}
             stageFilter={stageFilter}
             groupFilter={groupFilter}
+            matchStatusFilter={matchStatusFilter}
             searchKeyword={searchKeyword}
             setDateFilter={setDateFilter}
             setStageFilter={setStageFilter}
             setGroupFilter={setGroupFilter}
+            setMatchStatusFilter={setMatchStatusFilter}
             setSearchKeyword={setSearchKeyword}
           />
         </FilterDrawer>
