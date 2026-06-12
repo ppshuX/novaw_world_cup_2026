@@ -2,7 +2,7 @@ import { Clock, Database, MapPin, Star, Trophy } from 'lucide-react';
 import type { DataStatus, Match, Team } from '../types';
 import { getTeamById } from '../services/worldCupData';
 import { formatChineseDate } from '../utils/date';
-import { getMatchStatusLabel, getResultLabel } from '../utils/matchStatus';
+import { getResolvedMatchStatusLabel, getResultLabel } from '../utils/matchStatus';
 import { TeamMark } from './TeamIdentity';
 
 interface MatchCardProps {
@@ -87,7 +87,7 @@ export function MatchCard({ match, compact = false, onOpen, isFavorite = false, 
 
       <div className="mt-auto flex items-center justify-between gap-3 pt-3 sm:pt-4">
         <span className="inline-flex items-center gap-1 text-[11px] font-black text-slate-500 sm:text-xs">
-          <Trophy size={12} className="sm:size-[14px]" /> {getMatchStatusLabel(match.matchStatus)}
+          <Trophy size={12} className="sm:size-[14px]" /> {getResolvedMatchStatusLabel(match)}
         </span>
         <span className="text-xs font-black text-summer-blue transition group-hover:translate-x-0.5 sm:text-sm">详情</span>
       </div>

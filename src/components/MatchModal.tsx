@@ -5,7 +5,7 @@ import { formatChineseDate } from '../utils/date';
 import {
   getAdvancementStatusLabel,
   getMatchInfoStatusLabel,
-  getMatchStatusLabel,
+  getResolvedMatchStatusLabel,
   getResultLabel,
   getResultStatusLabel,
 } from '../utils/matchStatus';
@@ -76,7 +76,7 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
             <Info label="比赛时间" value={`${formatChineseDate(match.date)} ${match.time} 北京时间`} />
             <Info label="比赛阶段" value={`${match.stage}${match.group ? ` · ${match.group}` : ''}`} />
             <Info label="比赛地点" value={`${match.city} · ${match.stadium}`} />
-            <Info label="比赛状态" value={getMatchStatusLabel(match.matchStatus)} />
+            <Info label="比赛状态" value={getResolvedMatchStatusLabel(match)} />
             <Info label="重点标签" value={match.tag} />
             <Info label="更新时间" value={match.lastUpdated} />
           </div>

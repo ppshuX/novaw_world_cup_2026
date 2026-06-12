@@ -1,4 +1,7 @@
 import type { Match } from '../types';
+import { toMatchDate } from './date';
+
+const LIVE_WINDOW_MS = 135 * 60 * 1000;
 
 export function getMatchStatusLabel(status: Match['matchStatus']) {
   return {
@@ -8,12 +11,25 @@ export function getMatchStatusLabel(status: Match['matchStatus']) {
   }[status];
 }
 
+export function getResolvedMatchStatus(match: Match, now = Date.now()): Match['matchStatus'] {
+  if (match.matchStatus !== 'scheduled') return match.matchStatus;
+
+  const startsAt = toMatchDate(match).getTime();
+  if (!Number.isFinite(startsAt) || now < startsAt) return 'scheduled';
+
+  return now < startsAt + LIVE_WINDOW_MS ? 'live' : 'finished';
+}
+
+export function getResolvedMatchStatusLabel(match: Match) {
+  return getMatchStatusLabel(getResolvedMatchStatus(match));
+}
+
 export function getResultLabel(match: Match) {
   if (match.resultStatus === 'official' && match.homeScore != null && match.awayScore != null) {
     return `${match.homeScore} : ${match.awayScore}`;
   }
 
-  return getMatchStatusLabel(match.matchStatus);
+  return getResolvedMatchStatusLabel(match);
 }
 
 export function getMatchInfoStatusLabel(status: Match['matchInfoStatus']) {
