@@ -6,8 +6,8 @@
     "resultStatus": "official"
   },
   "2": {
-    "homeScore": 0,
-    "awayScore": 0,
+    "homeScore": 2,
+    "awayScore": 1,
     "matchStatus": "live",
     "resultStatus": "pending"
   }
