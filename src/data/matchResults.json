@@ -1,0 +1,14 @@
+{
+  "1": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "2": {
+    "homeScore": 0,
+    "awayScore": 0,
+    "matchStatus": "live",
+    "resultStatus": "pending"
+  }
+}
