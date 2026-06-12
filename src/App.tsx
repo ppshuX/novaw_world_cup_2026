@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
@@ -34,7 +34,13 @@ function App() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+  const [statusTick, setStatusTick] = useState(() => Date.now());
   const { favoriteIds, isFavorite, toggleFavorite, removeFavorite } = useFavoriteMatches();
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setStatusTick(Date.now()), 60 * 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const sortedMatches = useMemo(
     () => [...getMatches()].sort((a, b) => toMatchDate(a).getTime() - toMatchDate(b).getTime()),
@@ -82,7 +88,7 @@ function App() {
         (!keyword || teamNames.includes(keyword))
       );
     });
-  }, [dateFilter, groupFilter, searchKeyword, sortedMatches, stageFilter]);
+  }, [dateFilter, groupFilter, matchStatusFilter, searchKeyword, sortedMatches, stageFilter, statusTick]);
 
   const todayMatches = sortedMatches.filter((match) => match.date === todayKey);
   const tomorrowMatches = sortedMatches.filter((match) => match.date === tomorrowKey);

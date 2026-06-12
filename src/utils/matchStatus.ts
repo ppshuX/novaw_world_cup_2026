@@ -12,10 +12,12 @@ export function getMatchStatusLabel(status: Match['matchStatus']) {
 }
 
 export function getResolvedMatchStatus(match: Match, now = Date.now()): Match['matchStatus'] {
-  if (match.matchStatus !== 'scheduled') return match.matchStatus;
+  if (match.resultStatus === 'official' && match.homeScore != null && match.awayScore != null) return 'finished';
+  if (match.matchStatus === 'finished') return 'finished';
 
   const startsAt = toMatchDate(match).getTime();
-  if (!Number.isFinite(startsAt) || now < startsAt) return 'scheduled';
+  if (!Number.isFinite(startsAt)) return match.matchStatus;
+  if (now < startsAt) return match.matchStatus === 'live' ? 'live' : 'scheduled';
 
   return now < startsAt + LIVE_WINDOW_MS ? 'live' : 'finished';
 }
