@@ -79,8 +79,6 @@ export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorit
             <Info label="比赛阶段" value={`${match.stage}${match.group ? ` · ${match.group}` : ''}`} />
             <Info label="比赛地点" value={`${match.city} · ${match.stadium}`} />
             <Info label="比赛状态" value={getResolvedMatchStatusLabel(match)} />
-            <Info label="重点标签" value={match.tag} />
-            <Info label="更新时间" value={match.lastUpdated} />
           </div>
 
           <div className="mt-4 rounded-[8px] border border-slate-100 bg-slate-50 p-3 sm:mt-5 sm:p-4">
