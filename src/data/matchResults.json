@@ -22,5 +22,11 @@
     "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "6": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
