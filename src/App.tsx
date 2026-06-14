@@ -16,7 +16,7 @@ import { TeamProfileModal } from './components/TeamProfileModal';
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
 import { findNextMatch, formatChineseDate, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
-import { getResolvedMatchStatusLabel, getStatusColorClasses } from './utils/matchStatus';
+import { getResolvedMatchStatus, getResolvedMatchStatusLabel, getStatusColorClasses } from './utils/matchStatus';
 
 type AppView = 'home' | 'schedule' | 'bracket' | 'sources' | 'install';
 type StageFilter = TournamentStage | '全部阶段';
@@ -95,7 +95,9 @@ function App() {
   const upcomingMatches = sortedMatches
     .filter((match) => match.matchStatus !== 'finished' && toMatchDate(match).getTime() >= Date.now())
     .slice(0, 3);
-  const focusMatches = sortedMatches.filter((match) => match.tag !== '普通').slice(0, 6);
+  const focusMatches = sortedMatches
+    .filter((match) => match.tag !== '普通' && getResolvedMatchStatus(match, statusTick) !== 'finished')
+    .slice(0, 6);
   const headlineMatches = todayMatches.length > 0 ? todayMatches : tomorrowMatches.length > 0 ? tomorrowMatches : upcomingMatches;
   const favoriteMatches = useMemo(
     () =>
