@@ -1,8 +1,8 @@
-name: Daily World Cup Sync
+name: World Cup Score Sync
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          sync_date=$(TZ=Asia/Shanghai date +%F)
+          sync_time=$(TZ=Asia/Shanghai date '+%F %H:%M')
           git add src/data/matches.ts src/data/bracket.ts src/data/matchResults.json reports/
-          git commit -m "chore(data): sync fifa results ${sync_date}"
+          git commit -m "chore(data): sync fifa results ${sync_time}"
           git push
