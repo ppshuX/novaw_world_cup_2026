@@ -1,9 +1,9 @@
 /**
- * 每日从 TheSportsDB 免费 API 拉取世界杯比分，
- * 更新 src/data/matchResults.json。
+ * 从 ESPN 公开 API 拉取 2026 世界杯比分，更新 src/data/matchResults.json。
+ * 零 API Key，零付费。
  *
  * 用法: node scripts/update-scores.mjs
- * 在 GitHub Actions 中每天自动运行。
+ * GitHub Actions 中每 6 小时自动运行。
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -15,34 +15,47 @@ const ROOT = resolve(__dirname, '..');
 const RESULTS_PATH = resolve(ROOT, 'src/data/matchResults.json');
 const MATCHES_PATH = resolve(ROOT, 'src/data/matches.ts');
 
-const SPORTSDB_API = 'https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4429&s=2026';
+// ESPN 2026 World Cup API (公开，无需认证)
+const ESPN_API = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260720';
 
-// TheSportsDB 队名 → 我们的 team ID（matches.ts 中的格式）
-const SPORTSDB_TEAM_MAP = {
+const STATUS_MAP = {
+  STATUS_FULL_TIME: 'finished',
+  STATUS_FINAL: 'finished',
+  STATUS_FINAL_PEN: 'finished',
+  STATUS_IN_PROGRESS: 'live',
+  STATUS_HALF_TIME: 'live',
+  STATUS_FIRST_HALF: 'live',
+  STATUS_SECOND_HALF: 'live',
+  STATUS_END_OF_REGULATION: 'live',
+  STATUS_EXTRA_TIME: 'live',
+  STATUS_PENALTY_SHOOTOUT: 'live',
+  STATUS_SCHEDULED: 'scheduled',
+  STATUS_POSTPONED: 'scheduled',
+  STATUS_CANCELED: 'scheduled',
+};
+
+// ESPN 队名 → 我们的 team ID
+const ESPN_TEAM_MAP = {
   'mexico': 'mexico',
   'south africa': 'south-africa',
   'south korea': 'korea-republic',
-  'czech republic': 'czechia',
+  'czechia': 'czechia',
   'canada': 'canada',
   'bosnia-herzegovina': 'bosnia',
-  'bosnia and herzegovina': 'bosnia',
-  'bosnia & herzegovina': 'bosnia',
   'qatar': 'qatar',
   'switzerland': 'switzerland',
   'brazil': 'brazil',
   'morocco': 'morocco',
   'haiti': 'haiti',
   'scotland': 'scotland',
-  'usa': 'usa',
   'united states': 'usa',
   'paraguay': 'paraguay',
   'australia': 'australia',
-  'turkey': 'turkey',
   'türkiye': 'turkey',
+  'turkey': 'turkey',
   'germany': 'germany',
   'curaçao': 'curacao',
   'ivory coast': 'ivory-coast',
-  'côte d\'ivoire': 'ivory-coast',
   'ecuador': 'ecuador',
   'netherlands': 'netherlands',
   'japan': 'japan',
@@ -74,85 +87,82 @@ const SPORTSDB_TEAM_MAP = {
   'panama': 'panama',
 };
 
-function toTeamId(name) {
-  const lower = name.toLowerCase();
-  return SPORTSDB_TEAM_MAP[lower] ?? lower.replace(/\s+/g, '-');
+function toTeamId(espnName) {
+  const lower = espnName.toLowerCase();
+  return ESPN_TEAM_MAP[lower] ?? lower.replace(/\s+/g, '-');
 }
 
 async function main() {
   console.log('=== 2026 World Cup Score Update ===');
-  console.log(`Fetching: ${SPORTSDB_API}`);
+  console.log(`Fetching: ${ESPN_API}`);
 
-  const res = await fetch(SPORTSDB_API);
+  const res = await fetch(ESPN_API);
   const data = await res.json();
+  const events = data.events || [];
 
-  if (!data.events) {
-    console.error('❌ No events in response:', JSON.stringify(data).slice(0, 200));
-    process.exit(1);
-  }
-
-  console.log(`📡 Got ${data.events.length} events from TheSportsDB\n`);
+  console.log(`📡 Got ${events.length} events from ESPN\n`);
 
   // 读取现有结果
   const existing = JSON.parse(readFileSync(RESULTS_PATH, 'utf-8'));
   let updated = 0;
 
-  for (const event of data.events) {
-    const { strHomeTeam, strAwayTeam, intHomeScore, intAwayScore, strStatus, dateEvent } = event;
+  for (const event of events) {
+    const comp = event.competitions?.[0];
+    if (!comp) continue;
 
-    const homeId = toTeamId(strHomeTeam);
-    const awayId = toTeamId(strAwayTeam);
+    const competitors = comp.competitors || [];
+    if (competitors.length !== 2) continue;
 
-    // 找 matchNo：读取 matches.ts 中的 groupStageRows
-    const matchNo = findMatchNo(dateEvent, homeId, awayId);
+    const homeTeam = competitors.find(c => c.homeAway === 'home');
+    const awayTeam = competitors.find(c => c.homeAway === 'away');
+    if (!homeTeam || !awayTeam) continue;
+
+    const homeName = homeTeam.team?.displayName || '';
+    const awayName = awayTeam.team?.displayName || '';
+    const homeId = toTeamId(homeName);
+    const awayId = toTeamId(awayName);
+    const espnStatus = comp.status?.type?.name || 'STATUS_SCHEDULED';
+    const utcDate = event.date?.slice(0, 10) || '';
+
+    // 跳过未开始的比赛（ESPN 也不会有比分）
+    if (espnStatus === 'STATUS_SCHEDULED') continue;
+
+    // 按日期 + 主队 + 客队匹配我们的 matchNo
+    const matchNo = findMatchNo(utcDate, homeId, awayId);
     if (!matchNo) {
-      console.log(`⏭️  Skip: ${strHomeTeam} vs ${strAwayTeam} (no match found, date=${dateEvent})`);
-      continue;
-    }
-
-    // 跳过未开赛的（NS = Not Started, TBD = To Be Determined）
-    if (strStatus === 'NS' || strStatus === 'TBD' || strStatus === '') {
+      // 只对非 scheduled 的比赛报告 skip
+      if (espnStatus !== 'STATUS_SCHEDULED') {
+        console.log(`⏭️  Skip: ${homeName} vs ${awayName} (date=${utcDate}, no matchNo found)`);
+      }
       continue;
     }
 
     const key = String(matchNo);
     const oldEntry = existing[key];
 
-    // 解析比分
-    const homeScore = intHomeScore != null ? Number(intHomeScore) : null;
-    const awayScore = intAwayScore != null ? Number(intAwayScore) : null;
-
-    // 状态映射
-    let matchStatus = 'scheduled';
-    if (strStatus === 'FT' || strStatus === 'AET' || strStatus === 'PEN') {
-      matchStatus = 'finished';
-    } else if (strStatus === '1H' || strStatus === '2H' || strStatus === 'HT' || strStatus === 'LIVE') {
-      matchStatus = 'live';
-    }
-
-    // 判断 resultStatus
+    const homeScore = homeTeam.score != null ? Number(homeTeam.score) : null;
+    const awayScore = awayTeam.score != null ? Number(awayTeam.score) : null;
+    const matchStatus = STATUS_MAP[espnStatus] || 'scheduled';
     const hasScore = homeScore != null && awayScore != null;
     const resultStatus = matchStatus === 'finished' && hasScore ? 'official' : 'pending';
-    const effectiveStatus = matchStatus === 'finished' && hasScore ? 'finished' : matchStatus;
 
     const newEntry = {
       homeScore,
       awayScore,
-      matchStatus: effectiveStatus,
+      matchStatus,
       resultStatus,
     };
 
-    // 检查是否有变化
     const oldStr = JSON.stringify(oldEntry);
     const newStr = JSON.stringify(newEntry);
     if (oldStr === newStr) {
-      console.log(`   ${strHomeTeam} ${homeScore}-${awayScore} ${strAwayTeam} [${strStatus}] → match#${matchNo} (no change)`);
+      console.log(`   ${homeName} ${homeScore}-${awayScore} ${awayName} [${espnStatus}] → match#${matchNo} (no change)`);
       continue;
     }
 
     existing[key] = newEntry;
     updated++;
-    console.log(`✅ ${strHomeTeam} ${homeScore}-${awayScore} ${strAwayTeam} [${strStatus}] → match#${matchNo} UPDATED`);
+    console.log(`✅ ${homeName} ${homeScore}-${awayScore} ${awayName} [${espnStatus}] → match#${matchNo} UPDATED`);
   }
 
   if (updated > 0) {
@@ -165,9 +175,8 @@ async function main() {
 
 /**
  * 从 matches.ts 中解析 groupStageRows，找到匹配的 matchNo。
- * 解析格式: [matchNo, 'group', 'home', 'away', 'kickoffUtc', 'venue'],
  */
-function findMatchNo(dateEvent, homeId, awayId) {
+function findMatchNo(utcDate, homeId, awayId) {
   try {
     const text = readFileSync(MATCHES_PATH, 'utf-8');
 
@@ -184,23 +193,40 @@ function findMatchNo(dateEvent, homeId, awayId) {
       'dr congo': 'dr-congo',
     };
 
-    // 解析 groupStageRows 数组中的行
-    // venue 字段可能用双引号（含撇号如 Levi's）或单引号
-    // 格式: [matchNo, 'group', 'home', 'away', 'kickoffUtc', venue],
-    const rowRegex = /\[(\d+),\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*(?:'([^']+)'|"([^"]+)")\]/g;
+    const rowRegex = /\[(\d+),\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*(?:'[^']+'|"[^"]+")\]/g;
     let match;
     while ((match = rowRegex.exec(text)) !== null) {
-      const [, matchNo, group, home, away, kickoffUtc] = match;
-
-      // 用与 matches.ts 相同的逻辑转换 team ID
-      const resolvedHome = teamMap[home] ?? home.replace(/\s+/g, '-');
-      const resolvedAway = teamMap[away] ?? away.replace(/\s+/g, '-');
-
-      // 提取日期 (YYYY-MM-DD)
+      const [, matchNo, group, rowHome, rowAway, kickoffUtc] = match;
+      const resolvedHome = teamMap[rowHome] ?? rowHome.replace(/\s+/g, '-');
+      const resolvedAway = teamMap[rowAway] ?? rowAway.replace(/\s+/g, '-');
       const matchDate = kickoffUtc.slice(0, 10);
 
-      if (matchDate === dateEvent && resolvedHome === homeId && resolvedAway === awayId) {
-        return Number(matchNo);
+      // 额外处理：ESPN 有时用 UTC 日期和我们用北京时间日期的差异
+      // 尝试精确匹配和 ±1 天的容差匹配
+      if (resolvedHome === homeId && resolvedAway === awayId) {
+        if (matchDate === utcDate) {
+          return Number(matchNo);
+        }
+      }
+    }
+
+    // 容差匹配：同一天可能有 UTC/BJT 日期差异
+    // 重新扫描，这次放宽日期限制到 ±0 天（用北京时间考虑）
+    rowRegex.lastIndex = 0;
+    while ((match = rowRegex.exec(text)) !== null) {
+      const [, matchNo, group, rowHome, rowAway, kickoffUtc] = match;
+      const resolvedHome = teamMap[rowHome] ?? rowHome.replace(/\s+/g, '-');
+      const resolvedAway = teamMap[rowAway] ?? rowAway.replace(/\s+/g, '-');
+      const matchDate = kickoffUtc.slice(0, 10);
+
+      if (resolvedHome === homeId && resolvedAway === awayId) {
+        // 容差：日期差 ≤1 天
+        const d1 = new Date(matchDate);
+        const d2 = new Date(utcDate);
+        const diff = Math.abs(d1 - d2) / (1000 * 60 * 60 * 24);
+        if (diff <= 1) {
+          return Number(matchNo);
+        }
       }
     }
   } catch (err) {
