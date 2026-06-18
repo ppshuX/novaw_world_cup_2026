@@ -136,5 +136,17 @@
     "awayScore": 3,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "25": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "26": {
+    "homeScore": 0,
+    "awayScore": 0,
+    "matchStatus": "live",
+    "resultStatus": "pending"
   }
 }
