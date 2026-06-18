@@ -120,9 +120,21 @@
     "resultStatus": "official"
   },
   "21": {
+    "homeScore": 4,
+    "awayScore": 2,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "22": {
     "homeScore": 1,
     "awayScore": 0,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "24": {
+    "homeScore": 1,
+    "awayScore": 3,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
