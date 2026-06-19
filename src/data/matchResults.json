@@ -166,5 +166,11 @@
     "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "32": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "matchStatus": "scheduled",
+    "resultStatus": "pending"
   }
 }
