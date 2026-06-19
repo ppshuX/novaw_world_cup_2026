@@ -131,6 +131,12 @@
     "matchStatus": "finished",
     "resultStatus": "official"
   },
+  "23": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
   "24": {
     "homeScore": 1,
     "awayScore": 3,
@@ -144,9 +150,21 @@
     "resultStatus": "official"
   },
   "26": {
-    "homeScore": 0,
+    "homeScore": 4,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "27": {
+    "homeScore": 6,
     "awayScore": 0,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "28": {
+    "homeScore": 1,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }

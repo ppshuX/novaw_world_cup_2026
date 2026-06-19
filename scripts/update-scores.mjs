@@ -79,6 +79,7 @@ const ESPN_TEAM_MAP = {
   'jordan': 'jordan',
   'portugal': 'portugal',
   'dr congo': 'dr-congo',
+  'congo dr': 'dr-congo',
   'uzbekistan': 'uzbekistan',
   'colombia': 'colombia',
   'england': 'england',
@@ -191,6 +192,7 @@ function findMatchNo(utcDate, homeId, awayId) {
       'saudi arabia': 'saudi-arabia',
       'new zealand': 'new-zealand',
       'dr congo': 'dr-congo',
+      'congo dr': 'dr-congo',
     };
 
     const rowRegex = /\[(\d+),\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*'([^']+)',\s*(?:'[^']+'|"[^"]+")\]/g;
