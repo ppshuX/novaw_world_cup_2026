@@ -1,5 +1,5 @@
-const CACHE_NAME = 'novaw-world-cup-2026-v1';
-const APP_SHELL = ['/', '/manifest.webmanifest', '/icons/icon-192.svg', '/icons/icon-512.svg'];
+const CACHE_NAME = 'novaw-world-cup-2026-v2';
+const APP_SHELL = ['/', '/manifest.webmanifest', '/icons/icon-192.svg', '/icons/icon-512.svg', '/images/hero-world-cup-summer.webp', '/images/hero-mobile.webp'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -22,20 +22,36 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
 
-      return fetch(event.request)
-        .then((response) => {
-          const shouldCache = response.ok && new URL(event.request.url).origin === self.location.origin;
-          if (shouldCache) {
+  // Cache-first for static assets (JS, CSS, images, flags)
+  if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/flags/') || url.pathname.startsWith('/images/') || url.pathname.startsWith('/icons/')) {
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response.ok) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
           }
           return response;
-        })
-        .catch(() => caches.match('/')),
-    }),
+        });
+      }),
+    );
+    return;
+  }
+
+  // Network-first for HTML and other requests
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/'))),
   );
 });

@@ -21,8 +21,13 @@ function mergeResults(matches: Match[], results: ResultsMap): Match[] {
   });
 }
 
+let cachedMatches: Match[] | null = null;
+
 export function getMatches() {
-  return mergeResults(baseMatches, matchResults as ResultsMap);
+  if (!cachedMatches) {
+    cachedMatches = mergeResults(baseMatches, matchResults as ResultsMap);
+  }
+  return cachedMatches;
 }
 
 export function getTeams() {

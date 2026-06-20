@@ -1,18 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
-import { BracketTree } from './components/BracketTree';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
-import { InstallPage } from './components/InstallPage';
 import { MatchCard } from './components/MatchCard';
 import { MatchModal } from './components/MatchModal';
-import { OfficialSources } from './components/OfficialSources';
-import { ScheduleAssistant } from './components/ScheduleAssistant';
 import { TeamMark } from './components/TeamIdentity';
 import { TeamProfileModal } from './components/TeamProfileModal';
+
+const BracketTree = lazy(() => import('./components/BracketTree').then((m) => ({ default: m.BracketTree })));
+const InstallPage = lazy(() => import('./components/InstallPage').then((m) => ({ default: m.InstallPage })));
+const OfficialSources = lazy(() => import('./components/OfficialSources').then((m) => ({ default: m.OfficialSources })));
+const ScheduleAssistant = lazy(() => import('./components/ScheduleAssistant').then((m) => ({ default: m.ScheduleAssistant })));
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
 import { findNextMatch, formatChineseDate, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
@@ -242,13 +243,23 @@ function App() {
           </section>
         )}
 
-        {activeView === 'bracket' && <BracketTree rounds={getBracketRounds()} />}
-
-        {activeView === 'sources' && (
-          <OfficialSources />
+        {activeView === 'bracket' && (
+          <Suspense fallback={<div className="mx-auto w-full max-w-7xl px-4 py-12 text-center text-sm text-slate-400">加载中…</div>}>
+            <BracketTree rounds={getBracketRounds()} />
+          </Suspense>
         )}
 
-        {activeView === 'install' && <InstallPage />}
+        {activeView === 'sources' && (
+          <Suspense fallback={<div className="mx-auto w-full max-w-7xl px-4 py-12 text-center text-sm text-slate-400">加载中…</div>}>
+            <OfficialSources />
+          </Suspense>
+        )}
+
+        {activeView === 'install' && (
+          <Suspense fallback={<div className="mx-auto w-full max-w-7xl px-4 py-12 text-center text-sm text-slate-400">加载中…</div>}>
+            <InstallPage />
+          </Suspense>
+        )}
       </main>
 
       {filterOpen && (
@@ -279,7 +290,9 @@ function App() {
         onOpenTeam={setSelectedTeam}
       />
       <TeamProfileModal team={selectedTeam} onClose={() => setSelectedTeam(null)} />
-      <ScheduleAssistant matches={sortedMatches} onOpenMatch={setSelectedMatch} onNavigate={setActiveView} />
+      <Suspense fallback={null}>
+        <ScheduleAssistant matches={sortedMatches} onOpenMatch={setSelectedMatch} onNavigate={setActiveView} />
+      </Suspense>
       <Footer />
     </div>
   );
