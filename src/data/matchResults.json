@@ -182,8 +182,8 @@
   "31": {
     "homeScore": 0,
     "awayScore": 1,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
   },
   "32": {
     "homeScore": 2,
