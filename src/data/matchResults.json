@@ -167,10 +167,28 @@
     "matchStatus": "finished",
     "resultStatus": "official"
   },
+  "29": {
+    "homeScore": 3,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "30": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "31": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "matchStatus": "live",
+    "resultStatus": "pending"
+  },
   "32": {
     "homeScore": 2,
     "awayScore": 0,
-    "matchStatus": "scheduled",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
