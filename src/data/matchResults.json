@@ -214,5 +214,17 @@
     "awayScore": 4,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "37": {
+    "homeScore": 4,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "39": {
+    "homeScore": 0,
+    "awayScore": 0,
+    "matchStatus": "live",
+    "resultStatus": "pending"
   }
 }
