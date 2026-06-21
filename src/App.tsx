@@ -11,7 +11,7 @@ import { TeamMark } from './components/TeamIdentity';
 import { TeamProfileModal } from './components/TeamProfileModal';
 
 const BracketTree = lazy(() => import('./components/BracketTree').then((m) => ({ default: m.BracketTree })));
-const InstallPage = lazy(() => import('./components/InstallPage').then((m) => ({ default: m.InstallPage })));
+const SaveSitePage = lazy(() => import('./components/SaveSitePage').then((m) => ({ default: m.SaveSitePage })));
 const OfficialSources = lazy(() => import('./components/OfficialSources').then((m) => ({ default: m.OfficialSources })));
 const ScheduleAssistant = lazy(() => import('./components/ScheduleAssistant').then((m) => ({ default: m.ScheduleAssistant })));
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
@@ -257,7 +257,7 @@ function App() {
 
         {activeView === 'install' && (
           <Suspense fallback={<div className="mx-auto w-full max-w-7xl px-4 py-12 text-center text-sm text-slate-400">加载中…</div>}>
-            <InstallPage />
+            <SaveSitePage />
           </Suspense>
         )}
       </main>
@@ -304,7 +304,7 @@ function NavTabs({ activeView, onChange }: { activeView: AppView; onChange: (vie
     { id: 'schedule', label: '赛程' },
     { id: 'bracket', label: '晋级树' },
     { id: 'sources', label: '来源' },
-    { id: 'install', label: 'App' },
+    { id: 'install', label: '保存本站' },
   ];
 
   return (
