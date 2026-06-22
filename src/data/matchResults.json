@@ -238,5 +238,11 @@
     "awayScore": 3,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "43": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
