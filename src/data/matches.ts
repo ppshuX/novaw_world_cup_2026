@@ -8,7 +8,7 @@ const commonOfficial = {
   resultStatus: 'pending' as const,
   advancementStatus: 'not_applicable' as const,
   source: fifaScheduleSource,
-  lastUpdated: '2026-05-23',
+  lastUpdated: '2026-06-22',
 };
 
 const teamIdByScheduleName: Record<string, string> = {
