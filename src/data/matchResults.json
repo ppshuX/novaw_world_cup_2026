@@ -259,8 +259,8 @@
   },
   "44": {
     "homeScore": 1,
-    "awayScore": 0,
-    "matchStatus": "scheduled",
-    "resultStatus": "pending"
+    "awayScore": 2,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
