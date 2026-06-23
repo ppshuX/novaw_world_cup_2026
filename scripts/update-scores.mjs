@@ -172,6 +172,165 @@ async function main() {
   } else {
     console.log('\n✅ No changes needed');
   }
+
+  // 尝试拉取淘汰赛对阵数据（ESPN API，和比分用同一个源）
+  await updateBracketFixture();
+}
+
+/**
+ * 从 ESPN API 拉取淘汰赛对阵，更新 bracketFixture.json
+ * ESPN 返回的队名如 "Group C Winner"、"Third Place Group A/B/C/D/F"
+ * 我们把这些映射成 slot ID
+ */
+async function updateBracketFixture() {
+  const FIXTURE_PATH = resolve(ROOT, 'src/data/bracketFixture.json');
+
+  try {
+    // 拉取淘汰赛阶段的赛事（6月29日开始）
+    const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260629-20260720', {
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (!res.ok) {
+      console.log('\n⏭️  ESPN bracket fixture: HTTP ' + res.status + ' — 跳过');
+      return;
+    }
+
+    const data = await res.json();
+    const events = data.events || [];
+
+    if (events.length === 0) {
+      console.log('\n⏭️  ESPN bracket fixture: 无淘汰赛数据 — 跳过');
+      return;
+    }
+
+    // 解析 ESPN 的占位队名 → 我们的 slot ID
+    const r32 = {};
+    let updated = 0;
+
+    for (const event of events) {
+      const comp = event.competitions?.[0];
+      if (!comp) continue;
+
+      const competitors = comp.competitors || [];
+      if (competitors.length !== 2) continue;
+
+      const homeTeam = competitors.find(c => c.homeAway === 'home');
+      const awayTeam = competitors.find(c => c.homeAway === 'away');
+      if (!homeTeam || !awayTeam) continue;
+
+      const homeName = homeTeam.team?.displayName || '';
+      const awayName = awayTeam.team?.displayName || '';
+      const matchNo = findKnockoutMatchNo(event.date);
+
+      if (!matchNo || matchNo < 73 || matchNo > 88) continue;
+
+      const homeSlotId = parseEspnSlotName(homeName);
+      const awaySlotId = parseEspnSlotName(awayName);
+
+      if (homeSlotId && awaySlotId) {
+        r32[String(matchNo)] = { homeTeamId: homeSlotId, awayTeamId: awaySlotId };
+        updated++;
+      }
+    }
+
+    if (updated === 0) {
+      console.log('\n⏭️  ESPN bracket fixture: 无新对阵数据 — 跳过');
+      return;
+    }
+
+    // 读取现有 fixture，合并更新
+    let existing = { r32: {}, knockoutWinners: {} };
+    try {
+      existing = JSON.parse(readFileSync(FIXTURE_PATH, 'utf-8'));
+    } catch { /* 文件不存在或为空 */ }
+
+    const oldStr = JSON.stringify(existing.r32);
+    existing.r32 = { ...existing.r32, ...r32 };
+    const newStr = JSON.stringify(existing.r32);
+
+    if (oldStr === newStr) {
+      console.log('\n✅ ESPN bracket fixture: 无变化');
+      return;
+    }
+
+    writeFileSync(FIXTURE_PATH, JSON.stringify(existing, null, 2) + '\n', 'utf-8');
+    console.log(`\n💾 ESPN bracket fixture: 更新了 ${updated} 场 R32 对阵`);
+  } catch (err) {
+    console.log('\n⏭️  ESPN bracket fixture: ' + err.message + ' — 跳过');
+  }
+}
+
+/**
+ * 把 ESPN 的占位队名解析成我们的 slot ID
+ * "Group C Winner" → "slot-c1"
+ * "Group F 2nd Place" → "slot-f2"
+ * 真实队名（如 "Germany"）→ null（脚本无法确定 slot，由前端从排名计算）
+ */
+function parseEspnSlotName(name) {
+  const lower = name.toLowerCase();
+
+  // "group X winner" → X组第一
+  const winnerMatch = lower.match(/group ([a-l]) winner/);
+  if (winnerMatch) return `slot-${winnerMatch[1]}1`;
+
+  // "group X 2nd place" → X组第二
+  const secondMatch = lower.match(/group ([a-l]) 2nd place/);
+  if (secondMatch) return `slot-${secondMatch[1]}2`;
+
+  // 其他（真实队名、Third Place）→ 返回 null，由前端处理
+  return null;
+}
+
+/**
+ * 从 ESPN 淘汰赛事件中找到对应的 matchNo
+ * 按日期匹配，同一天有多场时按顺序分配
+ */
+const knockoutMatchCounter = new Map(); // date → next matchNo index
+let knockoutRowsCache = null;
+
+function getKnockoutRows() {
+  if (knockoutRowsCache) return knockoutRowsCache;
+  try {
+    const text = readFileSync(MATCHES_PATH, 'utf-8');
+    const rowRegex = /\[(\d+),\s*'([^']+)',\s*'([^']+)'\]/g;
+    const rows = [];
+    let match;
+    while ((match = rowRegex.exec(text)) !== null) {
+      const [, matchNo, stage, date] = match;
+      if (stage !== '小组赛' && stage !== '冠军') {
+        rows.push({ matchNo: Number(matchNo), date: date.slice(0, 10) });
+      }
+    }
+    knockoutRowsCache = rows;
+    return rows;
+  } catch {
+    return [];
+  }
+}
+
+function findKnockoutMatchNo(utcDate) {
+  const eventDate = utcDate?.slice(0, 10);
+  if (!eventDate) return null;
+
+  const rows = getKnockoutRows();
+  const dayMatches = rows
+    .filter(r => {
+      const d1 = new Date(r.date);
+      const d2 = new Date(eventDate);
+      const diff = Math.abs(d1 - d2) / (1000 * 60 * 60 * 24);
+      return diff <= 1;
+    })
+    .map(r => r.matchNo);
+
+  if (dayMatches.length === 0) return null;
+
+  const used = knockoutMatchCounter.get(eventDate) || 0;
+  if (used < dayMatches.length) {
+    knockoutMatchCounter.set(eventDate, used + 1);
+    return dayMatches[used];
+  }
+  return null;
 }
 
 /**

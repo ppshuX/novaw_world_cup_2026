@@ -1,5 +1,6 @@
 import { Info } from 'lucide-react';
 import type { BracketRound, BracketSlot } from '../types';
+import { getTeamById } from '../services/worldCupData';
 
 interface BracketTreeProps {
   rounds: BracketRound[];
@@ -14,11 +15,12 @@ export function BracketTree({ rounds }: BracketTreeProps) {
         <div className="mt-3 rounded-[8px] border border-summer-sky/40 bg-white/[0.9] p-3 text-xs font-medium leading-5 text-slate-600 shadow-sm backdrop-blur sm:mt-4 sm:p-4 sm:text-sm sm:leading-6">
           <p className="flex gap-1.5 sm:gap-2">
             <Info size={16} className="mt-0.5 shrink-0 text-summer-blue sm:size-[18px]" />
-            世界杯尚未开赛，当前晋级树仅展示赛制路径。具体晋级球队、胜者和冠军将在比赛进行后根据官方结果更新。
+            小组赛进行中，晋级球队将根据实时排名自动更新。淘汰赛胜者将在比赛结束后自动推进到下一轮。
           </p>
         </div>
       </div>
 
+      {/* 移动端布局 */}
       <div className="grid gap-3 lg:hidden sm:gap-4">
         {rounds.map((round) => (
           <section key={round.stage} className="rounded-[8px] border border-white/80 bg-white/[0.92] p-3 shadow-sm backdrop-blur sm:p-4">
@@ -32,6 +34,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
         ))}
       </div>
 
+      {/* 桌面端布局 */}
       <div className="hidden rounded-[8px] border border-white/80 bg-white/[0.88] p-4 shadow-card backdrop-blur sm:p-5 lg:block">
         <div className="mb-3 flex items-center justify-between gap-4 sm:mb-4">
           <div>
@@ -45,7 +48,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
             <div key={round.stage} className="bracket-column">
               <div className="bracket-round-title mb-2 rounded-[8px] bg-[#172033] px-2 py-1.5 text-center text-xs font-black text-white sm:mb-3 sm:px-3 sm:py-2 sm:text-sm">
                 <span>{round.stage}</span>
-                <span className="mt-0.5 block text-[10px] font-bold text-white/55 sm:mt-1 sm:text-[11px]">{round.matches.length} 个节点</span>
+                <span className="mt-0.5 block text-[10px] font-bold text-white/55 sm:mt-1 sm:text-[11px]">{round.matches.length} 场</span>
               </div>
               <div className={round.matches.length > 1 ? 'bracket-stack has-multiple' : 'bracket-stack'}>
                 {round.matches.map((match) => (
@@ -60,7 +63,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
                       )}
                     </div>
                     {round.stage === '冠军' ? (
-                      <BracketChampion />
+                      <BracketChampion winnerTeamId={match.winnerTeamId} />
                     ) : (
                       <div className="space-y-2">
                         <BracketTeam slot={match.homeSlot} />
@@ -88,7 +91,7 @@ function BracketMobileCard({ match }: { match: BracketRound['matches'][number] }
         )}
       </div>
       {match.round === '冠军' ? (
-        <BracketChampion />
+        <BracketChampion winnerTeamId={match.winnerTeamId} />
       ) : (
         <div className="space-y-2">
           <BracketTeam slot={match.homeSlot} />
@@ -100,7 +103,28 @@ function BracketMobileCard({ match }: { match: BracketRound['matches'][number] }
 }
 
 function BracketTeam({ slot }: { slot: BracketSlot }) {
+  const team = slot.teamId ? getTeamById(slot.teamId) : null;
   const label = slot.label.replace(/\s*\/\s*待确认/g, '');
+
+  if (team && slot.status === 'confirmed') {
+    return (
+      <div className="relative flex items-center gap-3 rounded-[8px] border border-summer-sky/30 bg-white px-3 py-2.5 shadow-sm">
+        {team.flagKey && (
+          <img
+            src={`/flags/${team.flagKey}.svg`}
+            alt={team.name}
+            className="h-5 w-7 rounded-sm object-cover shadow-sm sm:h-6 sm:w-8"
+          />
+        )}
+        <span className="min-w-0">
+          <span className="block text-sm font-black leading-5">{team.name}</span>
+          {team.shortName && team.shortName !== team.name && (
+            <span className="mt-0.5 block text-[11px] font-bold text-slate-400">{team.shortName}</span>
+          )}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex items-center gap-3 rounded-[8px] border border-dashed border-slate-300 bg-white px-3 py-3">
@@ -111,7 +135,24 @@ function BracketTeam({ slot }: { slot: BracketSlot }) {
   );
 }
 
-function BracketChampion() {
+function BracketChampion({ winnerTeamId }: { winnerTeamId: string | null }) {
+  const team = winnerTeamId ? getTeamById(winnerTeamId) : null;
+
+  if (team) {
+    return (
+      <div className="relative flex min-h-[68px] items-center justify-center gap-3 rounded-[8px] border-2 border-amber-300 bg-amber-50 px-3 py-3 text-center shadow-sm">
+        {team.flagKey && (
+          <img
+            src={`/flags/${team.flagKey}.svg`}
+            alt={team.name}
+            className="h-8 w-11 rounded-sm object-cover shadow"
+          />
+        )}
+        <span className="text-base font-black leading-5">{team.name}</span>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex min-h-[68px] items-center justify-center rounded-[8px] border border-dashed border-slate-300 bg-white px-3 py-3 text-center">
       <span className="text-base font-black leading-5">冠军</span>

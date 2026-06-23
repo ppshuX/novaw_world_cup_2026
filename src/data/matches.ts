@@ -199,48 +199,83 @@ const groupStageMatches: Match[] = groupStageRows.map(([matchNo, group, home, aw
   };
 });
 
-export const matches: Match[] = [
-  ...groupStageMatches,
-  {
-    id: 'm073',
-    matchNo: 73,
-    date: '2026-06-29',
-    time: '待确认',
-    stage: '32强',
-    homeTeamId: 'slot-a1',
-    awayTeamId: 'slot-b2',
-    homeScore: null,
-    awayScore: null,
-    matchStatus: 'scheduled',
-    city: '待确认',
-    stadium: '待确认',
-    note: '淘汰赛对阵占位，真实球队将在小组赛结束后更新。',
-    tag: '重点',
-    matchInfoStatus: 'pending',
-    resultStatus: 'pending',
-    advancementStatus: 'pending',
-    source: fifaScheduleSource,
-    lastUpdated: '2026-05-23',
-  },
-  {
-    id: 'm104',
-    matchNo: 104,
-    date: '2026-07-20',
-    time: '03:00',
-    stage: '决赛',
-    homeTeamId: 'tbd-home',
-    awayTeamId: 'tbd-away',
-    homeScore: null,
-    awayScore: null,
-    matchStatus: 'scheduled',
-    city: 'New York / New Jersey',
-    stadium: 'MetLife Stadium',
-    note: '决赛时间和场馆已确认；参赛球队和冠军待比赛产生。',
-    tag: '重点',
-    matchInfoStatus: 'official',
-    resultStatus: 'pending',
-    advancementStatus: 'pending',
-    source: fifaScheduleSource,
-    lastUpdated: '2026-05-23',
-  },
+// ─── 淘汰赛占位（球队在小组赛结束后自动填入） ──────────
+
+type KnockoutRow = readonly [
+  matchNo: number,
+  stage: '32强' | '16强' | '8强' | '半决赛' | '三四名决赛' | '决赛',
+  date: string,
 ];
+
+const knockoutRows: KnockoutRow[] = [
+  // 32 强
+  [73, '32强', '2026-06-29'],
+  [74, '32强', '2026-06-29'],
+  [75, '32强', '2026-06-29'],
+  [76, '32强', '2026-06-30'],
+  [77, '32强', '2026-06-30'],
+  [78, '32强', '2026-06-30'],
+  [79, '32强', '2026-07-01'],
+  [80, '32强', '2026-07-01'],
+  [81, '32强', '2026-07-01'],
+  [82, '32强', '2026-07-02'],
+  [83, '32强', '2026-07-02'],
+  [84, '32强', '2026-07-02'],
+  [85, '32强', '2026-07-03'],
+  [86, '32强', '2026-07-03'],
+  [87, '32强', '2026-07-03'],
+  [88, '32强', '2026-07-04'],
+  // 16 强
+  [89, '16强', '2026-07-05'],
+  [90, '16强', '2026-07-05'],
+  [91, '16强', '2026-07-06'],
+  [92, '16强', '2026-07-06'],
+  [93, '16强', '2026-07-07'],
+  [94, '16强', '2026-07-07'],
+  [95, '16强', '2026-07-08'],
+  [96, '16强', '2026-07-08'],
+  // 8 强
+  [97, '8强', '2026-07-11'],
+  [98, '8强', '2026-07-11'],
+  [99, '8强', '2026-07-12'],
+  [100, '8强', '2026-07-12'],
+  // 半决赛
+  [101, '半决赛', '2026-07-15'],
+  [102, '半决赛', '2026-07-16'],
+  // 三四名决赛
+  [103, '三四名决赛', '2026-07-19'],
+  // 决赛
+  [104, '决赛', '2026-07-20'],
+];
+
+const knockoutMatches: Match[] = knockoutRows.map(([matchNo, stage, date]) => ({
+  id: `m${String(matchNo).padStart(3, '0')}`,
+  matchNo,
+  date,
+  time: '待确认',
+  stage,
+  homeTeamId: 'tbd-home',
+  awayTeamId: 'tbd-away',
+  homeScore: null,
+  awayScore: null,
+  matchStatus: 'scheduled' as const,
+  city: '待确认',
+  stadium: '待确认',
+  note: '淘汰赛对阵占位，真实球队将在小组赛结束后自动更新。',
+  tag: '重点' as const,
+  matchInfoStatus: 'pending' as const,
+  resultStatus: 'pending' as const,
+  advancementStatus: 'pending' as const,
+  source: fifaScheduleSource,
+  lastUpdated: '2026-05-23',
+}));
+
+// 决赛特殊处理
+const finalMatch = knockoutMatches.find((m) => m.matchNo === 104)!;
+finalMatch.time = '03:00';
+finalMatch.city = 'New York / New Jersey';
+finalMatch.stadium = 'MetLife Stadium';
+finalMatch.note = '决赛时间和场馆已确认；参赛球队和冠军待比赛产生。';
+finalMatch.matchInfoStatus = 'official';
+
+export const matches: Match[] = [...groupStageMatches, ...knockoutMatches];

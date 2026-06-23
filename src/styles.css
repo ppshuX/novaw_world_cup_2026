@@ -59,8 +59,8 @@ select {
 
 .bracket-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 14px;
   align-items: start;
 }
 
@@ -81,10 +81,14 @@ select {
   gap: 76px;
 }
 
-.bracket-column:nth-child(3) .bracket-stack,
+.bracket-column:nth-child(3) .bracket-stack {
+  margin-top: 120px;
+}
+
 .bracket-column:nth-child(4) .bracket-stack,
 .bracket-column:nth-child(5) .bracket-stack,
-.bracket-column:nth-child(6) .bracket-stack {
+.bracket-column:nth-child(6) .bracket-stack,
+.bracket-column:nth-child(7) .bracket-stack {
   margin-top: 178px;
 }
 
