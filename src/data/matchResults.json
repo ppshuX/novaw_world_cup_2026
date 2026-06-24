@@ -266,11 +266,23 @@
   "45": {
     "homeScore": 0,
     "awayScore": 0,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "46": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   },
   "47": {
     "homeScore": 5,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "48": {
+    "homeScore": 1,
     "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
