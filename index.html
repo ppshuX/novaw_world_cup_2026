@@ -16,10 +16,27 @@
     <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
     <link rel="preload" href="/images/hero-world-cup-summer.webp" as="image" type="image/webp" />
     <title>World Cup 2026</title>
+    <style>
+      /* FastGPT 聊天按钮样式覆盖 */
+      #fastgpt-chatbot-button {
+        right: 8px !important;
+        opacity: 0.75 !important;
+      }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script
+      type="text/javascript"
+      src="https://cloud.fastgpt.cn/js/iframe.js"
+      id="chatbot-iframe"
+      data-bot-src="https://cloud.fastgpt.cn/chat/share?shareId=hnYEGWcDGxVEBPLbA7tTyk94"
+      data-default-open="false"
+      data-drag="false"
+      data-open-icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSIyNCIgZmlsbD0iIzExNzdkNiIvPjx0ZXh0IHg9IjI0IiB5PSIzMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiI+QUk8L3RleHQ+PC9zdmc+"
+      data-close-icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSIyNCIgZmlsbD0iIzExNzdkNiIvPjxwYXRoIGQ9Ik0xNiAxNmwxNiAxNk0zMiAxNkwxNiAzMiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="
+    ></script>
   </body>
 </html>

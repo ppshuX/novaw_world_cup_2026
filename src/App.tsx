@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
+import { ArrowDown, CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
@@ -13,7 +13,6 @@ import { TeamProfileModal } from './components/TeamProfileModal';
 const BracketTree = lazy(() => import('./components/BracketTree').then((m) => ({ default: m.BracketTree })));
 const SaveSitePage = lazy(() => import('./components/SaveSitePage').then((m) => ({ default: m.SaveSitePage })));
 const OfficialSources = lazy(() => import('./components/OfficialSources').then((m) => ({ default: m.OfficialSources })));
-const ScheduleAssistant = lazy(() => import('./components/ScheduleAssistant').then((m) => ({ default: m.ScheduleAssistant })));
 import { useFavoriteMatches } from './hooks/useFavoriteMatches';
 import { getBracketRounds, getMatches, getTeamById } from './services/worldCupData';
 import { findNextMatch, formatChineseDate, getTodayKey, getTomorrowKey, toMatchDate } from './utils/date';
@@ -216,7 +215,7 @@ function App() {
                   onClick={scrollToToday}
                   className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-[8px] bg-summer-blue px-3 py-1.5 text-xs font-black text-white shadow-sm sm:min-h-11 sm:px-4 sm:py-2 sm:text-sm"
                 >
-                  <CalendarDays size={14} className="sm:size-[17px]" />
+                  <ArrowDown size={14} className="sm:size-[17px]" />
                   今天
                 </button>
                 <button
@@ -249,7 +248,7 @@ function App() {
                   onClick={scrollToToday}
                   className="inline-flex shrink-0 items-center gap-1.5 rounded-[8px] bg-summer-blue px-3 py-2 text-xs font-black text-white shadow-sm transition hover:opacity-90 sm:text-sm"
                 >
-                  <CalendarDays size={14} className="sm:size-[16px]" />
+                  <ArrowDown size={14} className="sm:size-[16px]" />
                   今天
                 </button>
               </div>
@@ -342,9 +341,6 @@ function App() {
         onOpenTeam={setSelectedTeam}
       />
       <TeamProfileModal team={selectedTeam} onClose={() => setSelectedTeam(null)} />
-      <Suspense fallback={null}>
-        <ScheduleAssistant matches={sortedMatches} onOpenMatch={setSelectedMatch} onNavigate={setActiveView} />
-      </Suspense>
       <Footer />
     </div>
   );
