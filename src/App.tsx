@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
@@ -50,6 +50,11 @@ function App() {
 
   const todayKey = getTodayKey();
   const tomorrowKey = getTomorrowKey();
+
+  const todaySectionRef = useRef<HTMLDivElement>(null);
+  const scrollToToday = useCallback(() => {
+    todaySectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
   const nextImportantMatch = findNextMatch(sortedMatches, true);
 
   const dates = useMemo(() => Array.from(new Set(sortedMatches.map((match) => match.date))), [sortedMatches]);
@@ -90,6 +95,17 @@ function App() {
       );
     });
   }, [dateFilter, groupFilter, matchStatusFilter, searchKeyword, sortedMatches, stageFilter, statusTick]);
+
+  // 按日期分组（保持排序顺序）
+  const matchesByDate = useMemo(() => {
+    const groups = new Map<string, Match[]>();
+    for (const match of filteredMatches) {
+      const list = groups.get(match.date);
+      if (list) list.push(match);
+      else groups.set(match.date, [match]);
+    }
+    return Array.from(groups.entries());
+  }, [filteredMatches]);
 
   const todayMatches = sortedMatches.filter((match) => match.date === todayKey);
   const tomorrowMatches = sortedMatches.filter((match) => match.date === tomorrowKey);
@@ -197,6 +213,14 @@ function App() {
                 </button>
                 <button
                   type="button"
+                  onClick={scrollToToday}
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-[8px] bg-summer-blue px-3 py-1.5 text-xs font-black text-white shadow-sm sm:min-h-11 sm:px-4 sm:py-2 sm:text-sm"
+                >
+                  <CalendarDays size={14} className="sm:size-[17px]" />
+                  今天
+                </button>
+                <button
+                  type="button"
                   onClick={resetFilters}
                   className="min-h-10 rounded-[8px] bg-white px-3 py-1.5 text-xs font-black text-slate-600 shadow-sm sm:min-h-11 sm:px-4 sm:py-2 sm:text-sm"
                 >
@@ -204,7 +228,7 @@ function App() {
                 </button>
               </div>
 
-              <div className="hidden md:block">
+              <div className="hidden items-center gap-2 md:flex">
                 <FilterControls
                   dates={dates}
                   stages={stages}
@@ -220,20 +244,48 @@ function App() {
                   setMatchStatusFilter={setMatchStatusFilter}
                   setSearchKeyword={setSearchKeyword}
                 />
+                <button
+                  type="button"
+                  onClick={scrollToToday}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-[8px] bg-summer-blue px-3 py-2 text-xs font-black text-white shadow-sm transition hover:opacity-90 sm:text-sm"
+                >
+                  <CalendarDays size={14} className="sm:size-[16px]" />
+                  今天
+                </button>
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {filteredMatches.map((match) => (
-                <MatchCard
-                  key={match.id}
-                  match={match}
-                  onOpen={setSelectedMatch}
-                  onOpenTeam={setSelectedTeam}
-                  isFavorite={isFavorite(match.id)}
-                  onToggleFavorite={toggleFavorite}
-                />
-              ))}
+            <div className="space-y-5">
+              {matchesByDate.map(([date, dayMatches]) => {
+                const isToday = date === todayKey;
+                const dateLabel = formatChineseDate(date);
+                return (
+                  <div
+                    key={date}
+                    ref={isToday ? todaySectionRef : undefined}
+                    id={`date-${date}`}
+                  >
+                    <div className={`date-header sticky top-0 z-10 mb-3 flex items-center gap-2 rounded-[8px] px-3 py-2 sm:mb-4 sm:px-4 sm:py-2.5 ${isToday ? 'bg-summer-blue text-white shadow-md' : 'bg-white/90 text-slate-700 shadow-sm backdrop-blur'}`}>
+                      <CalendarDays size={16} className={isToday ? 'text-white' : 'text-summer-blue'} />
+                      <span className="text-sm font-black sm:text-base">{dateLabel}</span>
+                      <span className={`ml-auto text-xs font-bold ${isToday ? 'text-white/70' : 'text-slate-400'}`}>{dayMatches.length} 场</span>
+                      {isToday && <span className="rounded-[6px] bg-white/20 px-2 py-0.5 text-[11px] font-black">今日</span>}
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                      {dayMatches.map((match) => (
+                        <MatchCard
+                          key={match.id}
+                          match={match}
+                          onOpen={setSelectedMatch}
+                          onOpenTeam={setSelectedTeam}
+                          isFavorite={isFavorite(match.id)}
+                          onToggleFavorite={toggleFavorite}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             {filteredMatches.length === 0 && (
               <div className="mt-4">
