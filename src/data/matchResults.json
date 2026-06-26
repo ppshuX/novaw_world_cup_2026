@@ -325,14 +325,38 @@
   },
   "55": {
     "homeScore": 0,
-    "awayScore": 1,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "awayScore": 2,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   },
   "56": {
+    "homeScore": 2,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "57": {
     "homeScore": 1,
     "awayScore": 1,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "58": {
+    "homeScore": 1,
+    "awayScore": 3,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "59": {
+    "homeScore": 3,
+    "awayScore": 2,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "60": {
+    "homeScore": 0,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
