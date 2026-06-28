@@ -24,19 +24,19 @@
     "resultStatus": "official"
   },
   "5": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "6": {
     "homeScore": 2,
     "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
-  "6": {
-    "homeScore": 1,
-    "awayScore": 1,
-    "matchStatus": "finished",
-    "resultStatus": "official"
-  },
   "7": {
-    "homeScore": 0,
+    "homeScore": 1,
     "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
@@ -48,14 +48,14 @@
     "resultStatus": "official"
   },
   "9": {
-    "homeScore": 7,
-    "awayScore": 1,
+    "homeScore": 1,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "10": {
-    "homeScore": 1,
-    "awayScore": 0,
+    "homeScore": 7,
+    "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -72,26 +72,26 @@
     "resultStatus": "official"
   },
   "13": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "14": {
     "homeScore": 0,
     "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
-  "14": {
-    "homeScore": 1,
-    "awayScore": 1,
-    "matchStatus": "finished",
-    "resultStatus": "official"
-  },
   "15": {
-    "homeScore": 1,
-    "awayScore": 1,
+    "homeScore": 2,
+    "awayScore": 2,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "16": {
-    "homeScore": 2,
-    "awayScore": 2,
+    "homeScore": 1,
+    "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -120,14 +120,14 @@
     "resultStatus": "official"
   },
   "21": {
-    "homeScore": 4,
-    "awayScore": 2,
+    "homeScore": 1,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "22": {
-    "homeScore": 1,
-    "awayScore": 0,
+    "homeScore": 4,
+    "awayScore": 2,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -192,20 +192,20 @@
     "resultStatus": "official"
   },
   "33": {
-    "homeScore": 5,
-    "awayScore": 1,
-    "matchStatus": "finished",
-    "resultStatus": "official"
-  },
-  "34": {
     "homeScore": 2,
     "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
-  "35": {
+  "34": {
     "homeScore": 0,
     "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "35": {
+    "homeScore": 5,
+    "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -216,14 +216,14 @@
     "resultStatus": "official"
   },
   "37": {
-    "homeScore": 4,
-    "awayScore": 0,
+    "homeScore": 2,
+    "awayScore": 2,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "38": {
-    "homeScore": 2,
-    "awayScore": 2,
+    "homeScore": 4,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -241,13 +241,13 @@
   },
   "41": {
     "homeScore": 3,
-    "awayScore": 0,
+    "awayScore": 2,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "42": {
     "homeScore": 3,
-    "awayScore": 2,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -360,14 +360,14 @@
     "resultStatus": "official"
   },
   "61": {
-    "homeScore": 5,
-    "awayScore": 0,
+    "homeScore": 1,
+    "awayScore": 4,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "62": {
-    "homeScore": 1,
-    "awayScore": 4,
+    "homeScore": 5,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -396,14 +396,14 @@
     "resultStatus": "official"
   },
   "67": {
-    "homeScore": 2,
-    "awayScore": 1,
+    "homeScore": 0,
+    "awayScore": 2,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "68": {
-    "homeScore": 0,
-    "awayScore": 2,
+    "homeScore": 2,
+    "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
@@ -420,14 +420,14 @@
     "resultStatus": "official"
   },
   "71": {
-    "homeScore": 3,
-    "awayScore": 1,
+    "homeScore": 0,
+    "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
   },
   "72": {
-    "homeScore": 0,
-    "awayScore": 0,
+    "homeScore": 3,
+    "awayScore": 1,
     "matchStatus": "finished",
     "resultStatus": "official"
   }

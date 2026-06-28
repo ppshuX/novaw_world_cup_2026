@@ -296,7 +296,10 @@ function App() {
 
         {activeView === 'bracket' && (
           <Suspense fallback={<div className="mx-auto w-full max-w-7xl px-4 py-12 text-center text-sm text-slate-400">加载中…</div>}>
-            <BracketTree rounds={getBracketRounds()} />
+            <BracketTree rounds={getBracketRounds()} onOpenMatch={(id) => {
+              const m = getMatches().find((match) => match.id === id);
+              if (m) setSelectedMatch(m);
+            }} />
           </Suspense>
         )}
 

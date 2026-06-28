@@ -1,4 +1,5 @@
 import type { Match, MatchTag } from '../types';
+import bracketFixture from './bracketFixture.json';
 
 const fifaScheduleSource =
   'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures';
@@ -8,7 +9,7 @@ const commonOfficial = {
   resultStatus: 'pending' as const,
   advancementStatus: 'not_applicable' as const,
   source: fifaScheduleSource,
-  lastUpdated: '2026-06-22',
+  lastUpdated: '2026-06-28',
 };
 
 const teamIdByScheduleName: Record<string, string> = {
@@ -68,24 +69,24 @@ const groupStageRows: GroupStageRow[] = [
   [3, 'B', 'canada', 'bosnia & herzegovina', '2026-06-12T19:00:00Z', 'BMO Field, Toronto'],
   [4, 'D', 'usa', 'paraguay', '2026-06-13T01:00:00Z', 'SoFi Stadium, Los Angeles'],
   [8, 'B', 'qatar', 'switzerland', '2026-06-13T19:00:00Z', "Levi's Stadium, San Francisco Bay Area"],
-  [6, 'C', 'brazil', 'morocco', '2026-06-13T22:00:00Z', 'MetLife Stadium, New York/New Jersey'],
-  [7, 'C', 'haiti', 'scotland', '2026-06-14T01:00:00Z', 'Gillette Stadium, Boston'],
-  [5, 'D', 'australia', 'turkey', '2026-06-14T04:00:00Z', 'BC Place, Vancouver'],
-  [9, 'E', 'germany', 'curaçao', '2026-06-14T17:00:00Z', 'NRG Stadium, Houston'],
+  [7, 'C', 'brazil', 'morocco', '2026-06-13T22:00:00Z', 'MetLife Stadium, New York/New Jersey'],
+  [5, 'C', 'haiti', 'scotland', '2026-06-14T01:00:00Z', 'Gillette Stadium, Boston'],
+  [6, 'D', 'australia', 'turkey', '2026-06-14T04:00:00Z', 'BC Place, Vancouver'],
+  [10, 'E', 'germany', 'curaçao', '2026-06-14T17:00:00Z', 'NRG Stadium, Houston'],
   [11, 'F', 'netherlands', 'japan', '2026-06-14T20:00:00Z', 'AT&T Stadium, Dallas'],
-  [10, 'E', 'ivory coast', 'ecuador', '2026-06-14T23:00:00Z', 'Lincoln Financial Field, Philadelphia'],
+  [9, 'E', 'ivory coast', 'ecuador', '2026-06-14T23:00:00Z', 'Lincoln Financial Field, Philadelphia'],
   [12, 'F', 'sweden', 'tunisia', '2026-06-15T02:00:00Z', 'Estadio BBVA, Monterrey'],
-  [13, 'H', 'spain', 'cape verde', '2026-06-15T16:00:00Z', 'Mercedes-Benz Stadium, Atlanta'],
-  [15, 'G', 'belgium', 'egypt', '2026-06-15T19:00:00Z', 'Lumen Field, Seattle'],
-  [14, 'H', 'saudi arabia', 'uruguay', '2026-06-15T22:00:00Z', 'Hard Rock Stadium, Miami'],
-  [16, 'G', 'iran', 'new zealand', '2026-06-16T01:00:00Z', 'SoFi Stadium, Los Angeles'],
+  [14, 'H', 'spain', 'cape verde', '2026-06-15T16:00:00Z', 'Mercedes-Benz Stadium, Atlanta'],
+  [16, 'G', 'belgium', 'egypt', '2026-06-15T19:00:00Z', 'Lumen Field, Seattle'],
+  [13, 'H', 'saudi arabia', 'uruguay', '2026-06-15T22:00:00Z', 'Hard Rock Stadium, Miami'],
+  [15, 'G', 'iran', 'new zealand', '2026-06-16T01:00:00Z', 'SoFi Stadium, Los Angeles'],
   [17, 'I', 'france', 'senegal', '2026-06-16T19:00:00Z', 'MetLife Stadium, New York/New Jersey'],
   [18, 'I', 'iraq', 'norway', '2026-06-16T22:00:00Z', 'Gillette Stadium, Boston'],
   [19, 'J', 'argentina', 'algeria', '2026-06-17T01:00:00Z', 'GEHA Field at Arrowhead Stadium, Kansas City'],
   [20, 'J', 'austria', 'jordan', '2026-06-17T04:00:00Z', "Levi's Stadium, San Francisco Bay Area"],
   [23, 'K', 'portugal', 'dr congo', '2026-06-17T17:00:00Z', 'NRG Stadium, Houston'],
-  [21, 'L', 'england', 'croatia', '2026-06-17T20:00:00Z', 'AT&T Stadium, Dallas'],
-  [22, 'L', 'ghana', 'panama', '2026-06-17T23:00:00Z', 'BMO Field, Toronto'],
+  [22, 'L', 'england', 'croatia', '2026-06-17T20:00:00Z', 'AT&T Stadium, Dallas'],
+  [21, 'L', 'ghana', 'panama', '2026-06-17T23:00:00Z', 'BMO Field, Toronto'],
   [24, 'K', 'uzbekistan', 'colombia', '2026-06-18T02:00:00Z', 'Estadio Azteca, Mexico City'],
   [25, 'A', 'czech republic', 'south africa', '2026-06-18T16:00:00Z', 'Mercedes-Benz Stadium, Atlanta'],
   [26, 'B', 'switzerland', 'bosnia & herzegovina', '2026-06-18T19:00:00Z', 'SoFi Stadium, Los Angeles'],
@@ -95,17 +96,17 @@ const groupStageRows: GroupStageRow[] = [
   [30, 'C', 'scotland', 'morocco', '2026-06-19T22:00:00Z', 'Gillette Stadium, Boston'],
   [29, 'C', 'brazil', 'haiti', '2026-06-20T00:30:00Z', 'Lincoln Financial Field, Philadelphia'],
   [31, 'D', 'turkey', 'paraguay', '2026-06-20T03:00:00Z', "Levi's Stadium, San Francisco Bay Area"],
-  [33, 'F', 'netherlands', 'sweden', '2026-06-20T17:00:00Z', 'NRG Stadium, Houston'],
-  [34, 'E', 'germany', 'ivory coast', '2026-06-20T20:00:00Z', 'BMO Field, Toronto'],
-  [35, 'E', 'ecuador', 'curaçao', '2026-06-21T00:00:00Z', 'GEHA Field at Arrowhead Stadium, Kansas City'],
+  [35, 'F', 'netherlands', 'sweden', '2026-06-20T17:00:00Z', 'NRG Stadium, Houston'],
+  [33, 'E', 'germany', 'ivory coast', '2026-06-20T20:00:00Z', 'BMO Field, Toronto'],
+  [34, 'E', 'ecuador', 'curaçao', '2026-06-21T00:00:00Z', 'GEHA Field at Arrowhead Stadium, Kansas City'],
   [36, 'F', 'tunisia', 'japan', '2026-06-21T04:00:00Z', 'Estadio BBVA, Monterrey'],
-  [37, 'H', 'spain', 'saudi arabia', '2026-06-21T16:00:00Z', 'Mercedes-Benz Stadium, Atlanta'],
+  [38, 'H', 'spain', 'saudi arabia', '2026-06-21T16:00:00Z', 'Mercedes-Benz Stadium, Atlanta'],
   [39, 'G', 'belgium', 'iran', '2026-06-21T19:00:00Z', 'SoFi Stadium, Los Angeles'],
-  [38, 'H', 'uruguay', 'cape verde', '2026-06-21T22:00:00Z', 'Hard Rock Stadium, Miami'],
+  [37, 'H', 'uruguay', 'cape verde', '2026-06-21T22:00:00Z', 'Hard Rock Stadium, Miami'],
   [40, 'G', 'new zealand', 'egypt', '2026-06-22T01:00:00Z', 'BC Place, Vancouver'],
   [43, 'J', 'argentina', 'austria', '2026-06-22T17:00:00Z', 'AT&T Stadium, Dallas'],
-  [41, 'I', 'france', 'iraq', '2026-06-22T21:00:00Z', 'Lincoln Financial Field, Philadelphia'],
-  [42, 'I', 'norway', 'senegal', '2026-06-23T00:00:00Z', 'MetLife Stadium, New York/New Jersey'],
+  [42, 'I', 'france', 'iraq', '2026-06-22T21:00:00Z', 'Lincoln Financial Field, Philadelphia'],
+  [41, 'I', 'norway', 'senegal', '2026-06-23T00:00:00Z', 'MetLife Stadium, New York/New Jersey'],
   [44, 'J', 'jordan', 'algeria', '2026-06-23T03:00:00Z', "Levi's Stadium, San Francisco Bay Area"],
   [47, 'K', 'portugal', 'uzbekistan', '2026-06-23T17:00:00Z', 'NRG Stadium, Houston'],
   [45, 'L', 'england', 'ghana', '2026-06-23T20:00:00Z', 'Gillette Stadium, Boston'],
@@ -123,16 +124,16 @@ const groupStageRows: GroupStageRow[] = [
   [58, 'F', 'tunisia', 'netherlands', '2026-06-25T23:00:00Z', 'GEHA Field at Arrowhead Stadium, Kansas City'],
   [59, 'D', 'turkey', 'usa', '2026-06-26T02:00:00Z', 'SoFi Stadium, Los Angeles'],
   [60, 'D', 'paraguay', 'australia', '2026-06-26T02:00:00Z', "Levi's Stadium, San Francisco Bay Area"],
-  [62, 'I', 'norway', 'france', '2026-06-26T19:00:00Z', 'Gillette Stadium, Boston'],
-  [61, 'I', 'senegal', 'iraq', '2026-06-26T19:00:00Z', 'BMO Field, Toronto'],
+  [61, 'I', 'norway', 'france', '2026-06-26T19:00:00Z', 'Gillette Stadium, Boston'],
+  [62, 'I', 'senegal', 'iraq', '2026-06-26T19:00:00Z', 'BMO Field, Toronto'],
   [65, 'H', 'cape verde', 'saudi arabia', '2026-06-27T00:00:00Z', 'NRG Stadium, Houston'],
   [66, 'H', 'uruguay', 'spain', '2026-06-27T00:00:00Z', 'Estadio Akron, Guadalajara'],
   [63, 'G', 'egypt', 'iran', '2026-06-27T03:00:00Z', 'Lumen Field, Seattle'],
   [64, 'G', 'new zealand', 'belgium', '2026-06-27T03:00:00Z', 'BC Place, Vancouver'],
-  [68, 'L', 'panama', 'england', '2026-06-27T21:00:00Z', 'MetLife Stadium, New York/New Jersey'],
-  [67, 'L', 'croatia', 'ghana', '2026-06-27T21:00:00Z', 'Lincoln Financial Field, Philadelphia'],
-  [72, 'K', 'colombia', 'portugal', '2026-06-27T23:30:00Z', 'Hard Rock Stadium, Miami'],
-  [71, 'K', 'dr congo', 'uzbekistan', '2026-06-27T23:30:00Z', 'Mercedes-Benz Stadium, Atlanta'],
+  [67, 'L', 'panama', 'england', '2026-06-27T21:00:00Z', 'MetLife Stadium, New York/New Jersey'],
+  [68, 'L', 'croatia', 'ghana', '2026-06-27T21:00:00Z', 'Lincoln Financial Field, Philadelphia'],
+  [71, 'K', 'colombia', 'portugal', '2026-06-27T23:30:00Z', 'Hard Rock Stadium, Miami'],
+  [72, 'K', 'dr congo', 'uzbekistan', '2026-06-27T23:30:00Z', 'Mercedes-Benz Stadium, Atlanta'],
   [69, 'J', 'algeria', 'austria', '2026-06-28T02:00:00Z', 'GEHA Field at Arrowhead Stadium, Kansas City'],
   [70, 'J', 'jordan', 'argentina', '2026-06-28T02:00:00Z', 'AT&T Stadium, Dallas'],
 ];
@@ -207,6 +208,14 @@ type KnockoutRow = readonly [
   date: string,
 ];
 
+type KnockoutFixtureData = {
+  homeTeamId: string;
+  awayTeamId: string;
+  kickoffUtc?: string;
+  city?: string;
+  stadium?: string;
+};
+
 const knockoutRows: KnockoutRow[] = [
   // 32 强
   [73, '32强', '2026-06-29'],
@@ -248,27 +257,40 @@ const knockoutRows: KnockoutRow[] = [
   [104, '决赛', '2026-07-20'],
 ];
 
-const knockoutMatches: Match[] = knockoutRows.map(([matchNo, stage, date]) => ({
-  id: `m${String(matchNo).padStart(3, '0')}`,
-  matchNo,
-  date,
-  time: '待确认',
-  stage,
-  homeTeamId: 'tbd-home',
-  awayTeamId: 'tbd-away',
-  homeScore: null,
-  awayScore: null,
-  matchStatus: 'scheduled' as const,
-  city: '待确认',
-  stadium: '待确认',
-  note: '淘汰赛对阵占位，真实球队将在小组赛结束后自动更新。',
-  tag: '重点' as const,
-  matchInfoStatus: 'pending' as const,
-  resultStatus: 'pending' as const,
-  advancementStatus: 'pending' as const,
-  source: fifaScheduleSource,
-  lastUpdated: '2026-05-23',
-}));
+const knockoutFixtureByMatchNo = {
+  ...bracketFixture.r32,
+  ...bracketFixture.knockoutWinners,
+} as Record<string, KnockoutFixtureData>;
+
+const knockoutMatches: Match[] = knockoutRows.map(([matchNo, stage, fallbackDate]) => {
+  const fixture = knockoutFixtureByMatchNo[String(matchNo)];
+  const kickoff = fixture?.kickoffUtc ? toBeijingDateTime(fixture.kickoffUtc) : null;
+  const hasConfirmedTeams = Boolean(fixture?.homeTeamId && fixture?.awayTeamId);
+
+  return {
+    id: `m${String(matchNo).padStart(3, '0')}`,
+    matchNo,
+    date: kickoff?.date ?? fallbackDate,
+    time: kickoff?.time ?? '待确认',
+    stage,
+    homeTeamId: fixture?.homeTeamId ?? 'tbd-home',
+    awayTeamId: fixture?.awayTeamId ?? 'tbd-away',
+    homeScore: null,
+    awayScore: null,
+    matchStatus: 'scheduled' as const,
+    city: fixture?.city ?? '待确认',
+    stadium: fixture?.stadium ?? '待确认',
+    note: hasConfirmedTeams
+      ? '对阵、时间和场馆已按 FIFA 官方赛程确认。'
+      : '淘汰赛路径占位，球队将在 FIFA 官方确认后更新。',
+    tag: '重点' as const,
+    matchInfoStatus: hasConfirmedTeams ? 'official' as const : 'pending' as const,
+    resultStatus: 'pending' as const,
+    advancementStatus: hasConfirmedTeams ? 'confirmed' as const : 'pending' as const,
+    source: fifaScheduleSource,
+    lastUpdated: hasConfirmedTeams ? '2026-06-28' : '2026-05-23',
+  };
+});
 
 // 决赛特殊处理
 const finalMatch = knockoutMatches.find((m) => m.matchNo === 104)!;

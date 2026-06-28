@@ -14,14 +14,14 @@ const report = [
   '## Checklist',
   '- [x] Workflow进入脚本执行阶段（已通过 gate 或手动触发）。',
   '- [x] Daily sync script executed.',
-  '- [ ] FIFA official result verification (manual/agent task).',
-  '- [ ] Update `src/data/matches.ts` if official results changed.',
-  '- [ ] Update `src/data/bracket.ts` if knockout advancement changed.',
+  '- [x] FIFA official API data fetched and audited.',
+  '- [x] Score and confirmed knockout fixture files synchronized.',
+  '- [x] Local data consistency audit executed before build.',
   '- [ ] Commit and push (performed by workflow only when data changes are detected).',
   '',
   '## Notes',
   '- Workflow runs build and conditionally commits data updates when changes are detected.',
-  '- Manual verification of FIFA official source is still required for data correctness.',
+  '- The workflow stops before commit when the official-data audit reports a mismatch.',
   ''
 ].join('\n');
 

@@ -1,6 +1,121 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "r32": {},
-  "knockoutWinners": {}
+  "lastUpdated": "2026-06-28",
+  "r32": {
+    "73": {
+      "homeTeamId": "south-africa",
+      "awayTeamId": "canada",
+      "kickoffUtc": "2026-06-28T19:00:00Z",
+      "city": "Los Angeles",
+      "stadium": "Los Angeles Stadium"
+    },
+    "74": {
+      "homeTeamId": "germany",
+      "awayTeamId": "paraguay",
+      "kickoffUtc": "2026-06-29T20:30:00Z",
+      "city": "Boston",
+      "stadium": "Boston Stadium"
+    },
+    "75": {
+      "homeTeamId": "netherlands",
+      "awayTeamId": "morocco",
+      "kickoffUtc": "2026-06-30T01:00:00Z",
+      "city": "Monterrey",
+      "stadium": "Monterrey Stadium"
+    },
+    "76": {
+      "homeTeamId": "brazil",
+      "awayTeamId": "japan",
+      "kickoffUtc": "2026-06-29T17:00:00Z",
+      "city": "Houston",
+      "stadium": "Houston Stadium"
+    },
+    "77": {
+      "homeTeamId": "france",
+      "awayTeamId": "sweden",
+      "kickoffUtc": "2026-06-30T21:00:00Z",
+      "city": "New Jersey",
+      "stadium": "New York/New Jersey Stadium"
+    },
+    "78": {
+      "homeTeamId": "ivory-coast",
+      "awayTeamId": "norway",
+      "kickoffUtc": "2026-06-30T17:00:00Z",
+      "city": "Dallas",
+      "stadium": "Dallas Stadium"
+    },
+    "79": {
+      "homeTeamId": "mexico",
+      "awayTeamId": "ecuador",
+      "kickoffUtc": "2026-07-01T01:00:00Z",
+      "city": "Mexico City",
+      "stadium": "Mexico City Stadium"
+    },
+    "80": {
+      "homeTeamId": "england",
+      "awayTeamId": "dr-congo",
+      "kickoffUtc": "2026-07-01T16:00:00Z",
+      "city": "Atlanta",
+      "stadium": "Atlanta Stadium"
+    },
+    "81": {
+      "homeTeamId": "usa",
+      "awayTeamId": "bosnia",
+      "kickoffUtc": "2026-07-02T00:00:00Z",
+      "city": "San Francisco Bay Area",
+      "stadium": "San Francisco Bay Area Stadium"
+    },
+    "82": {
+      "homeTeamId": "belgium",
+      "awayTeamId": "senegal",
+      "kickoffUtc": "2026-07-01T20:00:00Z",
+      "city": "Seattle",
+      "stadium": "Seattle Stadium"
+    },
+    "83": {
+      "homeTeamId": "portugal",
+      "awayTeamId": "croatia",
+      "kickoffUtc": "2026-07-02T23:00:00Z",
+      "city": "Toronto",
+      "stadium": "Toronto Stadium"
+    },
+    "84": {
+      "homeTeamId": "spain",
+      "awayTeamId": "austria",
+      "kickoffUtc": "2026-07-02T19:00:00Z",
+      "city": "Los Angeles",
+      "stadium": "Los Angeles Stadium"
+    },
+    "85": {
+      "homeTeamId": "switzerland",
+      "awayTeamId": "algeria",
+      "kickoffUtc": "2026-07-03T03:00:00Z",
+      "city": "Vancouver",
+      "stadium": "BC Place Vancouver"
+    },
+    "86": {
+      "homeTeamId": "argentina",
+      "awayTeamId": "cape-verde",
+      "kickoffUtc": "2026-07-03T22:00:00Z",
+      "city": "Miami",
+      "stadium": "Miami Stadium"
+    },
+    "87": {
+      "homeTeamId": "colombia",
+      "awayTeamId": "ghana",
+      "kickoffUtc": "2026-07-04T01:30:00Z",
+      "city": "Kansas City",
+      "stadium": "Kansas City Stadium"
+    },
+    "88": {
+      "homeTeamId": "australia",
+      "awayTeamId": "egypt",
+      "kickoffUtc": "2026-07-03T18:00:00Z",
+      "city": "Dallas",
+      "stadium": "Dallas Stadium"
+    }
+  },
+  "knockoutWinners": {},
+  "_api": "https://api.fifa.com/api/v3/calendar/matches"
 }

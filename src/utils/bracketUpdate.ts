@@ -130,56 +130,11 @@ export function isGroupStageComplete(
  */
 export function buildR32Fill(
   fixture: BracketFixture,
-  allStandings: Map<string, TeamStanding[]>,
-  groupStageDone: boolean,
 ): Map<number, { homeTeamId: string; awayTeamId: string }> {
   const result = new Map<number, { homeTeamId: string; awayTeamId: string }>();
 
-  // 先从 fixture 填充
   for (const [matchNoStr, matchup] of Object.entries(fixture.r32)) {
     result.set(Number(matchNoStr), matchup);
-  }
-
-  // fixture 未覆盖的场次 + 小组赛已结束 → 用排名推算
-  if (groupStageDone) {
-    const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
-
-    // 收集所有小组的第1名和第2名
-    const firsts: string[] = [];
-    const seconds: string[] = [];
-    for (const group of groups) {
-      const standings = allStandings.get(group);
-      if (standings && standings[0]) firsts.push(standings[0].teamId);
-      if (standings && standings[1]) seconds.push(standings[1].teamId);
-    }
-
-    // 简化 R32 配对：1st[i] vs 2nd[i]（交叉配对）
-    // match 73-80: 1st vs 2nd
-    // match 81-88: 1st vs 2nd（剩余）
-    const pairings: [number, string, string][] = [
-      [73, firsts[0], seconds[1]],   // 1A vs 2B
-      [74, firsts[1], seconds[0]],   // 1B vs 2A
-      [75, firsts[2], seconds[3]],   // 1C vs 2D
-      [76, firsts[3], seconds[2]],   // 1D vs 2C
-      [77, firsts[4], seconds[5]],   // 1E vs 2F
-      [78, firsts[5], seconds[4]],   // 1F vs 2E
-      [79, firsts[6], seconds[7]],   // 1G vs 2H
-      [80, firsts[7], seconds[6]],   // 1H vs 2G
-      [81, firsts[8], seconds[9]],   // 1I vs 2J
-      [82, firsts[9], seconds[8]],   // 1J vs 2I
-      [83, firsts[10], seconds[11]], // 1K vs 2L
-      [84, firsts[11], seconds[10]], // 1L vs 2K
-      [85, firsts[0], seconds[2]],   // 1A vs 2C (补充配对)
-      [86, firsts[1], seconds[3]],   // 1B vs 2D
-      [87, firsts[2], seconds[0]],   // 1C vs 2A
-      [88, firsts[3], seconds[1]],   // 1D vs 2B
-    ];
-
-    for (const [matchNo, homeId, awayId] of pairings) {
-      if (!result.has(matchNo) && homeId && awayId) {
-        result.set(matchNo, { homeTeamId: homeId, awayTeamId: awayId });
-      }
-    }
   }
 
   return result;
@@ -231,43 +186,11 @@ export function getMatchLoser(
  */
 export function advanceKnockoutWinners(
   fixture: BracketFixture,
-  matches: Match[],
-  results: Record<string, { homeScore: number | null; awayScore: number | null; matchStatus: string }>,
 ): Map<number, { homeTeamId: string; awayTeamId: string }> {
   const advancements = new Map<number, { homeTeamId: string; awayTeamId: string }>();
 
-  // 先从 fixture 填充
   for (const [matchNoStr, matchup] of Object.entries(fixture.knockoutWinners)) {
     advancements.set(Number(matchNoStr), matchup);
-  }
-
-  // 定义对阵路径: targetMatchNo → [sourceMatchNos]
-  const bracketPath: Record<number, [number, number]> = {
-    89: [73, 74], 90: [75, 76], 91: [77, 78], 92: [79, 80],
-    93: [81, 82], 94: [83, 84], 95: [85, 86], 96: [87, 88],
-    97: [89, 90], 98: [91, 92], 99: [93, 94], 100: [95, 96],
-    101: [97, 98], 102: [99, 100],
-    104: [101, 102],
-  };
-
-  for (const [targetStr, [homeSource, awaySource]] of Object.entries(bracketPath)) {
-    const target = Number(targetStr);
-    if (advancements.has(target)) continue; // fixture 已有
-
-    const homeWinner = getMatchWinner(homeSource, results, matches);
-    const awayWinner = getMatchWinner(awaySource, results, matches);
-    if (homeWinner && awayWinner) {
-      advancements.set(target, { homeTeamId: homeWinner, awayTeamId: awayWinner });
-    }
-  }
-
-  // 三四名决赛: 半决赛负者
-  if (!advancements.has(103)) {
-    const sf1Loser = getMatchLoser(101, results, matches);
-    const sf2Loser = getMatchLoser(102, results, matches);
-    if (sf1Loser && sf2Loser) {
-      advancements.set(103, { homeTeamId: sf1Loser, awayTeamId: sf2Loser });
-    }
   }
 
   return advancements;

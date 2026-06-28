@@ -1,12 +1,13 @@
 import { Info } from 'lucide-react';
-import type { BracketRound, BracketSlot } from '../types';
+import type { BracketRound, BracketMatch, BracketSlot } from '../types';
 import { getTeamById } from '../services/worldCupData';
 
 interface BracketTreeProps {
   rounds: BracketRound[];
+  onOpenMatch?: (matchId: string) => void;
 }
 
-export function BracketTree({ rounds }: BracketTreeProps) {
+export function BracketTree({ rounds, onOpenMatch }: BracketTreeProps) {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-5">
@@ -15,7 +16,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
         <div className="mt-3 rounded-[8px] border border-summer-sky/40 bg-white/[0.9] p-3 text-xs font-medium leading-5 text-slate-600 shadow-sm backdrop-blur sm:mt-4 sm:p-4 sm:text-sm sm:leading-6">
           <p className="flex gap-1.5 sm:gap-2">
             <Info size={16} className="mt-0.5 shrink-0 text-summer-blue sm:size-[18px]" />
-            小组赛进行中，晋级球队将根据实时排名自动更新。淘汰赛胜者将在比赛结束后自动推进到下一轮。
+          32强对阵已按 FIFA 官方赛程更新；后续轮次将在官方确认后填入。
           </p>
         </div>
       </div>
@@ -27,7 +28,7 @@ export function BracketTree({ rounds }: BracketTreeProps) {
             <h3 className="mb-2 text-base font-black sm:mb-3 sm:text-lg">{round.stage}</h3>
             <div className="space-y-3">
               {round.matches.map((match) => (
-                <BracketMobileCard key={match.id} match={match} />
+                <BracketMobileCard key={match.id} match={match} onOpenMatch={onOpenMatch} />
               ))}
             </div>
           </section>
@@ -52,7 +53,14 @@ export function BracketTree({ rounds }: BracketTreeProps) {
               </div>
               <div className={round.matches.length > 1 ? 'bracket-stack has-multiple' : 'bracket-stack'}>
                 {round.matches.map((match) => (
-                  <div key={match.id} className="bracket-match">
+                  <div
+                    key={match.id}
+                    className={`bracket-match ${match.matchId && onOpenMatch ? 'cursor-pointer transition hover:shadow-md' : ''}`}
+                    onClick={match.matchId && onOpenMatch ? () => onOpenMatch(match.matchId!) : undefined}
+                    role={match.matchId && onOpenMatch ? 'button' : undefined}
+                    tabIndex={match.matchId && onOpenMatch ? 0 : undefined}
+                    onKeyDown={match.matchId && onOpenMatch ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenMatch(match.matchId!); } } : undefined}
+                  >
                     <span className="bracket-node-dot" aria-hidden="true" />
                     <div className="mb-2 flex items-center justify-between gap-2 px-1">
                       <span className="text-xs font-black text-slate-500">{match.title}</span>
@@ -81,9 +89,16 @@ export function BracketTree({ rounds }: BracketTreeProps) {
   );
 }
 
-function BracketMobileCard({ match }: { match: BracketRound['matches'][number] }) {
+function BracketMobileCard({ match, onOpenMatch }: { match: BracketRound['matches'][number]; onOpenMatch?: (matchId: string) => void }) {
+  const clickable = match.matchId && onOpenMatch;
   return (
-    <article className="rounded-[8px] bg-slate-50 p-3">
+    <article
+      className={`rounded-[8px] bg-slate-50 p-3 ${clickable ? 'cursor-pointer transition hover:bg-slate-100' : ''}`}
+      onClick={clickable ? () => onOpenMatch(match.matchId!) : undefined}
+      role={clickable ? 'button' : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      onKeyDown={clickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenMatch(match.matchId!); } } : undefined}
+    >
       <div className="mb-2 flex items-center justify-between gap-3">
         <h4 className="font-black">{match.title}</h4>
         {match.date && match.date !== '待确认' && (

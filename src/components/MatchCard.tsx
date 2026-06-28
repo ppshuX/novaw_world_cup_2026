@@ -1,6 +1,6 @@
 import { Clock, Database, MapPin, Star, Trophy } from 'lucide-react';
 import type { DataStatus, Match, Team } from '../types';
-import { getTeamById } from '../services/worldCupData';
+import { getTeamById, resolveMatchTeams } from '../services/worldCupData';
 import { formatChineseDate } from '../utils/date';
 import { getResolvedMatchStatusLabel, getResultLabel, getStatusColorClasses } from '../utils/matchStatus';
 import { TeamMark } from './TeamIdentity';
@@ -15,8 +15,9 @@ interface MatchCardProps {
 }
 
 export function MatchCard({ match, compact = false, onOpen, isFavorite = false, onToggleFavorite, onOpenTeam }: MatchCardProps) {
-  const homeTeam = getTeamById(match.homeTeamId);
-  const awayTeam = getTeamById(match.awayTeamId);
+  const resolved = resolveMatchTeams(match.id);
+  const homeTeam = getTeamById(resolved?.homeTeamId || match.homeTeamId);
+  const awayTeam = getTeamById(resolved?.awayTeamId || match.awayTeamId);
   const score = getResultLabel(match);
   const statusColors = getStatusColorClasses(match);
 

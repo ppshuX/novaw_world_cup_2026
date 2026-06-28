@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck } from 'lucide-react';
 import type { Match, Team } from '../types';
-import { getTeamById } from '../services/worldCupData';
+import { getTeamById, resolveMatchTeams } from '../services/worldCupData';
 import { formatChineseDate, getCountdownParts } from '../utils/date';
 import { getResolvedMatchStatusLabel, getStatusColorClasses } from '../utils/matchStatus';
 import { TeamMark } from './TeamIdentity';
@@ -24,8 +24,11 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
     return () => window.clearInterval(timer);
   }, [nextMatch]);
 
-  const homeTeam = nextMatch ? getTeamById(nextMatch.homeTeamId) : undefined;
-  const awayTeam = nextMatch ? getTeamById(nextMatch.awayTeamId) : undefined;
+  const resolved = nextMatch?.id ? resolveMatchTeams(nextMatch.id) : null;
+  const homeTeamId = resolved?.homeTeamId || nextMatch?.homeTeamId;
+  const awayTeamId = resolved?.awayTeamId || nextMatch?.awayTeamId;
+  const homeTeam = homeTeamId ? getTeamById(homeTeamId) : undefined;
+  const awayTeam = awayTeamId ? getTeamById(awayTeamId) : undefined;
 
   return (
     <header className="hero-scene relative overflow-hidden px-4 pb-12 pt-4 text-white sm:px-6 sm:pb-16 sm:pt-6 lg:px-8 lg:pb-16">
@@ -164,7 +167,7 @@ function TeamName({
     >
       {!alignRight && <TeamMark team={team} size="sm" />}
       <span className="min-w-0">
-        <span className="block truncate text-base font-black sm:text-xl">{name}</span>
+        <span className="block truncate text-base font-black text-white sm:text-xl">{name}</span>
         <span className="mt-0.5 block text-[11px] font-bold text-white/[0.62] sm:mt-1 sm:text-xs">{shortName}</span>
       </span>
       {alignRight && <TeamMark team={team} size="sm" />}

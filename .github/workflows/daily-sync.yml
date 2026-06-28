@@ -41,9 +41,13 @@ jobs:
         if: steps.gate.outputs.run_sync == 'true'
         run: npm ci
 
-      - name: Fetch live scores from TheSportsDB
+      - name: Fetch official FIFA scores and fixtures
         if: steps.gate.outputs.run_sync == 'true'
         run: node scripts/update-scores.mjs
+
+      - name: Audit FIFA data consistency
+        if: steps.gate.outputs.run_sync == 'true'
+        run: npm run audit:data
 
       - name: Generate daily sync report (check-only)
         if: steps.gate.outputs.run_sync == 'true'
@@ -58,7 +62,7 @@ jobs:
         if: steps.gate.outputs.run_sync == 'true'
         id: changes
         run: |
-          if git diff --quiet -- src/data/matches.ts src/data/bracket.ts src/data/matchResults.json; then
+          if git diff --quiet -- src/data/matches.ts src/data/bracket.ts src/data/bracketFixture.json src/data/matchResults.json; then
             echo "has_data_changes=false" >> "$GITHUB_OUTPUT"
             echo "No data changes detected."
           else
@@ -72,6 +76,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           sync_time=$(TZ=Asia/Shanghai date '+%F %H:%M')
-          git add src/data/matches.ts src/data/bracket.ts src/data/matchResults.json reports/
+          git add src/data/matches.ts src/data/bracket.ts src/data/bracketFixture.json src/data/matchResults.json reports/
           git commit -m "chore(data): sync fifa results ${sync_time}"
           git push

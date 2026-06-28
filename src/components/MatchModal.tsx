@@ -1,6 +1,6 @@
 import { ExternalLink, Star, X } from 'lucide-react';
 import type { Match, Team } from '../types';
-import { getTeamById } from '../services/worldCupData';
+import { getTeamById, resolveMatchTeams } from '../services/worldCupData';
 import { formatChineseDate } from '../utils/date';
 import {
   getAdvancementStatusLabel,
@@ -24,8 +24,9 @@ interface MatchModalProps {
 export function MatchModal({ match, onClose, isFavorite = false, onToggleFavorite, onOpenTeam }: MatchModalProps) {
   if (!match) return null;
 
-  const homeTeam = getTeamById(match.homeTeamId);
-  const awayTeam = getTeamById(match.awayTeamId);
+  const resolved = resolveMatchTeams(match.id);
+  const homeTeam = getTeamById(resolved?.homeTeamId || match.homeTeamId);
+  const awayTeam = getTeamById(resolved?.awayTeamId || match.awayTeamId);
   const score = getResultLabel(match);
   const statusColors = getStatusColorClasses(match);
 
@@ -136,7 +137,7 @@ function ModalTeam({
       ].join(' ')}
     >
       <TeamMark team={team} size="lg" />
-      <span className="mt-1.5 block max-w-full truncate text-lg font-black sm:mt-2 sm:text-2xl">{name}</span>
+      <span className="mt-1.5 block max-w-full truncate text-lg font-black text-white sm:mt-2 sm:text-2xl">{name}</span>
       <span className="mt-0.5 block text-[11px] font-bold text-white/[0.62] sm:mt-1 sm:text-xs">{shortName}</span>
     </button>
   );

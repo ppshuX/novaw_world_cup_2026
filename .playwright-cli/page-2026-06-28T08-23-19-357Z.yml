@@ -1,0 +1,475 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e8]:
+        - navigation [ref=e9]:
+          - generic [ref=e10]:
+            - img [ref=e12]
+            - generic [ref=e14]: 世界杯赛程·2026
+          - generic [ref=e15]: 北京时间 · 中文赛程
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]:
+              - img [ref=e19]
+              - text: 为中文用户整理的世界杯赛程查看网站
+            - heading "2026 世界杯赛程日历" [level=1] [ref=e22]
+            - generic [ref=e23]:
+              - button "全部赛程" [ref=e24] [cursor=pointer]:
+                - text: 全部赛程
+                - img [ref=e25]
+              - button "晋级树" [ref=e29] [cursor=pointer]:
+                - text: 晋级树
+                - img [ref=e30]
+              - button "官方来源" [ref=e34] [cursor=pointer]:
+                - text: 官方来源
+                - img [ref=e35]
+          - complementary [ref=e39]:
+            - paragraph [ref=e40]: 下一场重点比赛
+            - button "南非国旗 南非 RSA 未开始 加拿大 CAN 加拿大国旗" [ref=e41] [cursor=pointer]:
+              - generic [ref=e42]:
+                - button "南非国旗 南非 RSA" [ref=e43]:
+                  - img "南非国旗" [ref=e44]
+                  - generic [ref=e45]:
+                    - generic [ref=e46]: 南非
+                    - generic [ref=e47]: RSA
+                - generic [ref=e48]: 未开始
+                - button "加拿大 CAN 加拿大国旗" [ref=e49]:
+                  - generic [ref=e50]:
+                    - generic [ref=e51]: 加拿大
+                    - generic [ref=e52]: CAN
+                  - img "加拿大国旗" [ref=e53]
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - generic [ref=e56]: "0"
+                - text: 天
+              - generic [ref=e57]:
+                - generic [ref=e58]: "10"
+                - text: 小时
+              - generic [ref=e59]:
+                - generic [ref=e60]: "36"
+                - text: 分钟
+            - generic [ref=e61]:
+              - paragraph [ref=e62]:
+                - img [ref=e63]
+                - text: 北京时间 6月29日周一 03:00
+              - paragraph [ref=e66]:
+                - img [ref=e67]
+                - text: Los Angeles · Los Angeles Stadium
+    - main [ref=e70]:
+      - generic [ref=e72]:
+        - button "首页" [ref=e73] [cursor=pointer]
+        - button "赛程" [ref=e74] [cursor=pointer]
+        - button "晋级树" [active] [ref=e75] [cursor=pointer]
+        - button "来源" [ref=e76] [cursor=pointer]
+        - button "保存本站" [ref=e77] [cursor=pointer]
+      - generic [ref=e404]:
+        - generic [ref=e405]:
+          - paragraph [ref=e406]: Bracket Path
+          - heading "晋级路径" [level=2] [ref=e407]
+          - paragraph [ref=e409]:
+            - img [ref=e410]
+            - text: 小组赛进行中，晋级球队将根据实时排名自动更新。淘汰赛胜者将在比赛结束后自动推进到下一轮。
+        - generic [ref=e412]:
+          - generic [ref=e414]:
+            - paragraph [ref=e415]: Knockout Tree
+            - heading "淘汰赛晋级树" [level=3] [ref=e416]
+          - generic [ref=e417]:
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - text: 32强
+                - generic [ref=e420]: 16 场
+              - generic [ref=e421]:
+                - button "第73场 2026-06-29 南非 南非 RSA 加拿大 加拿大 CAN" [ref=e422] [cursor=pointer]:
+                  - generic [ref=e424]:
+                    - generic [ref=e425]: 第73场
+                    - generic [ref=e426]: 2026-06-29
+                  - generic [ref=e427]:
+                    - generic [ref=e428]:
+                      - img "南非" [ref=e429]
+                      - generic [ref=e430]:
+                        - generic [ref=e431]: 南非
+                        - generic [ref=e432]: RSA
+                    - generic [ref=e433]:
+                      - img "加拿大" [ref=e434]
+                      - generic [ref=e435]:
+                        - generic [ref=e436]: 加拿大
+                        - generic [ref=e437]: CAN
+                - button "第74场 2026-06-29 德国 德国 GER 巴拉圭 巴拉圭 PAR" [ref=e438] [cursor=pointer]:
+                  - generic [ref=e440]:
+                    - generic [ref=e441]: 第74场
+                    - generic [ref=e442]: 2026-06-29
+                  - generic [ref=e443]:
+                    - generic [ref=e444]:
+                      - img "德国" [ref=e445]
+                      - generic [ref=e446]:
+                        - generic [ref=e447]: 德国
+                        - generic [ref=e448]: GER
+                    - generic [ref=e449]:
+                      - img "巴拉圭" [ref=e450]
+                      - generic [ref=e451]:
+                        - generic [ref=e452]: 巴拉圭
+                        - generic [ref=e453]: PAR
+                - button "第75场 2026-06-29 荷兰 荷兰 NED 摩洛哥 摩洛哥 MAR" [ref=e454] [cursor=pointer]:
+                  - generic [ref=e456]:
+                    - generic [ref=e457]: 第75场
+                    - generic [ref=e458]: 2026-06-29
+                  - generic [ref=e459]:
+                    - generic [ref=e460]:
+                      - img "荷兰" [ref=e461]
+                      - generic [ref=e462]:
+                        - generic [ref=e463]: 荷兰
+                        - generic [ref=e464]: NED
+                    - generic [ref=e465]:
+                      - img "摩洛哥" [ref=e466]
+                      - generic [ref=e467]:
+                        - generic [ref=e468]: 摩洛哥
+                        - generic [ref=e469]: MAR
+                - button "第76场 2026-06-30 巴西 巴西 BRA 日本 日本 JPN" [ref=e470] [cursor=pointer]:
+                  - generic [ref=e472]:
+                    - generic [ref=e473]: 第76场
+                    - generic [ref=e474]: 2026-06-30
+                  - generic [ref=e475]:
+                    - generic [ref=e476]:
+                      - img "巴西" [ref=e477]
+                      - generic [ref=e478]:
+                        - generic [ref=e479]: 巴西
+                        - generic [ref=e480]: BRA
+                    - generic [ref=e481]:
+                      - img "日本" [ref=e482]
+                      - generic [ref=e483]:
+                        - generic [ref=e484]: 日本
+                        - generic [ref=e485]: JPN
+                - button "第77场 2026-06-30 法国 法国 FRA 瑞典 瑞典 SWE" [ref=e486] [cursor=pointer]:
+                  - generic [ref=e488]:
+                    - generic [ref=e489]: 第77场
+                    - generic [ref=e490]: 2026-06-30
+                  - generic [ref=e491]:
+                    - generic [ref=e492]:
+                      - img "法国" [ref=e493]
+                      - generic [ref=e494]:
+                        - generic [ref=e495]: 法国
+                        - generic [ref=e496]: FRA
+                    - generic [ref=e497]:
+                      - img "瑞典" [ref=e498]
+                      - generic [ref=e499]:
+                        - generic [ref=e500]: 瑞典
+                        - generic [ref=e501]: SWE
+                - button "第78场 2026-06-30 科特迪瓦 科特迪瓦 CIV 挪威 挪威 NOR" [ref=e502] [cursor=pointer]:
+                  - generic [ref=e504]:
+                    - generic [ref=e505]: 第78场
+                    - generic [ref=e506]: 2026-06-30
+                  - generic [ref=e507]:
+                    - generic [ref=e508]:
+                      - img "科特迪瓦" [ref=e509]
+                      - generic [ref=e510]:
+                        - generic [ref=e511]: 科特迪瓦
+                        - generic [ref=e512]: CIV
+                    - generic [ref=e513]:
+                      - img "挪威" [ref=e514]
+                      - generic [ref=e515]:
+                        - generic [ref=e516]: 挪威
+                        - generic [ref=e517]: NOR
+                - button "第79场 2026-07-01 墨西哥 墨西哥 MEX 厄瓜多尔 厄瓜多尔 ECU" [ref=e518] [cursor=pointer]:
+                  - generic [ref=e520]:
+                    - generic [ref=e521]: 第79场
+                    - generic [ref=e522]: 2026-07-01
+                  - generic [ref=e523]:
+                    - generic [ref=e524]:
+                      - img "墨西哥" [ref=e525]
+                      - generic [ref=e526]:
+                        - generic [ref=e527]: 墨西哥
+                        - generic [ref=e528]: MEX
+                    - generic [ref=e529]:
+                      - img "厄瓜多尔" [ref=e530]
+                      - generic [ref=e531]:
+                        - generic [ref=e532]: 厄瓜多尔
+                        - generic [ref=e533]: ECU
+                - button "第80场 2026-07-01 英格兰 英格兰 ENG 民主刚果 民主刚果 COD" [ref=e534] [cursor=pointer]:
+                  - generic [ref=e536]:
+                    - generic [ref=e537]: 第80场
+                    - generic [ref=e538]: 2026-07-01
+                  - generic [ref=e539]:
+                    - generic [ref=e540]:
+                      - img "英格兰" [ref=e541]
+                      - generic [ref=e542]:
+                        - generic [ref=e543]: 英格兰
+                        - generic [ref=e544]: ENG
+                    - generic [ref=e545]:
+                      - img "民主刚果" [ref=e546]
+                      - generic [ref=e547]:
+                        - generic [ref=e548]: 民主刚果
+                        - generic [ref=e549]: COD
+                - button "第81场 2026-07-01 美国 美国 USA 波黑 波黑 BIH" [ref=e550] [cursor=pointer]:
+                  - generic [ref=e552]:
+                    - generic [ref=e553]: 第81场
+                    - generic [ref=e554]: 2026-07-01
+                  - generic [ref=e555]:
+                    - generic [ref=e556]:
+                      - img "美国" [ref=e557]
+                      - generic [ref=e558]:
+                        - generic [ref=e559]: 美国
+                        - generic [ref=e560]: USA
+                    - generic [ref=e561]:
+                      - img "波黑" [ref=e562]
+                      - generic [ref=e563]:
+                        - generic [ref=e564]: 波黑
+                        - generic [ref=e565]: BIH
+                - button "第82场 2026-07-02 比利时 比利时 BEL 塞内加尔 塞内加尔 SEN" [ref=e566] [cursor=pointer]:
+                  - generic [ref=e568]:
+                    - generic [ref=e569]: 第82场
+                    - generic [ref=e570]: 2026-07-02
+                  - generic [ref=e571]:
+                    - generic [ref=e572]:
+                      - img "比利时" [ref=e573]
+                      - generic [ref=e574]:
+                        - generic [ref=e575]: 比利时
+                        - generic [ref=e576]: BEL
+                    - generic [ref=e577]:
+                      - img "塞内加尔" [ref=e578]
+                      - generic [ref=e579]:
+                        - generic [ref=e580]: 塞内加尔
+                        - generic [ref=e581]: SEN
+                - button "第83场 2026-07-02 葡萄牙 葡萄牙 POR 克罗地亚 克罗地亚 CRO" [ref=e582] [cursor=pointer]:
+                  - generic [ref=e584]:
+                    - generic [ref=e585]: 第83场
+                    - generic [ref=e586]: 2026-07-02
+                  - generic [ref=e587]:
+                    - generic [ref=e588]:
+                      - img "葡萄牙" [ref=e589]
+                      - generic [ref=e590]:
+                        - generic [ref=e591]: 葡萄牙
+                        - generic [ref=e592]: POR
+                    - generic [ref=e593]:
+                      - img "克罗地亚" [ref=e594]
+                      - generic [ref=e595]:
+                        - generic [ref=e596]: 克罗地亚
+                        - generic [ref=e597]: CRO
+                - button "第84场 2026-07-02 西班牙 西班牙 ESP 奥地利 奥地利 AUT" [ref=e598] [cursor=pointer]:
+                  - generic [ref=e600]:
+                    - generic [ref=e601]: 第84场
+                    - generic [ref=e602]: 2026-07-02
+                  - generic [ref=e603]:
+                    - generic [ref=e604]:
+                      - img "西班牙" [ref=e605]
+                      - generic [ref=e606]:
+                        - generic [ref=e607]: 西班牙
+                        - generic [ref=e608]: ESP
+                    - generic [ref=e609]:
+                      - img "奥地利" [ref=e610]
+                      - generic [ref=e611]:
+                        - generic [ref=e612]: 奥地利
+                        - generic [ref=e613]: AUT
+                - button "第85场 2026-07-03 瑞士 瑞士 SUI 阿尔及利亚 阿尔及利亚 ALG" [ref=e614] [cursor=pointer]:
+                  - generic [ref=e616]:
+                    - generic [ref=e617]: 第85场
+                    - generic [ref=e618]: 2026-07-03
+                  - generic [ref=e619]:
+                    - generic [ref=e620]:
+                      - img "瑞士" [ref=e621]
+                      - generic [ref=e622]:
+                        - generic [ref=e623]: 瑞士
+                        - generic [ref=e624]: SUI
+                    - generic [ref=e625]:
+                      - img "阿尔及利亚" [ref=e626]
+                      - generic [ref=e627]:
+                        - generic [ref=e628]: 阿尔及利亚
+                        - generic [ref=e629]: ALG
+                - button "第86场 2026-07-03 阿根廷 阿根廷 ARG 佛得角 佛得角 CPV" [ref=e630] [cursor=pointer]:
+                  - generic [ref=e632]:
+                    - generic [ref=e633]: 第86场
+                    - generic [ref=e634]: 2026-07-03
+                  - generic [ref=e635]:
+                    - generic [ref=e636]:
+                      - img "阿根廷" [ref=e637]
+                      - generic [ref=e638]:
+                        - generic [ref=e639]: 阿根廷
+                        - generic [ref=e640]: ARG
+                    - generic [ref=e641]:
+                      - img "佛得角" [ref=e642]
+                      - generic [ref=e643]:
+                        - generic [ref=e644]: 佛得角
+                        - generic [ref=e645]: CPV
+                - button "第87场 2026-07-03 哥伦比亚 哥伦比亚 COL 加纳 加纳 GHA" [ref=e646] [cursor=pointer]:
+                  - generic [ref=e648]:
+                    - generic [ref=e649]: 第87场
+                    - generic [ref=e650]: 2026-07-03
+                  - generic [ref=e651]:
+                    - generic [ref=e652]:
+                      - img "哥伦比亚" [ref=e653]
+                      - generic [ref=e654]:
+                        - generic [ref=e655]: 哥伦比亚
+                        - generic [ref=e656]: COL
+                    - generic [ref=e657]:
+                      - img "加纳" [ref=e658]
+                      - generic [ref=e659]:
+                        - generic [ref=e660]: 加纳
+                        - generic [ref=e661]: GHA
+                - button "第88场 2026-07-04 澳大利亚 澳大利亚 AUS 埃及 埃及 EGY" [ref=e662] [cursor=pointer]:
+                  - generic [ref=e664]:
+                    - generic [ref=e665]: 第88场
+                    - generic [ref=e666]: 2026-07-04
+                  - generic [ref=e667]:
+                    - generic [ref=e668]:
+                      - img "澳大利亚" [ref=e669]
+                      - generic [ref=e670]:
+                        - generic [ref=e671]: 澳大利亚
+                        - generic [ref=e672]: AUS
+                    - generic [ref=e673]:
+                      - img "埃及" [ref=e674]
+                      - generic [ref=e675]:
+                        - generic [ref=e676]: 埃及
+                        - generic [ref=e677]: EGY
+            - generic [ref=e678]:
+              - generic [ref=e679]:
+                - text: 16强
+                - generic [ref=e680]: 8 场
+              - generic [ref=e681]:
+                - button "第89场 2026-07-05 第73场胜者 第74场胜者" [ref=e682] [cursor=pointer]:
+                  - generic [ref=e684]:
+                    - generic [ref=e685]: 第89场
+                    - generic [ref=e686]: 2026-07-05
+                  - generic [ref=e687]:
+                    - generic [ref=e690]: 第73场胜者
+                    - generic [ref=e693]: 第74场胜者
+                - button "第90场 2026-07-05 第75场胜者 第76场胜者" [ref=e694] [cursor=pointer]:
+                  - generic [ref=e696]:
+                    - generic [ref=e697]: 第90场
+                    - generic [ref=e698]: 2026-07-05
+                  - generic [ref=e699]:
+                    - generic [ref=e702]: 第75场胜者
+                    - generic [ref=e705]: 第76场胜者
+                - button "第91场 2026-07-06 第77场胜者 第78场胜者" [ref=e706] [cursor=pointer]:
+                  - generic [ref=e708]:
+                    - generic [ref=e709]: 第91场
+                    - generic [ref=e710]: 2026-07-06
+                  - generic [ref=e711]:
+                    - generic [ref=e714]: 第77场胜者
+                    - generic [ref=e717]: 第78场胜者
+                - button "第92场 2026-07-06 第79场胜者 第80场胜者" [ref=e718] [cursor=pointer]:
+                  - generic [ref=e720]:
+                    - generic [ref=e721]: 第92场
+                    - generic [ref=e722]: 2026-07-06
+                  - generic [ref=e723]:
+                    - generic [ref=e726]: 第79场胜者
+                    - generic [ref=e729]: 第80场胜者
+                - button "第93场 2026-07-07 第81场胜者 第82场胜者" [ref=e730] [cursor=pointer]:
+                  - generic [ref=e732]:
+                    - generic [ref=e733]: 第93场
+                    - generic [ref=e734]: 2026-07-07
+                  - generic [ref=e735]:
+                    - generic [ref=e738]: 第81场胜者
+                    - generic [ref=e741]: 第82场胜者
+                - button "第94场 2026-07-07 第83场胜者 第84场胜者" [ref=e742] [cursor=pointer]:
+                  - generic [ref=e744]:
+                    - generic [ref=e745]: 第94场
+                    - generic [ref=e746]: 2026-07-07
+                  - generic [ref=e747]:
+                    - generic [ref=e750]: 第83场胜者
+                    - generic [ref=e753]: 第84场胜者
+                - button "第95场 2026-07-08 第85场胜者 第86场胜者" [ref=e754] [cursor=pointer]:
+                  - generic [ref=e756]:
+                    - generic [ref=e757]: 第95场
+                    - generic [ref=e758]: 2026-07-08
+                  - generic [ref=e759]:
+                    - generic [ref=e762]: 第85场胜者
+                    - generic [ref=e765]: 第86场胜者
+                - button "第96场 2026-07-08 第87场胜者 第88场胜者" [ref=e766] [cursor=pointer]:
+                  - generic [ref=e768]:
+                    - generic [ref=e769]: 第96场
+                    - generic [ref=e770]: 2026-07-08
+                  - generic [ref=e771]:
+                    - generic [ref=e774]: 第87场胜者
+                    - generic [ref=e777]: 第88场胜者
+            - generic [ref=e778]:
+              - generic [ref=e779]:
+                - text: 8强
+                - generic [ref=e780]: 4 场
+              - generic [ref=e781]:
+                - button "第97场 2026-07-11 第89场胜者 第90场胜者" [ref=e782] [cursor=pointer]:
+                  - generic [ref=e784]:
+                    - generic [ref=e785]: 第97场
+                    - generic [ref=e786]: 2026-07-11
+                  - generic [ref=e787]:
+                    - generic [ref=e790]: 第89场胜者
+                    - generic [ref=e793]: 第90场胜者
+                - button "第98场 2026-07-11 第91场胜者 第92场胜者" [ref=e794] [cursor=pointer]:
+                  - generic [ref=e796]:
+                    - generic [ref=e797]: 第98场
+                    - generic [ref=e798]: 2026-07-11
+                  - generic [ref=e799]:
+                    - generic [ref=e802]: 第91场胜者
+                    - generic [ref=e805]: 第92场胜者
+                - button "第99场 2026-07-12 第93场胜者 第94场胜者" [ref=e806] [cursor=pointer]:
+                  - generic [ref=e808]:
+                    - generic [ref=e809]: 第99场
+                    - generic [ref=e810]: 2026-07-12
+                  - generic [ref=e811]:
+                    - generic [ref=e814]: 第93场胜者
+                    - generic [ref=e817]: 第94场胜者
+                - button "第100场 2026-07-12 第95场胜者 第96场胜者" [ref=e818] [cursor=pointer]:
+                  - generic [ref=e820]:
+                    - generic [ref=e821]: 第100场
+                    - generic [ref=e822]: 2026-07-12
+                  - generic [ref=e823]:
+                    - generic [ref=e826]: 第95场胜者
+                    - generic [ref=e829]: 第96场胜者
+            - generic [ref=e830]:
+              - generic [ref=e831]:
+                - text: 半决赛
+                - generic [ref=e832]: 2 场
+              - generic [ref=e833]:
+                - button "第101场 2026-07-15 第97场胜者 第98场胜者" [ref=e834] [cursor=pointer]:
+                  - generic [ref=e836]:
+                    - generic [ref=e837]: 第101场
+                    - generic [ref=e838]: 2026-07-15
+                  - generic [ref=e839]:
+                    - generic [ref=e842]: 第97场胜者
+                    - generic [ref=e845]: 第98场胜者
+                - button "第102场 2026-07-16 第99场胜者 第100场胜者" [ref=e846] [cursor=pointer]:
+                  - generic [ref=e848]:
+                    - generic [ref=e849]: 第102场
+                    - generic [ref=e850]: 2026-07-16
+                  - generic [ref=e851]:
+                    - generic [ref=e854]: 第99场胜者
+                    - generic [ref=e857]: 第100场胜者
+            - generic [ref=e858]:
+              - generic [ref=e859]:
+                - text: 三四名决赛
+                - generic [ref=e860]: 1 场
+              - button "第103场 2026-07-19 第101场负者 第102场负者" [ref=e862] [cursor=pointer]:
+                - generic [ref=e864]:
+                  - generic [ref=e865]: 第103场
+                  - generic [ref=e866]: 2026-07-19
+                - generic [ref=e867]:
+                  - generic [ref=e870]: 第101场负者
+                  - generic [ref=e873]: 第102场负者
+            - generic [ref=e874]:
+              - generic [ref=e875]:
+                - text: 决赛
+                - generic [ref=e876]: 1 场
+              - button "第104场 2026-07-20 第101场胜者 第102场胜者" [ref=e878] [cursor=pointer]:
+                - generic [ref=e880]:
+                  - generic [ref=e881]: 第104场
+                  - generic [ref=e882]: 2026-07-20
+                - generic [ref=e883]:
+                  - generic [ref=e886]: 第101场胜者
+                  - generic [ref=e889]: 第102场胜者
+            - generic [ref=e890]:
+              - generic [ref=e891]:
+                - text: 冠军
+                - generic [ref=e892]: 1 场
+              - generic [ref=e894]:
+                - generic [ref=e897]: 冠军待诞生
+                - generic [ref=e899]: 冠军
+    - contentinfo [ref=e393]:
+      - generic [ref=e394]:
+        - paragraph [ref=e395]: World Cup 2026V1.0
+        - link "数据反馈：2064747320@qq.com" [ref=e396] [cursor=pointer]:
+          - /url: mailto:2064747320@qq.com
+          - img [ref=e397]
+          - text: 数据反馈：2064747320@qq.com
+      - paragraph [ref=e400]:
+        - text: 如发现赛程、北京时间、球队、场馆或晋级信息有误，欢迎反馈：
+        - link "2064747320@qq.com" [ref=e401] [cursor=pointer]:
+          - /url: mailto:2064747320@qq.com
+  - img [ref=e403] [cursor=pointer]

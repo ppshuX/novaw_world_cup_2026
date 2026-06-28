@@ -6,10 +6,8 @@ import { officialSources } from '../data/sources';
 import { teamById, teams } from '../data/teams';
 import type { BracketRound, BracketSlot, Match } from '../types';
 import {
-  calculateGroupStandings,
   buildR32Fill,
   advanceKnockoutWinners,
-  isGroupStageComplete,
 } from '../utils/bracketUpdate';
 import type { BracketFixture } from '../utils/bracketUpdate';
 
@@ -43,6 +41,22 @@ export function getMatches() {
   return cachedMatches;
 }
 
+/**
+ * 解析比赛的真实球队：从 bracket 数据中查找
+ * 用于淘汰赛阶段（homeTeamId/awayTeamId 为 tbd-* 时）
+ */
+export function resolveMatchTeams(matchId: string): { homeTeamId: string; awayTeamId: string } | null {
+  const bracket = getBracketRounds();
+  for (const round of bracket) {
+    for (const bmatch of round.matches) {
+      if (bmatch.matchId === matchId && bmatch.homeSlot.teamId && bmatch.awaySlot.teamId) {
+        return { homeTeamId: bmatch.homeSlot.teamId, awayTeamId: bmatch.awaySlot.teamId };
+      }
+    }
+  }
+  return null;
+}
+
 export function getTeams() {
   return teams;
 }
@@ -64,7 +78,6 @@ export function getBracketRounds(): BracketRound[] {
 
   const matches = getMatches();
   const results = matchResults as ResultsMap;
-  const allGroups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
 
   // 标准化结果格式
   const normalizedResults: Record<string, { homeScore: number | null; awayScore: number | null; matchStatus: string }> = {};
@@ -76,23 +89,10 @@ export function getBracketRounds(): BracketRound[] {
     };
   }
 
-  // 1. 计算每组排名
-  const allStandings = new Map<string, ReturnType<typeof calculateGroupStandings>>();
-  let groupStageDone = true;
+  // 晋级树只使用 FIFA 已确认的对阵，不从积分榜猜测配对。
+  const r32Fill = buildR32Fill(bracketFixture as BracketFixture);
 
-  for (const group of allGroups) {
-    const groupMatches = matches.filter((m) => m.group === `${group}组`);
-    allStandings.set(group, calculateGroupStandings(group, groupMatches, normalizedResults));
-    if (!isGroupStageComplete(groupMatches, normalizedResults)) {
-      groupStageDone = false;
-    }
-  }
-
-  // 2. 构建 R32 填充: fixture 优先，没有则用排名推算
-  const r32Fill = buildR32Fill(bracketFixture as BracketFixture, allStandings, groupStageDone);
-
-  // 3. 推进淘汰赛胜者: fixture 优先，没有则从比分推算
-  const advancements = advanceKnockoutWinners(bracketFixture as BracketFixture, matches, normalizedResults);
+  const advancements = advanceKnockoutWinners(bracketFixture as BracketFixture);
 
   // 4. 合并填充表
   const slotFill = new Map<number, { homeTeamId: string; awayTeamId: string }>();
@@ -105,6 +105,7 @@ export function getBracketRounds(): BracketRound[] {
     matches: round.matches.map((match) => {
       const matchNo = match.matchId ? parseInt(match.matchId.replace('m', ''), 10) : 0;
       const fill = slotFill.get(matchNo);
+      const matchData = matches.find((item) => item.matchNo === matchNo);
 
       if (fill) {
         const homeTeam = teamById[fill.homeTeamId];
@@ -112,6 +113,7 @@ export function getBracketRounds(): BracketRound[] {
 
         return {
           ...match,
+          date: matchData?.date ?? match.date,
           homeSlot: updateSlot(match.homeSlot, fill.homeTeamId, homeTeam?.name ?? fill.homeTeamId),
           awaySlot: updateSlot(match.awaySlot, fill.awayTeamId, awayTeam?.name ?? fill.awayTeamId),
           status: 'confirmed' as const,
@@ -122,7 +124,6 @@ export function getBracketRounds(): BracketRound[] {
       // 检查这场比赛本身是否已有结果
       const result = normalizedResults[String(matchNo)];
       if (result?.matchStatus === 'finished' && result.homeScore != null && result.awayScore != null) {
-        const matchData = matches.find((m) => m.matchNo === matchNo);
         if (matchData) {
           const winnerId = result.homeScore > result.awayScore
             ? matchData.homeTeamId
