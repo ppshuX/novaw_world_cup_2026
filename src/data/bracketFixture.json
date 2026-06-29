@@ -170,7 +170,7 @@
       "stadium": "Houston Stadium"
     },
     "91": {
-      "homeTeamId": null,
+      "homeTeamId": "brazil",
       "awayTeamId": null,
       "homePlaceholder": "W76",
       "awayPlaceholder": "W78",
