@@ -5,11 +5,19 @@ import matchResults from '../data/matchResults.json';
 import { officialSources } from '../data/sources';
 import { teamById, teams } from '../data/teams';
 import type { BracketRound, BracketSlot, Match } from '../types';
-import {
-  buildR32Fill,
-  advanceKnockoutWinners,
-} from '../utils/bracketUpdate';
-import type { BracketFixture } from '../utils/bracketUpdate';
+
+type OfficialKnockoutFixture = {
+  homeTeamId?: string | null;
+  awayTeamId?: string | null;
+  homePlaceholder?: string | null;
+  awayPlaceholder?: string | null;
+};
+
+type OfficialBracketData = {
+  r32: Record<string, OfficialKnockoutFixture>;
+  knockoutFixtures?: Record<string, OfficialKnockoutFixture>;
+  knockoutWinners: Record<string, OfficialKnockoutFixture>;
+};
 
 type ResultsMap = Record<string, {
   homeScore?: number | null;
@@ -65,12 +73,7 @@ export function getTeamById(teamId: string) {
   return teamById[teamId];
 }
 
-/**
- * 动态计算晋级树：
- * - 有 fixture 数据 → 直接用
- * - 没有 → 从小组赛排名推算（仅小组赛全部结束后）
- * - 淘汰赛胜者 → 从比分自动推进
- */
+/** 晋级树只展示 FIFA 已确认的球队和官方占位路径。 */
 let cachedBracket: BracketRound[] | null = null;
 
 export function getBracketRounds(): BracketRound[] {
@@ -89,50 +92,40 @@ export function getBracketRounds(): BracketRound[] {
     };
   }
 
-  // 晋级树只使用 FIFA 已确认的对阵，不从积分榜猜测配对。
-  const r32Fill = buildR32Fill(bracketFixture as BracketFixture);
-
-  const advancements = advanceKnockoutWinners(bracketFixture as BracketFixture);
-
-  // 4. 合并填充表
-  const slotFill = new Map<number, { homeTeamId: string; awayTeamId: string }>();
-  for (const [k, v] of r32Fill) slotFill.set(k, v);
-  for (const [k, v] of advancements) slotFill.set(k, v);
+  const officialBracket = bracketFixture as OfficialBracketData;
+  const fixtureByMatchNo: Record<string, OfficialKnockoutFixture> = {
+    ...officialBracket.r32,
+    ...(officialBracket.knockoutFixtures ?? {}),
+    ...officialBracket.knockoutWinners,
+  };
 
   // 5. 用填充数据更新 bracket
   const resolved = bracketRounds.map((round) => ({
     ...round,
     matches: round.matches.map((match) => {
       const matchNo = match.matchId ? parseInt(match.matchId.replace('m', ''), 10) : 0;
-      const fill = slotFill.get(matchNo);
+      const fixture = fixtureByMatchNo[String(matchNo)];
       const matchData = matches.find((item) => item.matchNo === matchNo);
+      const result = normalizedResults[String(matchNo)];
+      const winnerTeamId = resolveWinnerTeamId(matchData, result);
 
-      if (fill) {
-        const homeTeam = teamById[fill.homeTeamId];
-        const awayTeam = teamById[fill.awayTeamId];
+      if (fixture) {
+        const homeSlot = updateSlot(match.homeSlot, fixture.homeTeamId, fixture.homePlaceholder);
+        const awaySlot = updateSlot(match.awaySlot, fixture.awayTeamId, fixture.awayPlaceholder);
+        const isConfirmed = homeSlot.status === 'confirmed' && awaySlot.status === 'confirmed';
 
         return {
           ...match,
           date: matchData?.date ?? match.date,
-          homeSlot: updateSlot(match.homeSlot, fill.homeTeamId, homeTeam?.name ?? fill.homeTeamId),
-          awaySlot: updateSlot(match.awaySlot, fill.awayTeamId, awayTeam?.name ?? fill.awayTeamId),
-          status: 'confirmed' as const,
+          homeSlot,
+          awaySlot,
+          winnerTeamId: winnerTeamId ?? match.winnerTeamId,
+          status: isConfirmed ? 'confirmed' as const : 'pending' as const,
           dataStatus: 'official' as const,
         };
       }
 
-      // 检查这场比赛本身是否已有结果
-      const result = normalizedResults[String(matchNo)];
-      if (result?.matchStatus === 'finished' && result.homeScore != null && result.awayScore != null) {
-        if (matchData) {
-          const winnerId = result.homeScore > result.awayScore
-            ? matchData.homeTeamId
-            : result.awayScore > result.homeScore
-              ? matchData.awayTeamId
-              : null;
-          if (winnerId) return { ...match, winnerTeamId: winnerId };
-        }
-      }
+      if (winnerTeamId) return { ...match, winnerTeamId };
 
       return match;
     }),
@@ -142,17 +135,51 @@ export function getBracketRounds(): BracketRound[] {
   return resolved;
 }
 
-function updateSlot(base: BracketSlot, teamId: string, label: string): BracketSlot {
-  if (teamId.startsWith('tbd') || teamId.startsWith('slot-')) {
-    return base;
+function resolveWinnerTeamId(
+  match: Match | undefined,
+  result: { homeScore: number | null; awayScore: number | null; matchStatus: string } | undefined,
+) {
+  if (!match || result?.matchStatus !== 'finished' || result.homeScore == null || result.awayScore == null) return null;
+  if (result.homeScore > result.awayScore) return match.homeTeamId;
+  if (result.awayScore > result.homeScore) return match.awayTeamId;
+  return null;
+}
+
+function updateSlot(base: BracketSlot, teamId?: string | null, placeholder?: string | null): BracketSlot {
+  if (teamId && !teamId.startsWith('tbd') && !teamId.startsWith('slot-')) {
+    const team = teamById[teamId];
+    return {
+      ...base,
+      teamId,
+      label: team?.name ?? teamId,
+      status: 'confirmed',
+      dataStatus: 'official',
+    };
   }
+
+  if (!placeholder) return base;
   return {
     ...base,
-    teamId,
-    label,
-    status: 'confirmed',
+    teamId: null,
+    label: formatPlaceholder(placeholder),
+    status: 'pending',
     dataStatus: 'official',
   };
+}
+
+function formatPlaceholder(placeholder: string) {
+  const winner = placeholder.match(/^W(\d+)$/);
+  if (winner) return `第${winner[1]}场胜者`;
+  const runnerUp = placeholder.match(/^RU(\d+)$/);
+  if (runnerUp) return `第${runnerUp[1]}场负者`;
+
+  const groupSlot = placeholder.match(/^([123])([A-L])$/);
+  if (groupSlot) {
+    const rank = { '1': '第一', '2': '第二', '3': '第三' }[groupSlot[1]];
+    return `${groupSlot[2]}组${rank}`;
+  }
+
+  return placeholder;
 }
 
 export function getOfficialSources() {

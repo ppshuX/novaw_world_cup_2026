@@ -1,11 +1,13 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-06-28",
+  "lastUpdated": "2026-06-29",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
       "awayTeamId": "canada",
+      "homePlaceholder": "2A",
+      "awayPlaceholder": "2B",
       "kickoffUtc": "2026-06-28T19:00:00Z",
       "city": "Los Angeles",
       "stadium": "Los Angeles Stadium"
@@ -13,6 +15,8 @@
     "74": {
       "homeTeamId": "germany",
       "awayTeamId": "paraguay",
+      "homePlaceholder": "1E",
+      "awayPlaceholder": "3ABCDF",
       "kickoffUtc": "2026-06-29T20:30:00Z",
       "city": "Boston",
       "stadium": "Boston Stadium"
@@ -20,6 +24,8 @@
     "75": {
       "homeTeamId": "netherlands",
       "awayTeamId": "morocco",
+      "homePlaceholder": "1F",
+      "awayPlaceholder": "2C",
       "kickoffUtc": "2026-06-30T01:00:00Z",
       "city": "Monterrey",
       "stadium": "Monterrey Stadium"
@@ -27,6 +33,8 @@
     "76": {
       "homeTeamId": "brazil",
       "awayTeamId": "japan",
+      "homePlaceholder": "1C",
+      "awayPlaceholder": "2F",
       "kickoffUtc": "2026-06-29T17:00:00Z",
       "city": "Houston",
       "stadium": "Houston Stadium"
@@ -34,6 +42,8 @@
     "77": {
       "homeTeamId": "france",
       "awayTeamId": "sweden",
+      "homePlaceholder": "1I",
+      "awayPlaceholder": "3CDFGH",
       "kickoffUtc": "2026-06-30T21:00:00Z",
       "city": "New Jersey",
       "stadium": "New York/New Jersey Stadium"
@@ -41,6 +51,8 @@
     "78": {
       "homeTeamId": "ivory-coast",
       "awayTeamId": "norway",
+      "homePlaceholder": "2E",
+      "awayPlaceholder": "2I",
       "kickoffUtc": "2026-06-30T17:00:00Z",
       "city": "Dallas",
       "stadium": "Dallas Stadium"
@@ -48,6 +60,8 @@
     "79": {
       "homeTeamId": "mexico",
       "awayTeamId": "ecuador",
+      "homePlaceholder": "1A",
+      "awayPlaceholder": "3CEFHI",
       "kickoffUtc": "2026-07-01T01:00:00Z",
       "city": "Mexico City",
       "stadium": "Mexico City Stadium"
@@ -55,6 +69,8 @@
     "80": {
       "homeTeamId": "england",
       "awayTeamId": "dr-congo",
+      "homePlaceholder": "1L",
+      "awayPlaceholder": "3EHIJK",
       "kickoffUtc": "2026-07-01T16:00:00Z",
       "city": "Atlanta",
       "stadium": "Atlanta Stadium"
@@ -62,6 +78,8 @@
     "81": {
       "homeTeamId": "usa",
       "awayTeamId": "bosnia",
+      "homePlaceholder": "1D",
+      "awayPlaceholder": "3BEFIJ",
       "kickoffUtc": "2026-07-02T00:00:00Z",
       "city": "San Francisco Bay Area",
       "stadium": "San Francisco Bay Area Stadium"
@@ -69,6 +87,8 @@
     "82": {
       "homeTeamId": "belgium",
       "awayTeamId": "senegal",
+      "homePlaceholder": "1G",
+      "awayPlaceholder": "3AEHIJ",
       "kickoffUtc": "2026-07-01T20:00:00Z",
       "city": "Seattle",
       "stadium": "Seattle Stadium"
@@ -76,6 +96,8 @@
     "83": {
       "homeTeamId": "portugal",
       "awayTeamId": "croatia",
+      "homePlaceholder": "2K",
+      "awayPlaceholder": "2L",
       "kickoffUtc": "2026-07-02T23:00:00Z",
       "city": "Toronto",
       "stadium": "Toronto Stadium"
@@ -83,6 +105,8 @@
     "84": {
       "homeTeamId": "spain",
       "awayTeamId": "austria",
+      "homePlaceholder": "1H",
+      "awayPlaceholder": "2J",
       "kickoffUtc": "2026-07-02T19:00:00Z",
       "city": "Los Angeles",
       "stadium": "Los Angeles Stadium"
@@ -90,6 +114,8 @@
     "85": {
       "homeTeamId": "switzerland",
       "awayTeamId": "algeria",
+      "homePlaceholder": "1B",
+      "awayPlaceholder": "3EFGIJ",
       "kickoffUtc": "2026-07-03T03:00:00Z",
       "city": "Vancouver",
       "stadium": "BC Place Vancouver"
@@ -97,6 +123,8 @@
     "86": {
       "homeTeamId": "argentina",
       "awayTeamId": "cape-verde",
+      "homePlaceholder": "1J",
+      "awayPlaceholder": "2H",
       "kickoffUtc": "2026-07-03T22:00:00Z",
       "city": "Miami",
       "stadium": "Miami Stadium"
@@ -104,6 +132,8 @@
     "87": {
       "homeTeamId": "colombia",
       "awayTeamId": "ghana",
+      "homePlaceholder": "1K",
+      "awayPlaceholder": "3DEIJL",
       "kickoffUtc": "2026-07-04T01:30:00Z",
       "city": "Kansas City",
       "stadium": "Kansas City Stadium"
@@ -111,11 +141,159 @@
     "88": {
       "homeTeamId": "australia",
       "awayTeamId": "egypt",
+      "homePlaceholder": "2D",
+      "awayPlaceholder": "2G",
       "kickoffUtc": "2026-07-03T18:00:00Z",
       "city": "Dallas",
       "stadium": "Dallas Stadium"
     }
   },
   "knockoutWinners": {},
-  "_api": "https://api.fifa.com/api/v3/calendar/matches"
+  "_api": "https://api.fifa.com/api/v3/calendar/matches",
+  "knockoutFixtures": {
+    "89": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W74",
+      "awayPlaceholder": "W77",
+      "kickoffUtc": "2026-07-04T21:00:00Z",
+      "city": "Philadelphia",
+      "stadium": "Philadelphia Stadium"
+    },
+    "90": {
+      "homeTeamId": "canada",
+      "awayTeamId": null,
+      "homePlaceholder": "W73",
+      "awayPlaceholder": "W75",
+      "kickoffUtc": "2026-07-04T17:00:00Z",
+      "city": "Houston",
+      "stadium": "Houston Stadium"
+    },
+    "91": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W76",
+      "awayPlaceholder": "W78",
+      "kickoffUtc": "2026-07-05T20:00:00Z",
+      "city": "New Jersey",
+      "stadium": "New York/New Jersey Stadium"
+    },
+    "92": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W79",
+      "awayPlaceholder": "W80",
+      "kickoffUtc": "2026-07-06T00:00:00Z",
+      "city": "Mexico City",
+      "stadium": "Mexico City Stadium"
+    },
+    "93": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W83",
+      "awayPlaceholder": "W84",
+      "kickoffUtc": "2026-07-06T19:00:00Z",
+      "city": "Dallas",
+      "stadium": "Dallas Stadium"
+    },
+    "94": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W81",
+      "awayPlaceholder": "W82",
+      "kickoffUtc": "2026-07-07T00:00:00Z",
+      "city": "Seattle",
+      "stadium": "Seattle Stadium"
+    },
+    "95": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W86",
+      "awayPlaceholder": "W88",
+      "kickoffUtc": "2026-07-07T16:00:00Z",
+      "city": "Atlanta",
+      "stadium": "Atlanta Stadium"
+    },
+    "96": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W85",
+      "awayPlaceholder": "W87",
+      "kickoffUtc": "2026-07-07T20:00:00Z",
+      "city": "Vancouver",
+      "stadium": "BC Place Vancouver"
+    },
+    "97": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W89",
+      "awayPlaceholder": "W90",
+      "kickoffUtc": "2026-07-09T20:00:00Z",
+      "city": "Boston",
+      "stadium": "Boston Stadium"
+    },
+    "98": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W93",
+      "awayPlaceholder": "W94",
+      "kickoffUtc": "2026-07-10T19:00:00Z",
+      "city": "Los Angeles",
+      "stadium": "Los Angeles Stadium"
+    },
+    "99": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W91",
+      "awayPlaceholder": "W92",
+      "kickoffUtc": "2026-07-11T21:00:00Z",
+      "city": "Miami",
+      "stadium": "Miami Stadium"
+    },
+    "100": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W95",
+      "awayPlaceholder": "W96",
+      "kickoffUtc": "2026-07-12T01:00:00Z",
+      "city": "Kansas City",
+      "stadium": "Kansas City Stadium"
+    },
+    "101": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W97",
+      "awayPlaceholder": "W98",
+      "kickoffUtc": "2026-07-14T19:00:00Z",
+      "city": "Dallas",
+      "stadium": "Dallas Stadium"
+    },
+    "102": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W99",
+      "awayPlaceholder": "W100",
+      "kickoffUtc": "2026-07-15T19:00:00Z",
+      "city": "Atlanta",
+      "stadium": "Atlanta Stadium"
+    },
+    "103": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "RU101",
+      "awayPlaceholder": "RU102",
+      "kickoffUtc": "2026-07-18T21:00:00Z",
+      "city": "Miami",
+      "stadium": "Miami Stadium"
+    },
+    "104": {
+      "homeTeamId": null,
+      "awayTeamId": null,
+      "homePlaceholder": "W101",
+      "awayPlaceholder": "W102",
+      "kickoffUtc": "2026-07-19T19:00:00Z",
+      "city": "New Jersey",
+      "stadium": "New York/New Jersey Stadium"
+    }
+  }
 }

@@ -108,24 +108,31 @@ function updateBracketFixtures(officialMatches) {
     lastUpdated: new Date().toISOString().slice(0, 10),
     r32: { ...(existing.r32 ?? {}) },
     knockoutWinners: { ...(existing.knockoutWinners ?? {}) },
+    knockoutFixtures: { ...(existing.knockoutFixtures ?? {}) },
   };
 
   for (const [matchNo, match] of officialMatches) {
     if (matchNo < 73 || matchNo > 104) continue;
     const homeTeamId = teamIdFromSide(match.Home);
     const awayTeamId = teamIdFromSide(match.Away);
-    if (!homeTeamId || !awayTeamId) continue;
 
     const fixture = {
       homeTeamId,
       awayTeamId,
+      homePlaceholder: match.PlaceHolderA ?? null,
+      awayPlaceholder: match.PlaceHolderB ?? null,
       kickoffUtc: match.Date,
       city: localizedName(match.Stadium?.CityName),
       stadium: localizedName(match.Stadium?.Name),
     };
 
-    if (matchNo <= 88) next.r32[String(matchNo)] = fixture;
-    else next.knockoutWinners[String(matchNo)] = fixture;
+    if (matchNo <= 88) {
+      if (homeTeamId && awayTeamId) next.r32[String(matchNo)] = fixture;
+      continue;
+    }
+
+    next.knockoutFixtures[String(matchNo)] = fixture;
+    if (homeTeamId && awayTeamId) next.knockoutWinners[String(matchNo)] = fixture;
   }
 
   const changed = JSON.stringify(existing) !== JSON.stringify(next);

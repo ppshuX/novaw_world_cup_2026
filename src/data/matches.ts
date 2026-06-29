@@ -209,8 +209,10 @@ type KnockoutRow = readonly [
 ];
 
 type KnockoutFixtureData = {
-  homeTeamId: string;
-  awayTeamId: string;
+  homeTeamId?: string | null;
+  awayTeamId?: string | null;
+  homePlaceholder?: string | null;
+  awayPlaceholder?: string | null;
   kickoffUtc?: string;
   city?: string;
   stadium?: string;
@@ -259,6 +261,7 @@ const knockoutRows: KnockoutRow[] = [
 
 const knockoutFixtureByMatchNo = {
   ...bracketFixture.r32,
+  ...bracketFixture.knockoutFixtures,
   ...bracketFixture.knockoutWinners,
 } as Record<string, KnockoutFixtureData>;
 
@@ -266,6 +269,7 @@ const knockoutMatches: Match[] = knockoutRows.map(([matchNo, stage, fallbackDate
   const fixture = knockoutFixtureByMatchNo[String(matchNo)];
   const kickoff = fixture?.kickoffUtc ? toBeijingDateTime(fixture.kickoffUtc) : null;
   const hasConfirmedTeams = Boolean(fixture?.homeTeamId && fixture?.awayTeamId);
+  const hasOfficialInfo = Boolean(fixture?.kickoffUtc && fixture?.city && fixture?.stadium);
 
   return {
     id: `m${String(matchNo).padStart(3, '0')}`,
@@ -284,11 +288,11 @@ const knockoutMatches: Match[] = knockoutRows.map(([matchNo, stage, fallbackDate
       ? '对阵、时间和场馆已按 FIFA 官方赛程确认。'
       : '淘汰赛路径占位，球队将在 FIFA 官方确认后更新。',
     tag: '重点' as const,
-    matchInfoStatus: hasConfirmedTeams ? 'official' as const : 'pending' as const,
+    matchInfoStatus: hasOfficialInfo ? 'official' as const : 'pending' as const,
     resultStatus: 'pending' as const,
     advancementStatus: hasConfirmedTeams ? 'confirmed' as const : 'pending' as const,
     source: fifaScheduleSource,
-    lastUpdated: hasConfirmedTeams ? '2026-06-28' : '2026-05-23',
+    lastUpdated: hasOfficialInfo ? bracketFixture.lastUpdated : '2026-05-23',
   };
 });
 

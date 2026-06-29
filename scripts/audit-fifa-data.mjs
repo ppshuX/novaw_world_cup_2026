@@ -41,6 +41,12 @@ function localizedName(value) {
   return value.find((item) => item.Locale === 'en-GB')?.Description ?? value[0]?.Description ?? '';
 }
 
+function officialTeamId(side) {
+  if (!side) return null;
+  const id = toTeamId(localizedName(side.TeamName));
+  return id || null;
+}
+
 async function fetchOfficialMatches() {
   const ranges = [
     ['2026-06-10T00:00:00Z', '2026-06-18T23:59:59Z'],
@@ -188,10 +194,42 @@ for (let matchNo = 73; matchNo <= 88; matchNo += 1) {
   }
 }
 
+for (let matchNo = 89; matchNo <= 104; matchNo += 1) {
+  const official = officialMatches.get(matchNo);
+  const local = bracketFixture.knockoutFixtures?.[String(matchNo)];
+  if (!official || !local) {
+    errors.push(`Match ${matchNo}: missing ${official ? 'local knockout fixture' : 'FIFA fixture'}`);
+    continue;
+  }
+
+  if (local.homePlaceholder !== official.PlaceHolderA || local.awayPlaceholder !== official.PlaceHolderB) {
+    pushMismatch(
+      errors,
+      `Match ${matchNo} bracket path`,
+      `${local.homePlaceholder} vs ${local.awayPlaceholder}`,
+      `${official.PlaceHolderA} vs ${official.PlaceHolderB}`,
+    );
+  }
+  if (local.kickoffUtc !== official.Date) {
+    pushMismatch(errors, `Match ${matchNo} knockout kickoff`, local.kickoffUtc, official.Date);
+  }
+
+  const officialHomeId = officialTeamId(official.Home);
+  const officialAwayId = officialTeamId(official.Away);
+  if ((local.homeTeamId ?? null) !== officialHomeId || (local.awayTeamId ?? null) !== officialAwayId) {
+    pushMismatch(
+      errors,
+      `Match ${matchNo} confirmed teams`,
+      `${local.homeTeamId ?? '-'} vs ${local.awayTeamId ?? '-'}`,
+      `${officialHomeId ?? '-'} vs ${officialAwayId ?? '-'}`,
+    );
+  }
+}
+
 if (errors.length > 0) {
   console.error(`FIFA data audit failed with ${errors.length} issue(s):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`FIFA data audit passed: ${groupRows.size} group fixtures, 16 R32 fixtures, scores and flag assets verified.`);
+console.log(`FIFA data audit passed: ${groupRows.size} group fixtures, 16 R32 fixtures, 16 knockout paths, scores and flag assets verified.`);
