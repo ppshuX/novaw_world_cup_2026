@@ -148,7 +148,17 @@
       "stadium": "Dallas Stadium"
     }
   },
-  "knockoutWinners": {},
+  "knockoutWinners": {
+    "90": {
+      "homeTeamId": "canada",
+      "awayTeamId": "morocco",
+      "homePlaceholder": "W73",
+      "awayPlaceholder": "W75",
+      "kickoffUtc": "2026-07-04T17:00:00Z",
+      "city": "Houston",
+      "stadium": "Houston Stadium"
+    }
+  },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
   "knockoutFixtures": {
     "89": {
@@ -162,7 +172,7 @@
     },
     "90": {
       "homeTeamId": "canada",
-      "awayTeamId": null,
+      "awayTeamId": "morocco",
       "homePlaceholder": "W73",
       "awayPlaceholder": "W75",
       "kickoffUtc": "2026-07-04T17:00:00Z",
