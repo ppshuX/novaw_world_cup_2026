@@ -157,6 +157,15 @@
       "kickoffUtc": "2026-07-04T17:00:00Z",
       "city": "Houston",
       "stadium": "Houston Stadium"
+    },
+    "91": {
+      "homeTeamId": "brazil",
+      "awayTeamId": "norway",
+      "homePlaceholder": "W76",
+      "awayPlaceholder": "W78",
+      "kickoffUtc": "2026-07-05T20:00:00Z",
+      "city": "New Jersey",
+      "stadium": "New York/New Jersey Stadium"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -181,7 +190,7 @@
     },
     "91": {
       "homeTeamId": "brazil",
-      "awayTeamId": null,
+      "awayTeamId": "norway",
       "homePlaceholder": "W76",
       "awayPlaceholder": "W78",
       "kickoffUtc": "2026-07-05T20:00:00Z",
