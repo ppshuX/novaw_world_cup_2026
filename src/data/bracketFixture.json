@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-06-29",
+  "lastUpdated": "2026-06-30",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -152,7 +152,7 @@
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
   "knockoutFixtures": {
     "89": {
-      "homeTeamId": null,
+      "homeTeamId": "paraguay",
       "awayTeamId": null,
       "homePlaceholder": "W74",
       "awayPlaceholder": "W77",
