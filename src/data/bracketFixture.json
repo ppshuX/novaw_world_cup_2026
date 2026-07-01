@@ -175,6 +175,15 @@
       "kickoffUtc": "2026-07-05T20:00:00Z",
       "city": "New Jersey",
       "stadium": "New York/New Jersey Stadium"
+    },
+    "92": {
+      "homeTeamId": "mexico",
+      "awayTeamId": "england",
+      "homePlaceholder": "W79",
+      "awayPlaceholder": "W80",
+      "kickoffUtc": "2026-07-06T00:00:00Z",
+      "city": "Mexico City",
+      "stadium": "Mexico City Stadium"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -208,7 +217,7 @@
     },
     "92": {
       "homeTeamId": "mexico",
-      "awayTeamId": null,
+      "awayTeamId": "england",
       "homePlaceholder": "W79",
       "awayPlaceholder": "W80",
       "kickoffUtc": "2026-07-06T00:00:00Z",
