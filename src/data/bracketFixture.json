@@ -270,7 +270,7 @@
       "stadium": "Atlanta Stadium"
     },
     "96": {
-      "homeTeamId": null,
+      "homeTeamId": "switzerland",
       "awayTeamId": null,
       "homePlaceholder": "W85",
       "awayPlaceholder": "W87",
