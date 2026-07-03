@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-07-02",
+  "lastUpdated": "2026-07-03",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -185,6 +185,15 @@
       "city": "Mexico City",
       "stadium": "Mexico City Stadium"
     },
+    "93": {
+      "homeTeamId": "portugal",
+      "awayTeamId": "spain",
+      "homePlaceholder": "W83",
+      "awayPlaceholder": "W84",
+      "kickoffUtc": "2026-07-06T19:00:00Z",
+      "city": "Dallas",
+      "stadium": "Dallas Stadium"
+    },
     "94": {
       "homeTeamId": "usa",
       "awayTeamId": "belgium",
@@ -234,8 +243,8 @@
       "stadium": "Mexico City Stadium"
     },
     "93": {
-      "homeTeamId": null,
-      "awayTeamId": null,
+      "homeTeamId": "portugal",
+      "awayTeamId": "spain",
       "homePlaceholder": "W83",
       "awayPlaceholder": "W84",
       "kickoffUtc": "2026-07-06T19:00:00Z",

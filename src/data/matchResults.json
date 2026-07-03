@@ -491,7 +491,19 @@
     "matchStatus": "finished",
     "resultStatus": "official"
   },
+  "83": {
+    "homeScore": 2,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
   "84": {
+    "homeScore": 3,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "85": {
     "homeScore": 1,
     "awayScore": 0,
     "matchStatus": "live",
