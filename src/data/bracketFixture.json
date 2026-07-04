@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-07-03",
+  "lastUpdated": "2026-07-04",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -202,6 +202,24 @@
       "kickoffUtc": "2026-07-07T00:00:00Z",
       "city": "Seattle",
       "stadium": "Seattle Stadium"
+    },
+    "95": {
+      "homeTeamId": "argentina",
+      "awayTeamId": "egypt",
+      "homePlaceholder": "W86",
+      "awayPlaceholder": "W88",
+      "kickoffUtc": "2026-07-07T16:00:00Z",
+      "city": "Atlanta",
+      "stadium": "Atlanta Stadium"
+    },
+    "96": {
+      "homeTeamId": "switzerland",
+      "awayTeamId": "colombia",
+      "homePlaceholder": "W85",
+      "awayPlaceholder": "W87",
+      "kickoffUtc": "2026-07-07T20:00:00Z",
+      "city": "Vancouver",
+      "stadium": "BC Place Vancouver"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -261,8 +279,8 @@
       "stadium": "Seattle Stadium"
     },
     "95": {
-      "homeTeamId": null,
-      "awayTeamId": null,
+      "homeTeamId": "argentina",
+      "awayTeamId": "egypt",
       "homePlaceholder": "W86",
       "awayPlaceholder": "W88",
       "kickoffUtc": "2026-07-07T16:00:00Z",
@@ -271,7 +289,7 @@
     },
     "96": {
       "homeTeamId": "switzerland",
-      "awayTeamId": null,
+      "awayTeamId": "colombia",
       "homePlaceholder": "W85",
       "awayPlaceholder": "W87",
       "kickoffUtc": "2026-07-07T20:00:00Z",
