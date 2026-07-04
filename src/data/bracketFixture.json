@@ -298,7 +298,7 @@
     },
     "97": {
       "homeTeamId": null,
-      "awayTeamId": null,
+      "awayTeamId": "morocco",
       "homePlaceholder": "W89",
       "awayPlaceholder": "W90",
       "kickoffUtc": "2026-07-09T20:00:00Z",
