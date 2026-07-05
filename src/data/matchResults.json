@@ -527,6 +527,12 @@
     "matchStatus": "finished",
     "resultStatus": "official"
   },
+  "89": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
   "90": {
     "homeScore": 0,
     "awayScore": 3,
