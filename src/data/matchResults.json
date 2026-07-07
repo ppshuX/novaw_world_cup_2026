@@ -553,8 +553,14 @@
   },
   "93": {
     "homeScore": 0,
-    "awayScore": 0,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "awayScore": 1,
+    "matchStatus": "finished",
+    "resultStatus": "official"
+  },
+  "94": {
+    "homeScore": 1,
+    "awayScore": 4,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
