@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-07-07",
+  "lastUpdated": "2026-07-08",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -247,6 +247,15 @@
       "kickoffUtc": "2026-07-11T21:00:00Z",
       "city": "Miami",
       "stadium": "Miami Stadium"
+    },
+    "100": {
+      "homeTeamId": "argentina",
+      "awayTeamId": "switzerland",
+      "homePlaceholder": "W95",
+      "awayPlaceholder": "W96",
+      "kickoffUtc": "2026-07-12T01:00:00Z",
+      "city": "Kansas City",
+      "stadium": "Kansas City Stadium"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -352,7 +361,7 @@
     },
     "100": {
       "homeTeamId": "argentina",
-      "awayTeamId": null,
+      "awayTeamId": "switzerland",
       "homePlaceholder": "W95",
       "awayPlaceholder": "W96",
       "kickoffUtc": "2026-07-12T01:00:00Z",

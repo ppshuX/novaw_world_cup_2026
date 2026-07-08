@@ -572,7 +572,7 @@
   "96": {
     "homeScore": 0,
     "awayScore": 0,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
