@@ -574,5 +574,11 @@
     "awayScore": 0,
     "matchStatus": "finished",
     "resultStatus": "official"
+  },
+  "97": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
