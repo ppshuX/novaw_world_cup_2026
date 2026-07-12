@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-07-11",
+  "lastUpdated": "2026-07-12",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -387,7 +387,7 @@
       "stadium": "Dallas Stadium"
     },
     "102": {
-      "homeTeamId": null,
+      "homeTeamId": "england",
       "awayTeamId": null,
       "homePlaceholder": "W99",
       "awayPlaceholder": "W100",
