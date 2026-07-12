@@ -594,9 +594,9 @@
     "resultStatus": "official"
   },
   "100": {
-    "homeScore": 1,
+    "homeScore": 3,
     "awayScore": 1,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }

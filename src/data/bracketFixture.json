@@ -265,6 +265,15 @@
       "kickoffUtc": "2026-07-14T19:00:00Z",
       "city": "Dallas",
       "stadium": "Dallas Stadium"
+    },
+    "102": {
+      "homeTeamId": "england",
+      "awayTeamId": "argentina",
+      "homePlaceholder": "W99",
+      "awayPlaceholder": "W100",
+      "kickoffUtc": "2026-07-15T19:00:00Z",
+      "city": "Atlanta",
+      "stadium": "Atlanta Stadium"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -388,7 +397,7 @@
     },
     "102": {
       "homeTeamId": "england",
-      "awayTeamId": null,
+      "awayTeamId": "argentina",
       "homePlaceholder": "W99",
       "awayPlaceholder": "W100",
       "kickoffUtc": "2026-07-15T19:00:00Z",
