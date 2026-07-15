@@ -601,8 +601,8 @@
   },
   "101": {
     "homeScore": 0,
-    "awayScore": 1,
-    "matchStatus": "live",
-    "resultStatus": "pending"
+    "awayScore": 2,
+    "matchStatus": "finished",
+    "resultStatus": "official"
   }
 }
