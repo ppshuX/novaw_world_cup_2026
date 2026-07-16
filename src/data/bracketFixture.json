@@ -1,7 +1,7 @@
 {
   "_comment": "淘汰赛对阵数据，从 FIFA 官网拉取。有就填充，没有就显示占位。",
   "_source": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
-  "lastUpdated": "2026-07-15",
+  "lastUpdated": "2026-07-16",
   "r32": {
     "73": {
       "homeTeamId": "south-africa",
@@ -274,6 +274,24 @@
       "kickoffUtc": "2026-07-15T19:00:00Z",
       "city": "Atlanta",
       "stadium": "Atlanta Stadium"
+    },
+    "103": {
+      "homeTeamId": "france",
+      "awayTeamId": "england",
+      "homePlaceholder": "RU101",
+      "awayPlaceholder": "RU102",
+      "kickoffUtc": "2026-07-18T21:00:00Z",
+      "city": "Miami",
+      "stadium": "Miami Stadium"
+    },
+    "104": {
+      "homeTeamId": "spain",
+      "awayTeamId": "argentina",
+      "homePlaceholder": "W101",
+      "awayPlaceholder": "W102",
+      "kickoffUtc": "2026-07-19T19:00:00Z",
+      "city": "New Jersey",
+      "stadium": "New York/New Jersey Stadium"
     }
   },
   "_api": "https://api.fifa.com/api/v3/calendar/matches",
@@ -406,7 +424,7 @@
     },
     "103": {
       "homeTeamId": "france",
-      "awayTeamId": null,
+      "awayTeamId": "england",
       "homePlaceholder": "RU101",
       "awayPlaceholder": "RU102",
       "kickoffUtc": "2026-07-18T21:00:00Z",
@@ -415,7 +433,7 @@
     },
     "104": {
       "homeTeamId": "spain",
-      "awayTeamId": null,
+      "awayTeamId": "argentina",
       "homePlaceholder": "W101",
       "awayPlaceholder": "W102",
       "kickoffUtc": "2026-07-19T19:00:00Z",
