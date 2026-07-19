@@ -2,6 +2,9 @@ import { Info } from 'lucide-react';
 import type { BracketRound, BracketMatch, BracketSlot } from '../types';
 import { getTeamById } from '../services/worldCupData';
 
+const pngFlags = new Set(['spain', 'argentina']);
+const flagSrc = (flagKey: string) => `/flags/${flagKey}.${pngFlags.has(flagKey) ? 'png' : 'svg'}`;
+
 interface BracketTreeProps {
   rounds: BracketRound[];
   onOpenMatch?: (matchId: string) => void;
@@ -126,7 +129,7 @@ function BracketTeam({ slot }: { slot: BracketSlot }) {
       <div className="relative flex items-center gap-3 rounded-[8px] border border-summer-sky/30 bg-white px-3 py-2.5 shadow-sm">
         {team.flagKey && (
           <img
-            src={`/flags/${team.flagKey}.svg`}
+            src={flagSrc(team.flagKey)}
             alt={team.name}
             className="h-5 w-7 rounded-sm object-cover shadow-sm sm:h-6 sm:w-8"
           />
@@ -158,7 +161,7 @@ function BracketChampion({ winnerTeamId }: { winnerTeamId: string | null }) {
       <div className="relative flex min-h-[68px] items-center justify-center gap-3 rounded-[8px] border-2 border-amber-300 bg-amber-50 px-3 py-3 text-center shadow-sm">
         {team.flagKey && (
           <img
-            src={`/flags/${team.flagKey}.svg`}
+            src={flagSrc(team.flagKey)}
             alt={team.name}
             className="h-8 w-11 rounded-sm object-cover shadow"
           />

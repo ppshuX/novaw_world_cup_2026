@@ -28,7 +28,7 @@ export function TeamFlag({ team, size = 'md' }: { team?: Team; size?: 'sm' | 'md
         className={`${sizeClass} shrink-0 rounded-[4px] border border-slate-200 bg-white object-cover`}
         loading="lazy"
         onError={() => {
-          console.warn(`Missing flag asset: /flags/${team.flagKey}.svg`);
+          console.warn(`Missing flag asset: /flags/${team.flagKey}.${ext}`);
           setFailed(true);
         }}
       />
