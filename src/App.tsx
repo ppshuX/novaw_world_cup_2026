@@ -114,7 +114,7 @@ function App() {
   const focusMatches = sortedMatches
     .filter((match) => match.tag !== '普通' && getResolvedMatchStatus(match, statusTick) !== 'finished')
     .slice(0, 6);
-  const headlineMatches = todayMatches.length > 0 ? todayMatches : tomorrowMatches.length > 0 ? tomorrowMatches : upcomingMatches;
+  const headlineMatches = todayMatches.length + tomorrowMatches.length > 0 ? [...todayMatches, ...tomorrowMatches] : upcomingMatches;
   const favoriteMatches = useMemo(
     () =>
       favoriteIds
