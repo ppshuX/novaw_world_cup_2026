@@ -9,6 +9,8 @@ export function TeamMark({ team, size = 'md' }: { team?: Team; size?: 'sm' | 'md
   return <TeamFlag team={team} size={size} />;
 }
 
+const pngFlags = new Set(['spain', 'argentina']);
+
 export function TeamFlag({ team, size = 'md' }: { team?: Team; size?: 'sm' | 'md' | 'lg' }) {
   const [failed, setFailed] = useState(false);
   const sizeClass = {
@@ -18,9 +20,10 @@ export function TeamFlag({ team, size = 'md' }: { team?: Team; size?: 'sm' | 'md
   }[size];
 
   if (isConfirmedTeam(team) && team?.flagKey && !failed) {
+    const ext = pngFlags.has(team.flagKey) ? 'png' : 'svg';
     return (
       <img
-        src={`/flags/${team.flagKey}.svg`}
+        src={`/flags/${team.flagKey}.${ext}`}
         alt={`${team.name}国旗`}
         className={`${sizeClass} shrink-0 rounded-[4px] border border-slate-200 bg-white object-cover`}
         loading="lazy"
