@@ -38,7 +38,7 @@ export function MatchCard({ match, compact = false, onOpen, isFavorite = false, 
         <div className="min-w-0">
           <span className="text-[10px] font-black uppercase text-summer-blue sm:text-xs">Match {match.matchNo}</span>
           <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <h3 className="text-sm font-black sm:text-lg">{match.stage}</h3>
+            <h3 className={`text-sm font-black sm:text-lg ${match.stage === '决赛' ? 'text-red-600' : ''}`}>{match.stage}</h3>
             {match.group && <span className="rounded-[6px] bg-slate-100 px-1.5 py-0.5 text-[10px] font-black sm:px-2 sm:py-1 sm:text-xs">{match.group}</span>}
           </div>
         </div>
