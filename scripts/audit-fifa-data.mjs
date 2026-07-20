@@ -188,7 +188,9 @@ for (let matchNo = 73; matchNo <= 88; matchNo += 1) {
   for (const teamId of [officialHomeId, officialAwayId]) {
     const team = teams.get(teamId);
     if (!team?.name) errors.push(`Team ${teamId}: missing Chinese name`);
-    if (!team?.flagKey || !existsSync(resolve(ROOT, `public/flags/${team.flagKey}.svg`))) {
+    const flagSvg = existsSync(resolve(ROOT, `public/flags/${team.flagKey}.svg`));
+    const flagPng = existsSync(resolve(ROOT, `public/flags/${team.flagKey}.png`));
+    if (!team?.flagKey || (!flagSvg && !flagPng)) {
       errors.push(`Team ${teamId}: missing local flag`);
     }
   }
