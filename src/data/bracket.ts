@@ -81,7 +81,7 @@ export const bracketRounds: BracketRound[] = [
   {
     stage: '冠军',
     matches: [
-      { id: 'champion', title: '冠军待诞生', round: '冠军', homeSlot: pendingSlot('champion-home', '决赛胜者'), awaySlot: pendingSlot('champion-away', ''), winnerTeamId: null, status: 'pending', dataStatus: 'pending', note: '' },
+      { id: 'champion', title: '2026世界杯冠军', round: '冠军', homeSlot: pendingSlot('champion-home', '决赛胜者'), awaySlot: pendingSlot('champion-away', ''), winnerTeamId: 'spain', status: 'confirmed', dataStatus: 'official', note: '' },
     ],
   },
 ];

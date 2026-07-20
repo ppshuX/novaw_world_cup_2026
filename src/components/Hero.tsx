@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck } from 'lucide-react';
+import { CalendarDays, Clock, ExternalLink, MapPin, ShieldCheck, Trophy } from 'lucide-react';
 import type { Match, Team } from '../types';
 import { getTeamById, resolveMatchTeams } from '../services/worldCupData';
 import { formatChineseDate, getCountdownParts } from '../utils/date';
@@ -68,7 +68,7 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
           </div>
 
           <aside className="rounded-[8px] border border-white/[0.45] bg-[#14162d]/[0.58] p-3 shadow-glow backdrop-blur-xl sm:p-5">
-            <p className="mb-2 text-xs font-bold text-summer-lime sm:mb-3 sm:text-sm">下一场重点比赛</p>
+            <p className="mb-2 text-xs font-bold text-summer-lime sm:mb-3 sm:text-sm">{nextMatch ? '下一场重点比赛' : '世界冠军'}</p>
             {nextMatch && homeTeam && awayTeam ? (
               <>
                 <article
@@ -115,7 +115,7 @@ export function Hero({ nextMatch, onNavigate, onOpenMatch, onOpenTeam }: HeroPro
                 </div>
               </>
             ) : (
-              <p className="text-white/[0.74]">暂无未来重点比赛，更新本地赛程数据后这里会自动显示。</p>
+              <ChampionCard onOpenTeam={onOpenTeam} />
             )}
           </aside>
         </div>
@@ -172,5 +172,46 @@ function TeamName({
       </span>
       {alignRight && <TeamMark team={team} size="sm" />}
     </button>
+  );
+}
+
+function ChampionCard({ onOpenTeam }: { onOpenTeam: (team: Team) => void }) {
+  const champion = getTeamById('spain');
+  const runnerUp = getTeamById('argentina');
+
+  return (
+    <div className="rounded-[8px] bg-white/[0.08] p-3 backdrop-blur sm:p-4">
+      <div className="flex flex-col items-center text-center">
+        <Trophy size={28} className="mb-2 text-amber-300 sm:size-[36px]" fill="currentColor" />
+        <p className="text-[11px] font-bold text-amber-300/80 sm:text-xs">2026世界杯冠军</p>
+        {champion && (
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onOpenTeam(champion); }}
+            className="mt-3 flex flex-col items-center gap-2 rounded-[8px] p-2 transition hover:bg-white/[0.1]"
+          >
+            <div className="flex h-16 w-20 items-center justify-center rounded-[8px] sm:h-20 sm:w-24">
+              <img
+                src="/flags/spain.png"
+                alt="西班牙国旗"
+                className="h-full w-full rounded-[8px] object-cover shadow-lg"
+              />
+            </div>
+            <div>
+              <span className="block text-xl font-black text-white sm:text-2xl">{champion.name}</span>
+              <span className="mt-0.5 block text-[11px] font-bold text-white/[0.5] sm:text-xs">{champion.shortName}</span>
+            </div>
+          </button>
+        )}
+        <div className="mt-3 rounded-[8px] bg-white/[0.1] px-4 py-2.5">
+          <p className="text-sm font-black text-white sm:text-base">
+            决赛 1:0 {runnerUp?.name ?? '阿根廷'}
+          </p>
+          <p className="mt-1 text-[11px] font-medium text-white/[0.55] sm:text-xs">
+            加时赛 · New Jersey · MetLife Stadium
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

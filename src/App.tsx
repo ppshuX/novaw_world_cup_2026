@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { ArrowDown, CalendarDays, Filter, Search, Star, Trash2, TreePine, Tv, X } from 'lucide-react';
+import { ArrowDown, CalendarDays, Filter, Search, Star, Trash2, TreePine, Trophy, Tv, X } from 'lucide-react';
 import type { Match, Team, TournamentStage } from './types';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
@@ -115,6 +115,10 @@ function App() {
     .filter((match) => match.tag !== '普通' && getResolvedMatchStatus(match, statusTick) !== 'finished')
     .slice(0, 6);
   const headlineMatches = todayMatches.length + tomorrowMatches.length > 0 ? [...todayMatches, ...tomorrowMatches] : upcomingMatches;
+  const isTournamentOver = sortedMatches.length > 0 && sortedMatches.every((m) => m.resultStatus === 'official' && m.homeScore != null && m.awayScore != null);
+  const champion = getTeamById('spain');
+  const finalMatch = sortedMatches.find((m) => m.matchNo === 104);
+  const thirdPlaceMatch = sortedMatches.find((m) => m.matchNo === 103);
   const favoriteMatches = useMemo(
     () =>
       favoriteIds
@@ -137,44 +141,76 @@ function App() {
       <Hero nextMatch={nextImportantMatch} onNavigate={setActiveView} onOpenMatch={setSelectedMatch} onOpenTeam={setSelectedTeam} />
 
       <main className="relative z-10 -mt-8 space-y-6 pb-12 sm:-mt-14 sm:space-y-10 sm:pb-16 lg:-mt-10">
+        {isTournamentOver && (
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <button
+              type="button"
+              onClick={() => setActiveView('bracket')}
+              className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-r from-amber-400 to-amber-500 px-4 py-3 text-sm font-black text-[#271527] shadow-md transition hover:from-amber-300 hover:to-amber-400 sm:py-4 sm:text-base"
+            >
+              <Trophy size={18} className="sm:size-[22px]" fill="currentColor" />
+              🏆 2026世界杯已圆满结束 · 西班牙荣耀夺冠  查看晋级树 →
+            </button>
+          </div>
+        )}
         <NavTabs activeView={activeView} onChange={setActiveView} />
 
         {activeView === 'home' && (
           <>
             <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="grid items-start gap-4 sm:gap-6 lg:grid-cols-[1fr_340px] xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]">
-                <PanelHeaderCard
-                  icon={<CalendarDays size={16} className="sm:size-[20px]" />}
-                  eyebrow="近期比赛"
-                  title="今日 / 最近即将开赛"
-                >
-                  <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                    {headlineMatches.map((match) => (
-                      <MatchCard
-                        key={match.id}
-                        match={match}
-                        compact
-                        onOpen={setSelectedMatch}
-                        onOpenTeam={setSelectedTeam}
-                        isFavorite={isFavorite(match.id)}
-                        onToggleFavorite={toggleFavorite}
-                      />
-                    ))}
-                  </div>
-                </PanelHeaderCard>
+                {isTournamentOver ? (
+                  <TournamentRecap champion={champion} finalMatch={finalMatch} thirdPlaceMatch={thirdPlaceMatch} onOpenMatch={setSelectedMatch} onOpenTeam={setSelectedTeam} onGoSchedule={() => setActiveView('schedule')} onGoBracket={() => setActiveView('bracket')} />
+                ) : (
+                  <PanelHeaderCard
+                    icon={<CalendarDays size={16} className="sm:size-[20px]" />}
+                    eyebrow="近期比赛"
+                    title="今日 / 最近即将开赛"
+                  >
+                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                      {headlineMatches.map((match) => (
+                        <MatchCard
+                          key={match.id}
+                          match={match}
+                          compact
+                          onOpen={setSelectedMatch}
+                          onOpenTeam={setSelectedTeam}
+                          isFavorite={isFavorite(match.id)}
+                          onToggleFavorite={toggleFavorite}
+                        />
+                      ))}
+                    </div>
+                  </PanelHeaderCard>
+                )}
 
-                <PanelHeaderCard
-                  dark
-                  icon={<TreePine size={16} className="sm:size-[20px]" />}
-                  eyebrow="重点比赛"
-                  title="推荐关注"
-                >
-                  <div className="space-y-2 sm:space-y-3">
-                    {focusMatches.slice(0, 4).map((match) => (
-                      <FocusMatchButton key={match.id} match={match} onOpen={setSelectedMatch} onOpenTeam={setSelectedTeam} />
-                    ))}
-                  </div>
-                </PanelHeaderCard>
+                {isTournamentOver ? (
+                  <PanelHeaderCard
+                    dark
+                    icon={<Trophy size={16} className="sm:size-[20px]" />}
+                    eyebrow="冠军"
+                    title="决赛之夜"
+                  >
+                    <div className="space-y-3">
+                      <ChampionHighlight team={champion} onOpenTeam={setSelectedTeam} />
+                      <p className="text-xs font-medium leading-5 text-white/[0.68] sm:text-sm sm:leading-6">
+                        2026年7月20日，西班牙在 MetLife Stadium 举行的决赛中，经过加时赛以 1:0 击败阿根廷，首次捧起世界杯冠军奖杯。
+                      </p>
+                    </div>
+                  </PanelHeaderCard>
+                ) : (
+                  <PanelHeaderCard
+                    dark
+                    icon={<TreePine size={16} className="sm:size-[20px]" />}
+                    eyebrow="重点比赛"
+                    title="推荐关注"
+                  >
+                    <div className="space-y-2 sm:space-y-3">
+                      {focusMatches.slice(0, 4).map((match) => (
+                        <FocusMatchButton key={match.id} match={match} onOpen={setSelectedMatch} onOpenTeam={setSelectedTeam} />
+                      ))}
+                    </div>
+                  </PanelHeaderCard>
+                )}
               </div>
             </section>
 
@@ -791,6 +827,141 @@ function FilterDrawer({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function TournamentRecap({
+  champion,
+  finalMatch,
+  thirdPlaceMatch,
+  onOpenMatch,
+  onOpenTeam,
+  onGoSchedule,
+  onGoBracket,
+}: {
+  champion?: ReturnType<typeof getTeamById>;
+  finalMatch: Match | undefined;
+  thirdPlaceMatch: Match | undefined;
+  onOpenMatch: (match: Match) => void;
+  onOpenTeam: (team: Team) => void;
+  onGoSchedule: () => void;
+  onGoBracket: () => void;
+}) {
+  const finalMatchData = finalMatch;
+  const finalHome = finalMatchData ? getTeamById(finalMatchData.homeTeamId) : null;
+  const finalAway = finalMatchData ? getTeamById(finalMatchData.awayTeamId) : null;
+
+  const thirdHome = thirdPlaceMatch ? getTeamById(thirdPlaceMatch.homeTeamId) : null;
+  const thirdAway = thirdPlaceMatch ? getTeamById(thirdPlaceMatch.awayTeamId) : null;
+
+  return (
+    <section className="rounded-[8px] border border-white/70 bg-white/[0.72] p-4 shadow-card backdrop-blur sm:p-5">
+      <div className="mb-3 flex items-start gap-2 sm:mb-4 sm:gap-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-summer-orange text-[#271527] sm:h-10 sm:w-10">
+          <Trophy size={16} className="sm:size-[20px]" fill="currentColor" />
+        </span>
+        <div>
+          <p className="text-xs font-semibold text-summer-blue sm:text-sm">赛事回顾</p>
+          <h2 className="text-xl font-black sm:text-2xl">2026世界杯收官</h2>
+          <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+            6月11日 — 7月20日 · 104场比赛 · 48支球队
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-3 sm:space-y-4">
+        {/* 冠军行 */}
+        <div className="rounded-[8px] bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-200 p-4">
+          <div className="flex items-center gap-3">
+            {champion && (
+              <button
+                type="button"
+                onClick={() => champion && onOpenTeam(champion)}
+                className="flex shrink-0 items-center gap-2 rounded-[8px] p-1 transition hover:bg-amber-200/50"
+              >
+                <img
+                  src="/flags/spain.png"
+                  alt="西班牙国旗"
+                  className="h-10 w-14 rounded-[6px] object-cover shadow-sm sm:h-12 sm:w-16"
+                />
+              </button>
+            )}
+            <div className="min-w-0">
+              <span className="rounded-[6px] bg-amber-400 px-1.5 py-0.5 text-[10px] font-black text-[#271527] sm:px-2 sm:py-1 sm:text-xs">冠军</span>
+              <p className="mt-1 text-lg font-black sm:text-2xl">{champion?.name ?? '西班牙'}</p>
+              <p className="text-xs font-bold text-amber-700 sm:text-sm">
+                决赛 {finalMatchData?.homeScore ?? 1}:{finalMatchData?.awayScore ?? 0} {finalAway?.name ?? '阿根廷'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 三四名 */}
+        <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-black text-slate-500 sm:text-sm">🥉 三四名决赛</span>
+            <div className="flex items-center gap-2 text-sm font-bold sm:text-base">
+              <span>{thirdHome?.name ?? '法国'}</span>
+              <span className="rounded-[6px] bg-slate-300 px-2 py-0.5 text-xs font-black text-slate-700 sm:text-sm">
+                {thirdPlaceMatch?.homeScore ?? 4}:{thirdPlaceMatch?.awayScore ?? 6}
+              </span>
+              <span>{thirdAway?.name ?? '英格兰'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 快捷入口 */}
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={onGoSchedule}
+            className="min-h-10 rounded-[8px] bg-[#172033] px-3 py-2 text-xs font-black text-white transition hover:bg-summer-blue sm:min-h-11 sm:px-4 sm:py-2.5 sm:text-sm"
+          >
+            查看全部赛程
+          </button>
+          <button
+            type="button"
+            onClick={onGoBracket}
+            className="min-h-10 rounded-[8px] bg-white border border-slate-200 px-3 py-2 text-xs font-black text-slate-700 shadow-sm transition hover:bg-summer-lime hover:text-[#172033] sm:min-h-11 sm:px-4 sm:py-2.5 sm:text-sm"
+          >
+            查看晋级树
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ChampionHighlight({
+  team,
+  onOpenTeam,
+}: {
+  team?: ReturnType<typeof getTeamById>;
+  onOpenTeam: (team: Team) => void;
+}) {
+  if (!team) return null;
+
+  return (
+    <div className="rounded-[8px] bg-white/[0.1] p-4">
+      <button
+        type="button"
+        onClick={() => onOpenTeam(team)}
+        className="flex flex-col items-center gap-3 text-center w-full"
+      >
+        <img
+          src="/flags/spain.png"
+          alt="西班牙国旗"
+          className="h-20 w-28 rounded-[8px] object-cover shadow"
+        />
+        <div>
+          <span className="rounded-[6px] bg-summer-lime px-2 py-0.5 text-[10px] font-black text-[#17331d] sm:px-2 sm:py-1 sm:text-xs">
+            2026世界杯冠军
+          </span>
+          <p className="mt-2 text-xl font-black text-white sm:text-2xl">{team.name}</p>
+          <p className="mt-0.5 text-sm font-bold text-white/[0.55]">{team.shortName}</p>
+        </div>
+      </button>
     </div>
   );
 }
