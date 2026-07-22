@@ -20,16 +20,18 @@
 
 **V1 明确不做**：预测、排行榜、用户系统、后端、数据库、自动抓取、实时 API。
 
-## V1 后续维护（不阻塞发布）
+## V1 后续维护（已完成 ✅）
 
 随 FIFA 官方信息更新，人工维护本地数据即可：
 
-- [ ] 用 FIFA 官方页面持续核对完整赛程
-- [ ] 将已确认字段标记为 `matchInfoStatus: 'official'`
-- [ ] 未确认字段保持 `pending`，示例数据保持 `mock`
-- [ ] 补齐或修正城市、球场、阶段、北京时间
-- [ ] 赛后更新 `homeScore` / `awayScore`，并设置 `matchStatus: 'finished'`、`resultStatus: 'official'`
-- [ ] 淘汰赛产生胜者后再更新 `src/data/bracket.ts`
+- [x] 用 FIFA 官方页面持续核对完整赛程
+- [x] 将已确认字段标记为 `matchInfoStatus: 'official'`
+- [x] 未确认字段保持 `pending`，示例数据保持 `mock`
+- [x] 补齐或修正城市、球场、阶段、北京时间
+- [x] 赛后更新 `homeScore` / `awayScore`，并设置 `matchStatus: 'finished'`、`resultStatus: 'official'`
+- [x] 淘汰赛产生胜者后再更新 `src/data/bracket.ts`
+
+> 全部 104 场比赛数据已于 2026-07-22 同步完毕。世界杯赛程维护正式结束。
 
 ## V2 轻量增强
 
